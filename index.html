@@ -3,11 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Global Organic - Divine Shopping</title>
+  <title>Global Organic States - Divine Shopping</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.22.9/babel.min.js"></script>
   <style>
     body {
       margin: 0;
@@ -16,6 +19,7 @@
       color: #1e293b;
       line-height: 1.6;
     }
+    
     header {
       background: linear-gradient(90deg, #ff6b6b, #f7b733);
       color: white;
@@ -24,21 +28,50 @@
       align-items: center;
       padding: 1.2rem 3rem;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
+    
     .logo {
       font-size: 2rem;
       font-weight: 900;
       letter-spacing: -0.5px;
     }
+    
+    .nav-icons {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    
     .nav-icons i {
-      margin-left: 1.5rem;
       cursor: pointer;
       font-size: 1.3rem;
       transition: transform 0.2s ease;
+      position: relative;
     }
+    
     .nav-icons i:hover {
       transform: scale(1.2);
     }
+    
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #dc2626;
+      color: white;
+      border-radius: 50%;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      min-width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
     nav {
       background: #ffe3c2;
       padding: 1rem 3rem;
@@ -47,6 +80,7 @@
       flex-wrap: wrap;
       justify-content: center;
     }
+    
     nav a {
       color: #b91c1c;
       text-decoration: none;
@@ -54,9 +88,11 @@
       font-size: 1rem;
       transition: color 0.3s;
     }
+    
     nav a:hover {
       color: #7f1d1d;
     }
+    
     .hero {
       display: flex;
       flex-wrap: wrap;
@@ -66,20 +102,24 @@
       background: url('https://uploads.onecompiler.io/434pwjffd/43qw9sj8x/ai-generated-8502022_1280.png') no-repeat center center/cover;
       color: white;
     }
+    
     .hero-text {
       max-width: 500px;
       background: rgba(0,0,0,0.5);
       padding: 2rem;
       border-radius: 10px;
     }
+    
     .hero-text h1 {
       font-size: 2.8rem;
       margin-bottom: 1rem;
     }
+    
     .hero-text p {
       font-size: 1.1rem;
       margin-bottom: 2rem;
     }
+    
     .hero-text button {
       background: #ff6b6b;
       color: white;
@@ -92,23 +132,28 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.15);
       transition: background 0.3s;
     }
+    
     .hero-text button:hover {
       background: #d84343;
     }
+    
     .section {
       padding: 4rem 3rem;
     }
+    
     .section h2 {
       text-align: center;
       font-size: 2.4rem;
       margin-bottom: 2rem;
       color: #e11d48;
     }
+    
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 2rem;
     }
+    
     .product-card {
       background: white;
       border-radius: 1rem;
@@ -118,27 +163,247 @@
       text-align: center;
       transition: transform 0.3s;
     }
+    
     .product-card:hover {
       transform: translateY(-8px);
     }
+    
     .product-card img {
+      width: 100%;
       height: 180px;
-      object-fit: contain;
+      object-fit: cover;
       margin-bottom: 1rem;
+      border-radius: 0.5rem;
     }
+    
     .product-card h3 {
       font-size: 1.2rem;
       margin: 0.5rem 0;
     }
-    .product-card p {
+    
+    .product-card .price {
       color: #16a34a;
       font-weight: 800;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
     }
+    
+    .product-card .description {
+      color: #64748b;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    
+    .quantity-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+    
+    .quantity-controls button {
+      background: #f1f5f9;
+      border: 1px solid #d1d5db;
+      color: #374151;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .quantity-controls button:hover {
+      background: #e2e8f0;
+    }
+    
+    .quantity-input {
+      width: 60px;
+      text-align: center;
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      padding: 0.5rem;
+    }
+    
+    .add-to-cart-btn {
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+      transition: background 0.3s;
+    }
+    
+    .add-to-cart-btn:hover {
+      background: #dc2626;
+    }
+    
+    .cart-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 998;
+    }
+    
+    .cart-modal {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 400px;
+      height: 100%;
+      background: white;
+      box-shadow: -4px 0 10px rgba(0, 0, 0, 0.15);
+      padding: 2rem;
+      overflow-y: auto;
+      z-index: 999;
+    }
+    
+    .cart-modal h2 {
+      color: #e11d48;
+      margin-bottom: 1.5rem;
+    }
+    
+    .cart-item {
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .cart-item-info {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .cart-item img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 0.5rem;
+    }
+    
+    .cart-item-details {
+      flex: 1;
+    }
+    
+    .cart-item-name {
+      font-weight: 600;
+      color: #1e293b;
+    }
+    
+    .cart-item-price {
+      color: #16a34a;
+      font-weight: 700;
+    }
+    
+    .cart-total {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #e11d48;
+      margin: 1.5rem 0;
+      text-align: center;
+    }
+    
+    .checkout-btn {
+      background: #16a34a;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+      margin-bottom: 1rem;
+      transition: background 0.3s;
+      position: relative;
+    }
+    
+    .checkout-btn:hover {
+      background: #15803d;
+    }
+    
+    .checkout-btn:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+    
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 8px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .close-cart-btn {
+      background: #6b7280;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+      transition: background 0.3s;
+    }
+    
+    .close-cart-btn:hover {
+      background: #4b5563;
+    }
+    
+    .remove-item-btn {
+      color: #dc2626;
+      background: none;
+      border: none;
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    
+    .error-message {
+      background: #fee2e2;
+      color: #dc2626;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    
+    .success-message {
+      background: #dcfce7;
+      color: #16a34a;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    
+    .global-message {
+      position: fixed;
+      top: 100px;
+      right: 20px;
+      z-index: 1000;
+      max-width: 300px;
+    }
+    
     .testimonial-section {
       background: #fdf2f8;
       padding: 4rem 3rem;
       text-align: center;
     }
+    
     .testimonial-grid {
       display: flex;
       justify-content: center;
@@ -146,6 +411,7 @@
       flex-wrap: wrap;
       margin-top: 2rem;
     }
+    
     .testimonial {
       background: white;
       padding: 2rem;
@@ -153,122 +419,575 @@
       max-width: 320px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.07);
     }
+    
     footer {
       background: #0f172a;
       color: #f1f5f9;
       padding: 3rem;
     }
+    
     .footer-grid {
       display: flex;
       flex-wrap: wrap;
       gap: 2rem;
       justify-content: space-between;
     }
+    
     .footer-grid div {
       max-width: 300px;
     }
+    
     footer h4 {
       color: #facc15;
       margin-bottom: 1rem;
     }
+    
     footer a {
       color: #bae6fd;
       text-decoration: none;
     }
+    
     footer a:hover {
       text-decoration: underline;
     }
+    
     footer p {
       font-size: 0.95rem;
+    }
+    
+    @media (max-width: 768px) {
+      .cart-modal {
+        width: 90%;
+        right: 5%;
+      }
+      
+      header {
+        padding: 1rem;
+      }
+      
+      .logo {
+        font-size: 1.5rem;
+      }
+      
+      .hero {
+        padding: 3rem 1rem;
+      }
+      
+      .section {
+        padding: 2rem 1rem;
+      }
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">Global Organic States</div>
-    <div class="nav-icons">
-      <i class="fas fa-search"></i>
-      <i class="fas fa-user"></i>
-      <i class="fas fa-heart"></i>
-      <i class="fas fa-shopping-cart"></i>
-    </div>
-  </header>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    const { createRoot } = ReactDOM;
 
-  <nav>
-    <a href="#">Home</a>
-    <a href="#">Temples</a>
-    <a href="#">Statues</a>
-    <a href="#">Collections</a>
-    <a href="#">Contact</a>
-  </nav>
+    // Configuration - Update this with your backend URL
+    const API_BASE_URL = 'https://your-backend-url.onrender.com'; // Replace with your actual Render backend URL
 
-  <section class="hero">
-    <div class="hero-text">
-      <h1>Artful Divinity for Every Home</h1>
-      <p>Discover soulful craftsmanship infused with positivity, beauty, and sacred intention.</p>
-      <button>Explore Now</button>
-    </div>
-  </section>
+    // Enhanced product data with the original styling
+    const products = [
+      {
+        id: 1,
+        name: "Minimalist Wood Shrine",
+        price: 149.00,
+        image: "https://uploads.onecompiler.io/434pwjffd/43qw9sj8x/ai-generated-8502022_1280.png",
+        description: "Handcrafted wooden shrine with minimalist design for peaceful meditation.",
+      },
+      {
+        id: 2,
+        name: "Marble Ganesha Idol",
+        price: 89.00,
+        image: "https://uploads.onecompiler.io/434pwjffd/43qw9sj8x/ai-generated-8502022_1280.png",
+        description: "Beautiful marble Ganesha idol carved by skilled artisans.",
+      },
+      {
+        id: 3,
+        name: "Hanuman in Bronze",
+        price: 129.00,
+        image: "https://uploads.onecompiler.io/434pwjffd/43qw9sj8x/ai-generated-8502022_1280.png",
+        description: "Stunning bronze Hanuman statue with intricate details.",
+      },
+      {
+        id: 4,
+        name: "Sacred Lotus Candle",
+        price: 29.99,
+        image: "https://uploads.onecompiler.io/434pwjffd/43qw9sj8x/ai-generated-8502022_1280.png",
+        description: "Hand-poured lotus-shaped candle with calming lavender scent.",
+      },
+      {
+        id: 5,
+        name: "Organic Incense Set",
+        price: 19.99,
+        image: "https://uploads.onecompiler.io/434pwjffd/43qw9sj8x/ai-generated-8502022_1280.png",
+        description: "Natural incense sticks collection for meditation and relaxation.",
+      },
+      {
+        id: 6,
+        name: "Crystal Prayer Beads",
+        price: 39.99,
+        image: "https://uploads.onecompiler.io/434pwjffd/43qw9sj8x/ai-generated-8502022_1280.png",
+        description: "Handcrafted prayer beads with healing crystals.",
+      },
+    ];
 
-  <section class="section">
-    <h2>Top Picks</h2>
-    <div class="product-grid">
-      <div class="product-card">
-        <img src="https://uploads.onecompiler.io/434pwjffd/43qw9sj8x/ai-generated-8502022_1280.png" alt="Wood Temple">
-        <h3>Minimalist Wood Shrine</h3>
-        <p>$149.00</p>
-      </div>
-      <div class="product-card">
-        <img src="https://uploads.onecompiler.io/434pwjffd/43qw9sj8x/ai-generated-8502022_1280.png" alt="Marble Idol">
-        <h3>Marble Ganesha Idol</h3>
-        <p>$89.00</p>
-      </div>
-      <div class="product-card">
-        <img src="https://uploads.onecompiler.io/434pwjffd/43qw9sj8x/ai-generated-8502022_1280.png" alt="Metal Hanuman">
-        <h3>Hanuman in Bronze</h3>
-        <p>$129.00</p>
-      </div>
-    </div>
-  </section>
+    // Error Boundary component
+    class ErrorBoundary extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = { hasError: false };
+      }
 
-  <section class="testimonial-section">
-    <h2>Words from Our Clients</h2>
-    <div class="testimonial-grid">
-      <div class="testimonial">
-        <p>“Incredible energy and craftsmanship. I feel a sense of calm every day now.”</p>
-        <strong>- Kassim R.</strong>
-      </div>
-      <div class="testimonial">
-        <p>“Looks even better in person than in pictures. Truly divine.”</p>
-        <strong>- Amrit M.</strong>
-      </div>
-      <div class="testimonial">
-        <p>“A sacred addition to our home. The detail and finish are remarkable.”</p>
-        <strong>- Abhaya L.</strong>
-      </div>
-    </div>
-  </section>
+      static getDerivedStateFromError(error) {
+        return { hasError: true };
+      }
 
-  <footer>
-    <div class="footer-grid">
-      <div>
-        <h4>About Us</h4>
-        <p>Global Organic States brings together sacred artistry and contemporary design to help you create a sanctuary in your space.</p>
-      </div>
-      <div>
-        <h4>Explore</h4>
-        <p><a href="#">Products</a></p>
-        <p><a href="#">Stories</a></p>
-        <p><a href="#">Care Guide</a></p>
-      </div>
-      <div>
-        <h4>Contact</h4>
-        <p>Email: contact@globalorganicstates.com</p>
-        <p>Phone: +1 (555) 321-7654</p>
-        <p>Delware, USA</p>
-      </div>
-    </div>
-    <p style="text-align:center; margin-top: 2rem; font-size: 0.95rem; color: #cbd5e1;">&copy; 2025 Global Organic. Inspired by soul, designed for life.</p>
-  </footer>
+      componentDidCatch(error, errorInfo) {
+        console.error('Error caught by boundary:', error, errorInfo);
+      }
+
+      render() {
+        if (this.state.hasError) {
+          return <div style={{padding: '2rem', textAlign: 'center', color: 'red'}}>Something went wrong. Please refresh the page.</div>;
+        }
+        return this.props.children;
+      }
+    }
+
+    // Header component
+    function Header({ totalItems, toggleCart }) {
+      return (
+        <header>
+          <div className="logo">Divine Shopping</div>
+          <div className="nav-icons">
+            <i className="fas fa-search"></i>
+            <i className="fas fa-user"></i>
+            <i className="fas fa-shopping-cart" onClick={toggleCart}>
+              {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
+            </i>
+          </div>
+        </header>
+      );
+    }
+
+    // Navigation component
+    function Navigation() {
+      return (
+        <nav>
+          <a href="#home">Home</a>
+          <a href="#products">Products</a>
+          <a href="#about">About</a>
+          <a href="#testimonials">Testimonials</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      );
+    }
+
+    // Hero section component
+    function HeroSection({ onExplore }) {
+      return (
+        <section className="hero">
+          <div className="hero-text">
+            <h1>Sacred Items for Modern Living</h1>
+            <p>Discover handcrafted spiritual items that bring peace and mindfulness to your daily life.</p>
+            <button onClick={onExplore}>Explore Collection</button>
+          </div>
+        </section>
+      );
+    }
+
+    // Product card component
+    function ProductCard({ product, addToCart }) {
+      const [quantity, setQuantity] = useState(1);
+
+      const handleQuantityChange = (change) => {
+        setQuantity(prev => Math.max(1, prev + change));
+      };
+
+      const handleAddToCart = () => {
+        addToCart(product, quantity);
+        setQuantity(1); // Reset quantity after adding to cart
+      };
+
+      return (
+        <div className="product-card">
+          <img src={product.image} alt={product.name} />
+          <h3>{product.name}</h3>
+          <div className="price">${product.price.toFixed(2)}</div>
+          <div className="description">{product.description}</div>
+          
+          <div className="quantity-controls">
+            <button onClick={() => handleQuantityChange(-1)}>-</button>
+            <input 
+              type="number" 
+              className="quantity-input" 
+              value={quantity} 
+              onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+              min="1"
+            />
+            <button onClick={() => handleQuantityChange(1)}>+</button>
+          </div>
+          
+          <button className="add-to-cart-btn" onClick={handleAddToCart}>
+            Add to Cart
+          </button>
+        </div>
+      );
+    }
+
+    // Product section component
+    function ProductSection({ products, addToCart }) {
+      return (
+        <section id="products-section" className="section">
+          <h2>Our Sacred Collection</h2>
+          <div className="product-grid">
+            {products.map(product => (
+              <ProductCard 
+                key={product.id} 
+                product={product} 
+                addToCart={addToCart}
+              />
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    // Cart modal component
+    function CartModal({ 
+      cart, 
+      updateQuantity, 
+      removeFromCart, 
+      calculateTotal, 
+      closeCart, 
+      handleCheckout, 
+      isLoading, 
+      error, 
+      success 
+    }) {
+      return (
+        <div className="cart-modal">
+          <h2>Shopping Cart</h2>
+          
+          {error && <div className="error-message">{error}</div>}
+          {success && <div className="success-message">{success}</div>}
+          
+          {cart.length === 0 ? (
+            <p>Your cart is empty</p>
+          ) : (
+            <>
+              {cart.map(item => (
+                <div key={item.product.id} className="cart-item">
+                  <div className="cart-item-info">
+                    <img src={item.product.image} alt={item.product.name} />
+                    <div className="cart-item-details">
+                      <div className="cart-item-name">{item.product.name}</div>
+                      <div className="cart-item-price">${item.product.price.toFixed(2)}</div>
+                    </div>
+                  </div>
+                  <div className="quantity-controls">
+                    <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)}>-</button>
+                    <span>{item.quantity}</span>
+                    <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)}>+</button>
+                  </div>
+                  <button 
+                    className="remove-item-btn" 
+                    onClick={() => removeFromCart(item.product.id)}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+              
+              <div className="cart-total">
+                Total: ${calculateTotal()}
+              </div>
+              
+              <button 
+                className="checkout-btn" 
+                onClick={handleCheckout}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <span className="loading-spinner"></span>
+                    Processing...
+                  </>
+                ) : (
+                  'Proceed to Checkout'
+                )}
+              </button>
+            </>
+          )}
+          
+          <button className="close-cart-btn" onClick={closeCart}>
+            Close Cart
+          </button>
+        </div>
+      );
+    }
+
+    // Testimonial section component
+    function TestimonialSection() {
+      const testimonials = [
+        {
+          id: 1,
+          name: "Sarah Johnson",
+          text: "The quality of the products is amazing. My wooden shrine brings such peace to my meditation practice.",
+          rating: 5
+        },
+        {
+          id: 2,
+          name: "Michael Chen",
+          text: "Fast shipping and beautiful craftsmanship. The marble Ganesha is absolutely stunning.",
+          rating: 5
+        },
+        {
+          id: 3,
+          name: "Emily Rodriguez",
+          text: "These sacred items have transformed my spiritual practice. Highly recommended!",
+          rating: 5
+        }
+      ];
+
+      return (
+        <section className="testimonial-section">
+          <h2>What Our Customers Say</h2>
+          <div className="testimonial-grid">
+            {testimonials.map(testimonial => (
+              <div key={testimonial.id} className="testimonial">
+                <p>"{testimonial.text}"</p>
+                <h4>- {testimonial.name}</h4>
+                <div>
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <i key={i} className="fas fa-star" style={{ color: '#facc15' }}></i>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    // Footer component
+    function Footer() {
+      return (
+        <footer>
+          <div className="footer-grid">
+            <div>
+              <h4>About Divine Shopping</h4>
+              <p>We curate the finest spiritual and sacred items to enhance your journey of mindfulness and inner peace.</p>
+            </div>
+            <div>
+              <h4>Quick Links</h4>
+              <p><a href="#products">Products</a></p>
+              <p><a href="#about">About Us</a></p>
+              <p><a href="#contact">Contact</a></p>
+              <p><a href="#shipping">Shipping Info</a></p>
+            </div>
+            <div>
+              <h4>Customer Service</h4>
+              <p>Email: support@divineshopping.com</p>
+              <p>Phone: (555) 123-4567</p>
+              <p>Hours: Mon-Fri 9AM-6PM EST</p>
+            </div>
+            <div>
+              <h4>Follow Us</h4>
+              <p>
+                <a href="#"><i className="fab fa-facebook"></i> Facebook</a><br/>
+                <a href="#"><i className="fab fa-instagram"></i> Instagram</a><br/>
+                <a href="#"><i className="fab fa-twitter"></i> Twitter</a>
+              </p>
+            </div>
+          </div>
+          <div style={{ textAlign: 'center', marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid #374151' }}>
+            <p>&copy; 2025 Divine Shopping. All rights reserved.</p>
+          </div>
+        </footer>
+      );
+    }
+
+    // Main App component
+    function App() {
+      const [cart, setCart] = useState([]);
+      const [isCartOpen, setIsCartOpen] = useState(false);
+      const [isLoading, setIsLoading] = useState(false);
+      const [error, setError] = useState('');
+      const [success, setSuccess] = useState('');
+
+      // Load cart from memory on mount
+      useEffect(() => {
+        console.log('App initialized');
+        // Clear any previous messages
+        setError('');
+        setSuccess('');
+      }, []);
+
+      // Clear messages after 5 seconds
+      useEffect(() => {
+        if (error || success) {
+          const timer = setTimeout(() => {
+            setError('');
+            setSuccess('');
+          }, 5000);
+          return () => clearTimeout(timer);
+        }
+      }, [error, success]);
+
+      // Add product to cart
+      const addToCart = (product, quantity) => {
+        console.log(`Adding to cart: ${product.name}, Quantity: ${quantity}`);
+        setCart((prevCart) => {
+          const existingItem = prevCart.find((item) => item.product.id === product.id);
+          if (existingItem) {
+            return prevCart.map((item) =>
+              item.product.id === product.id
+                ? { ...item, quantity: item.quantity + quantity }
+                : item
+            );
+          }
+          return [...prevCart, { product, quantity }];
+        });
+        setSuccess(`${product.name} added to cart!`);
+      };
+
+      // Update quantity in cart
+      const updateQuantity = (productId, newQuantity) => {
+        if (newQuantity < 1) return;
+        setCart((prevCart) =>
+          prevCart.map((item) =>
+            item.product.id === productId ? { ...item, quantity: newQuantity } : item
+          )
+        );
+      };
+
+      // Remove item from cart
+      const removeFromCart = (productId) => {
+        setCart((prevCart) => prevCart.filter((item) => item.product.id !== productId));
+      };
+
+      // Calculate total cart value
+      const calculateTotal = () => {
+        return cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0).toFixed(2);
+      };
+
+      // Calculate total items in cart
+      const calculateTotalItems = () => {
+        return cart.reduce((sum, item) => sum + item.quantity, 0);
+      };
+
+      // Handle Stripe checkout
+      const handleCheckout = async () => {
+        if (cart.length === 0) {
+          setError('Your cart is empty!');
+          return;
+        }
+
+        setIsLoading(true);
+        setError('');
+
+        try {
+          // Prepare cart items for backend
+          const items = cart.map(item => ({
+            name: item.product.name,
+            price: item.product.price,
+            quantity: item.quantity,
+            description: item.product.description,
+            image: item.product.image
+          }));
+
+          // Create checkout session
+          const response = await fetch(`${API_BASE_URL}/create-checkout-session`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ items }),
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to create checkout session');
+          }
+
+          const data = await response.json();
+          
+          // Redirect to Stripe checkout
+          window.location.href = data.checkout_url;
+          
+        } catch (err) {
+          console.error('Checkout error:', err);
+          setError(err.message || 'Failed to proceed to checkout. Please try again.');
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      const scrollToProducts = () => {
+        const productsSection = document.getElementById('products-section');
+        if (productsSection) {
+          productsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      };
+
+      return (
+        <ErrorBoundary>
+          <div>
+            <Header 
+              totalItems={calculateTotalItems()} 
+              toggleCart={() => setIsCartOpen(!isCartOpen)} 
+            />
+            
+            <Navigation />
+            
+            <HeroSection onExplore={scrollToProducts} />
+            
+            <ProductSection 
+              products={products} 
+              addToCart={addToCart} 
+            />
+            
+            <TestimonialSection />
+            
+            <Footer />
+            
+            {isCartOpen && (
+              <>
+                <div className="cart-modal-overlay" onClick={() => setIsCartOpen(false)}></div>
+                <CartModal
+                  cart={cart}
+                  updateQuantity={updateQuantity}
+                  removeFromCart={removeFromCart}
+                  calculateTotal={calculateTotal}
+                  closeCart={() => setIsCartOpen(false)}
+                  handleCheckout={handleCheckout}
+                  isLoading={isLoading}
+                  error={error}
+                  success={success}
+                />
+              </>
+            )}
+            
+            {/* Global message display */}
+            {(error || success) && (
+              <div className="global-message">
+                {error && <div className="error-message">{error}</div>}
+                {success && <div className="success-message">{success}</div>}
+              </div>
+            )}
+          </div>
+        </ErrorBoundary>
+      );
+    }
+
+    // Render the app
+    const root = createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
 </body>
 </html>
