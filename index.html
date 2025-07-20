@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global Organic - Divine Shopping</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Manrope', sans-serif;
+      background-color: #fffaf5;
+      color: #1e293b;
+      line-height: 1.6;
+    }
+    header {
+      background: linear-gradient(90deg, #ff6b6b, #f7b733);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .logo {
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+    }
+    .nav-icons i {
+      margin-left: 1.5rem;
+      cursor: pointer;
+      font-size: 1.3rem;
+      transition: transform 0.2s ease;
+    }
+    .nav-icons i:hover {
+      transform: scale(1.2);
+    }
+    nav {
+      background: #ffe3c2;
+      padding: 1rem 3rem;
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    nav a {
+      color: #b91c1c;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #7f1d1d;
+    }
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5rem 3rem;
+      background: url('https://uploads.onecompiler.io/434pwjffd/43qw9sj8x/ai-generated-8502022_1280.png') no-repeat center center/cover;
+      color: white;
+    }
+    .hero-text {
+      max-width: 500px;
+      background: rgba(0,0,0,0.5);
+      padding: 2rem;
+      border-radius: 10px;
+    }
+    .hero-text h1 {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+    }
+    .hero-text p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+    .hero-text button {
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      padding: 0.9rem 1.7rem;
+      font-size: 1rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      font-weight: 700;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      transition: background 0.3s;
+    }
+    .hero-text button:hover {
+      background: #d84343;
+    }
+    .section {
+      padding: 4rem 3rem;
+    }
+    .section h2 {
+      text-align: center;
+      font-size: 2.4rem;
+      margin-bottom: 2rem;
+      color: #e11d48;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+    .product-card {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      overflow: hidden;
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    .product-card:hover {
+      transform: translateY(-8px);
+    }
+    .product-card img {
+      height: 180px;
+      object-fit: contain;
+      margin-bottom: 1rem;
+    }
+    .product-card h3 {
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+    }
+    .product-card p {
+      color: #16a34a;
+      font-weight: 800;
+    }
+    .testimonial-section {
+      background: #fdf2f8;
+      padding: 4rem 3rem;
+      text-align: center;
+    }
+    .testimonial-grid {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .testimonial {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      max-width: 320px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.07);
+    }
+    footer {
+      background: #0f172a;
+      color: #f1f5f9;
+      padding: 3rem;
+    }
+    .footer-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: space-between;
+    }
+    .footer-grid div {
+      max-width: 300px;
+    }
+    footer h4 {
+      color: #facc15;
+      margin-bottom: 1rem;
+    }
+    footer a {
+      color: #bae6fd;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+    footer p {
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Global Organic States</div>
+    <div class="nav-icons">
+      <i class="fas fa-search"></i>
+      <i class="fas fa-user"></i>
+      <i class="fas fa-heart"></i>
+      <i class="fas fa-shopping-cart"></i>
+    </div>
+  </header>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Temples</a>
+    <a href="#">Statues</a>
+    <a href="#">Collections</a>
+    <a href="#">Contact</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Artful Divinity for Every Home</h1>
+      <p>Discover soulful craftsmanship infused with positivity, beauty, and sacred intention.</p>
+      <button>Explore Now</button>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Top Picks</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <img src="https://uploads.onecompiler.io/434pwjffd/43qw9sj8x/ai-generated-8502022_1280.png" alt="Wood Temple">
+        <h3>Minimalist Wood Shrine</h3>
+        <p>$149.00</p>
+      </div>
+      <div class="product-card">
+        <img src="https://uploads.onecompiler.io/434pwjffd/43qw9sj8x/ai-generated-8502022_1280.png" alt="Marble Idol">
+        <h3>Marble Ganesha Idol</h3>
+        <p>$89.00</p>
+      </div>
+      <div class="product-card">
+        <img src="https://uploads.onecompiler.io/434pwjffd/43qw9sj8x/ai-generated-8502022_1280.png" alt="Metal Hanuman">
+        <h3>Hanuman in Bronze</h3>
+        <p>$129.00</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonial-section">
+    <h2>Words from Our Clients</h2>
+    <div class="testimonial-grid">
+      <div class="testimonial">
+        <p>“Incredible energy and craftsmanship. I feel a sense of calm every day now.”</p>
+        <strong>- Kassim R.</strong>
+      </div>
+      <div class="testimonial">
+        <p>“Looks even better in person than in pictures. Truly divine.”</p>
+        <strong>- Amrit M.</strong>
+      </div>
+      <div class="testimonial">
+        <p>“A sacred addition to our home. The detail and finish are remarkable.”</p>
+        <strong>- Abhaya L.</strong>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <h4>About Us</h4>
+        <p>Global Organic States brings together sacred artistry and contemporary design to help you create a sanctuary in your space.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <p><a href="#">Products</a></p>
+        <p><a href="#">Stories</a></p>
+        <p><a href="#">Care Guide</a></p>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>Email: contact@globalorganicstates.com</p>
+        <p>Phone: +1 (555) 321-7654</p>
+        <p>Delware, USA</p>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top: 2rem; font-size: 0.95rem; color: #cbd5e1;">&copy; 2025 Global Organic. Inspired by soul, designed for life.</p>
+  </footer>
+</body>
+</html>
