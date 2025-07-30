@@ -3,13 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Premium onion hair care products - oils, shampoos & treatments. Made in Delaware, USA. Fast shipping nationwide with Stripe secure checkout.">
+  <meta name="description" content="Premium onion hair care products - oils, shampoos & treatments. Made in Delaware, USA. Fast shipping nationwide with Amazon Pay secure checkout.">
   <meta name="keywords" content="onion hair oil, onion shampoo, hair growth, natural hair care, organic hair products, Delaware USA">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Global Organic States">
-  <meta name="geo.region" content="US-DE">
-  
-  <!-- Open Graph -->
   <meta property="og:title" content="Premium Onion Hair Care Products | Made in Delaware USA">
   <meta property="og:description" content="Transform your hair with scientifically proven onion hair care products. 95% success rate, 50K+ happy customers.">
   <meta property="og:image" content="https://yoursite.com/og-image.jpg">
@@ -18,41 +15,22 @@
   
   <title>Global Organic States - Premium Onion Hair Care | Made in Delaware, USA</title>
   
-  <!-- External Resources -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Amazon Pay SDK -->
-  <script src="https://static-na.payments-amazon.com/checkout.js"></script>
   
   <style>
-    /* CSS Variables & Reset */
     :root {
-      --primary: #F06292;
-      --secondary: #4CAF50;
-      --accent: #F48FB1;
-      --onion: #8B4513;
-      --dark: #2c3e50;
-      --light-bg: #FFF8F0;
+      --primary: #F06292; --secondary: #4CAF50; --accent: #F48FB1; --onion: #8B4513; --dark: #2c3e50; --light-bg: #FFF8F0;
       --gradient-primary: linear-gradient(135deg, var(--primary), var(--accent));
       --gradient-secondary: linear-gradient(135deg, var(--secondary), #66BB6A);
       --gradient-onion: linear-gradient(135deg, var(--onion), #CD853F);
-      --shadow: 0 15px 35px rgba(0,0,0,0.1);
-      --shadow-hover: 0 25px 50px rgba(0,0,0,0.25);
-      --transition: all 0.3s ease;
-      --radius: 20px;
-      --navbar-height: 80px;
+      --shadow: 0 15px 35px rgba(0,0,0,0.1); --shadow-hover: 0 25px 50px rgba(0,0,0,0.25);
+      --transition: all 0.3s ease; --radius: 20px; --navbar-height: 80px;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: 'Open Sans', sans-serif;
-      line-height: 1.6;
-      color: var(--dark);
-      overflow-x: hidden;
-    }
-
+    body { font-family: 'Open Sans', sans-serif; line-height: 1.6; color: var(--dark); overflow-x: hidden; }
     h1, h2, h3, h4, h5, h6 { font-family: 'Nunito', sans-serif; font-weight: 700; }
 
     /* Utility Classes */
@@ -63,465 +41,186 @@
 
     /* Loading Screen */
     .loading-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: var(--gradient-primary);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      transition: opacity 0.3s ease;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--gradient-primary);
+      display: flex; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.8s ease;
     }
-
-    .loading-content {
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2rem;
-    }
-
+    .loading-overlay.fade-out { opacity: 0; visibility: hidden; }
+    .loading-content { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2rem; }
     .loading-brand {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 800;
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      color: white;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-      animation: fadeInBounce 1s ease-out;
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: clamp(2.5rem, 6vw, 4rem);
+      color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); animation: fadeInBounce 1s ease-out;
     }
-
-    .loading-ring {
-      width: 60px;
-      height: 60px;
-      border: 4px solid rgba(255,255,255,0.3);
-      border-top: 4px solid white;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    .btn-loading { position: relative; color: transparent !important; }
-    .btn-loading::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      margin: auto;
-      width: 18px;
-      height: 18px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-top: 2px solid white;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
+    .loading-ring { width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid white; border-radius: 50%; animation: spin 1s linear infinite; }
 
     /* Navigation */
     .navbar {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      padding: 1rem 0;
-      transition: var(--transition);
-      box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-      height: var(--navbar-height);
+      background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 1rem 0; transition: var(--transition);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.1); height: var(--navbar-height);
     }
-
-    .navbar.scrolled {
-      background: rgba(255, 255, 255, 0.98);
-      padding: 0.5rem 0;
-      box-shadow: 0 5px 30px rgba(0,0,0,0.15);
-    }
-
-    .navbar-brand {
-      font-family: 'Nunito', sans-serif;
-      font-weight: 800;
-      font-size: 1.6rem;
-      text-decoration: none;
-    }
-
+    .navbar.scrolled { background: rgba(255, 255, 255, 0.98); padding: 0.5rem 0; box-shadow: 0 5px 30px rgba(0,0,0,0.15); }
+    .navbar-brand { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.6rem; text-decoration: none; }
     .navbar-brand:hover { background: var(--gradient-onion); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
     .nav-link {
-      color: var(--dark) !important;
-      font-weight: 600;
-      margin: 0 0.5rem;
-      padding: 0.5rem 1rem !important;
-      border-radius: 25px;
-      transition: var(--transition);
+      color: var(--dark) !important; font-weight: 600; margin: 0 0.5rem; padding: 0.5rem 1rem !important;
+      border-radius: 25px; transition: var(--transition);
     }
-
-    .nav-link:hover, .nav-link.active {
-      background: var(--gradient-primary);
-      color: white !important;
-      transform: translateY(-2px);
-    }
-
+    .nav-link:hover, .nav-link.active { background: var(--gradient-primary); color: white !important; transform: translateY(-2px); }
     .cart-icon {
-      position: relative;
-      background: var(--gradient-primary);
-      color: white;
-      border: none;
-      padding: 0.7rem 1rem;
-      border-radius: 25px;
-      transition: var(--transition);
+      position: relative; background: var(--gradient-primary); color: white; border: none;
+      padding: 0.7rem 1rem; border-radius: 25px; transition: var(--transition);
     }
-
     .cart-icon:hover { transform: translateY(-2px); box-shadow: var(--shadow); color: white; }
-
     .cart-badge {
-      position: absolute;
-      top: -8px;
-      right: -8px;
-      background: var(--onion);
-      color: white;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      font-size: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
+      position: absolute; top: -8px; right: -8px; background: var(--onion); color: white; border-radius: 50%;
+      width: 20px; height: 20px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700;
     }
 
     /* Hero Section */
     .hero-section {
-      background: var(--gradient-primary);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-      padding-top: var(--navbar-height);
+      background: var(--gradient-primary); min-height: 100vh; display: flex; align-items: center;
+      position: relative; overflow: hidden; padding-top: var(--navbar-height);
     }
-
     .hero-section::before {
-      content: '';
-      position: absolute;
-      inset: 0;
+      content: ''; position: absolute; inset: 0;
       background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="onion" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23onion)"/></svg>');
       animation: float 20s ease-in-out infinite;
     }
-
     .hero-content { position: relative; z-index: 2; color: white; }
-
     .hero-title {
-      font-size: clamp(2.2rem, 5vw, 4rem);
-      font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 1.5rem;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 800; line-height: 1.1;
+      margin-bottom: 1.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-
     .hero-highlight { color: #FFD700; position: relative; }
     .hero-highlight::after {
-      content: '🧅';
-      position: absolute;
-      right: -35px;
-      top: -5px;
-      font-size: 1.8rem;
-      animation: wiggle 3s ease-in-out infinite;
+      content: '🧅'; position: absolute; right: -35px; top: -5px;
+      font-size: 1.8rem; animation: wiggle 3s ease-in-out infinite;
     }
-
     .hero-subtitle { font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.95; }
-
     .hero-buttons { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem; }
-
     .btn-hero, .btn-secondary-hero {
-      padding: 1rem 2.5rem;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      transition: var(--transition);
-      text-decoration: none;
-      display: inline-block;
+      padding: 1rem 2.5rem; border-radius: 50px; font-weight: 700; font-size: 1.1rem;
+      transition: var(--transition); text-decoration: none; display: inline-block;
     }
-
     .btn-hero { background: white; color: var(--primary); border: none; }
     .btn-secondary-hero { background: transparent; color: white; border: 2px solid white; }
-
-    .btn-hero:hover, .btn-secondary-hero:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-    }
-
+    .btn-hero:hover, .btn-secondary-hero:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
     .btn-secondary-hero:hover { background: white; color: var(--primary); }
-
     .hero-stats {
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(10px);
-      border-radius: var(--radius);
-      padding: 2rem;
-      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: var(--radius);
+      padding: 2rem; border: 1px solid rgba(255,255,255,0.2);
     }
-
     .stat-number { font-size: 2.5rem; font-weight: 800; color: #FFD700; margin-bottom: 0.5rem; }
     .stat-label { font-size: 0.9rem; opacity: 0.9; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
-    /* Sections */
+    /* Sections & Cards */
     .section-header { text-align: center; margin-bottom: 3rem; }
-
     .section-title {
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      color: var(--dark);
-      margin-bottom: 1rem;
-      position: relative;
+      font-size: clamp(2rem, 4vw, 3.5rem); color: var(--dark); margin-bottom: 1rem; position: relative;
     }
-
     .section-title::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100px;
-      height: 4px;
-      background: var(--gradient-primary);
-      border-radius: 2px;
+      content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
+      width: 100px; height: 4px; background: var(--gradient-primary); border-radius: 2px;
     }
-
     .section-subtitle { font-size: 1.2rem; color: #666; max-width: 600px; margin: 0 auto; }
 
-    /* Cards */
     .card-base {
-      background: white;
-      border-radius: var(--radius);
-      padding: 2.5rem 2rem;
-      text-align: center;
-      transition: var(--transition);
-      height: 100%;
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(240, 98, 146, 0.1);
-      margin-bottom: 2rem;
+      background: white; border-radius: var(--radius); padding: 2.5rem 2rem; text-align: center;
+      transition: var(--transition); height: 100%; position: relative; overflow: hidden;
+      border: 1px solid rgba(240, 98, 146, 0.1); margin-bottom: 2rem;
     }
-
     .card-base::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background: var(--gradient-onion);
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 5px; background: var(--gradient-onion);
     }
-
     .card-base:hover { transform: translateY(-10px); box-shadow: var(--shadow); }
 
     .onion-benefits { background: var(--light-bg); }
     .products-section { background: white; }
-
     .benefit-icon {
-      font-size: 3.5rem;
-      margin-bottom: 1.5rem;
-      background: var(--gradient-onion);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-size: 3.5rem; margin-bottom: 1.5rem; background: var(--gradient-onion);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-
     .benefit-title, .product-title { color: var(--dark); margin-bottom: 1rem; font-size: 1.4rem; }
     .benefit-description, .product-description { color: #666; line-height: 1.6; }
 
     /* Products */
-    .product-card {
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      cursor: pointer;
-      padding: 0;
-    }
-
+    .product-card { box-shadow: 0 10px 30px rgba(0,0,0,0.1); cursor: pointer; padding: 0; }
     .product-card:hover { transform: translateY(-12px); box-shadow: var(--shadow-hover); }
-
     .product-image-container {
-      position: relative;
-      overflow: hidden;
-      height: 250px;
-      background: var(--light-bg);
+      position: relative; overflow: hidden; height: 250px; background: var(--light-bg);
     }
-
-    .product-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: var(--transition);
-    }
-
+    .product-image { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
     .product-card:hover .product-image { transform: scale(1.05); }
-
     .product-badge {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: var(--gradient-primary);
-      color: white;
-      padding: 0.4rem 0.8rem;
-      border-radius: 15px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-transform: uppercase;
+      position: absolute; top: 1rem; right: 1rem; background: var(--gradient-primary); color: white;
+      padding: 0.4rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
     }
-
     .product-info { padding: 1.5rem; }
     .product-rating { margin-bottom: 1rem; }
     .stars { color: #FFD700; }
     .rating-count { color: #999; font-size: 0.85rem; margin-left: 0.5rem; }
-
-    .product-price {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
+    .product-price { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
     .current-price { font-size: 1.6rem; font-weight: 800; color: var(--primary); }
     .original-price { font-size: 1.1rem; color: #999; text-decoration: line-through; }
     .discount-badge { background: var(--onion); color: white; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.75rem; font-weight: 700; }
 
-    /* Quantity Controls */
-    .quantity-selector {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-
+    /* Controls */
+    .quantity-selector { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 1rem; }
     .quantity-btn, .cart-quantity-btn {
-      background: var(--gradient-primary);
-      border: none;
-      color: white;
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: var(--transition);
+      background: var(--gradient-primary); border: none; color: white; width: 35px; height: 35px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: var(--transition);
     }
-
     .cart-quantity-btn { width: 25px; height: 25px; font-size: 0.8rem; }
     .quantity-btn:hover, .cart-quantity-btn:hover { transform: scale(1.1); }
-
     .quantity-display {
-      background: white;
-      border: 2px solid var(--primary);
-      border-radius: 8px;
-      padding: 0.5rem 1rem;
-      font-weight: 700;
-      color: var(--primary);
-      min-width: 60px;
-      text-align: center;
+      background: white; border: 2px solid var(--primary); border-radius: 8px;
+      padding: 0.5rem 1rem; font-weight: 700; color: var(--primary); min-width: 60px; text-align: center;
     }
-
     .btn-add-cart, .btn-checkout {
-      background: var(--gradient-primary);
-      border: none;
-      color: white;
-      padding: 0.8rem 1.5rem;
-      border-radius: 25px;
-      font-weight: 700;
-      transition: var(--transition);
-      width: 100%;
+      background: var(--gradient-primary); border: none; color: white; padding: 0.8rem 1.5rem;
+      border-radius: 25px; font-weight: 700; transition: var(--transition); width: 100%;
     }
-
     .btn-add-cart:hover, .btn-checkout:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(240, 98, 146, 0.4);
-      color: white;
+      transform: translateY(-2px); box-shadow: 0 10px 25px rgba(240, 98, 146, 0.4); color: white;
     }
 
     /* Cart Sidebar */
     .cart-sidebar {
-      position: fixed;
-      top: 0;
-      right: -400px;
-      width: 400px;
-      height: 100vh;
-      background: white;
-      box-shadow: -10px 0 30px rgba(0,0,0,0.2);
-      transition: var(--transition);
-      z-index: 1000;
-      overflow-y: auto;
+      position: fixed; top: 0; right: -400px; width: 400px; height: 100vh; background: white;
+      box-shadow: -10px 0 30px rgba(0,0,0,0.2); transition: var(--transition); z-index: 1000; overflow-y: auto;
     }
-
     .cart-sidebar.open { right: 0; }
-
     .cart-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 999;
-      opacity: 0;
-      visibility: hidden;
-      transition: var(--transition);
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999;
+      opacity: 0; visibility: hidden; transition: var(--transition);
     }
-
     .cart-overlay.show { opacity: 1; visibility: visible; }
-
     .cart-header {
-      background: var(--gradient-primary);
-      color: white;
-      padding: 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      background: var(--gradient-primary); color: white; padding: 1.5rem;
+      display: flex; justify-content: space-between; align-items: center;
     }
-
     .cart-close {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.5rem;
-      cursor: pointer;
-      padding: 0.5rem;
-      border-radius: 50%;
-      transition: var(--transition);
+      background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;
+      padding: 0.5rem; border-radius: 50%; transition: var(--transition);
     }
-
     .cart-close:hover { background: rgba(255,255,255,0.2); }
-
     .cart-items { padding: 1rem; max-height: calc(100vh - 200px); overflow-y: auto; }
-
     .cart-item {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem;
-      border-bottom: 1px solid #eee;
+      display: flex; align-items: center; gap: 1rem; padding: 1rem; border-bottom: 1px solid #eee;
     }
-
     .cart-item:hover { background: var(--light-bg); }
-
     .cart-item-image { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
     .cart-item-info { flex: 1; }
     .cart-item-title { font-weight: 600; color: var(--dark); margin-bottom: 0.3rem; font-size: 0.9rem; }
     .cart-item-price { color: var(--primary); font-weight: 700; }
-
-    .cart-quantity-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      margin-top: 0.5rem;
-    }
-
+    .cart-quantity-controls { display: flex; align-items: center; gap: 0.3rem; margin-top: 0.5rem; }
     .cart-quantity { font-weight: 600; min-width: 25px; text-align: center; font-size: 0.9rem; }
-
     .remove-item {
-      background: #dc3545;
-      border: none;
-      color: white;
-      padding: 0.3rem;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.8rem;
+      background: #dc3545; border: none; color: white; padding: 0.3rem;
+      border-radius: 4px; cursor: pointer; font-size: 0.8rem;
     }
-
-    .cart-total {
-      background: var(--light-bg);
-      padding: 1.5rem;
-      border-top: 2px solid #eee;
-    }
-
+    .cart-total { background: var(--light-bg); padding: 1.5rem; border-top: 2px solid #eee; }
     .total-row { display: flex; justify-content: space-between; margin-bottom: 0.8rem; }
     .total-label { font-weight: 600; }
     .total-amount { font-weight: 700; color: var(--primary); }
@@ -529,194 +228,78 @@
 
     /* Contact & Forms */
     .contact-section { background: var(--gradient-secondary); color: white; }
-
     .contact-card {
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(10px);
-      border-radius: var(--radius);
-      padding: 2.5rem;
-      text-align: center;
-      border: 1px solid rgba(255,255,255,0.2);
-      transition: var(--transition);
+      background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: var(--radius);
+      padding: 2.5rem; text-align: center; border: 1px solid rgba(255,255,255,0.2); transition: var(--transition);
     }
-
     .contact-card:hover { transform: translateY(-5px); }
     .contact-icon { font-size: 3rem; margin-bottom: 1.5rem; color: #FFD700; }
-
-    .newsletter-section {
-      padding: 4rem 0;
-      background: var(--dark);
-      color: white;
-      text-align: center;
-    }
-
-    .newsletter-form {
-      display: flex;
-      gap: 1rem;
-      max-width: 450px;
-      margin: 0 auto;
-    }
-
-    .newsletter-input {
-      flex: 1;
-      padding: 0.8rem 1.2rem;
-      border: none;
-      border-radius: 25px;
-      font-size: 1rem;
-    }
-
+    .newsletter-section { padding: 4rem 0; background: var(--dark); color: white; text-align: center; }
+    .newsletter-form { display: flex; gap: 1rem; max-width: 450px; margin: 0 auto; }
+    .newsletter-input { flex: 1; padding: 0.8rem 1.2rem; border: none; border-radius: 25px; font-size: 1rem; }
     .newsletter-btn {
-      background: var(--gradient-primary);
-      border: none;
-      color: white;
-      padding: 0.8rem 1.5rem;
-      border-radius: 25px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: var(--transition);
+      background: var(--gradient-primary); border: none; color: white; padding: 0.8rem 1.5rem;
+      border-radius: 25px; font-weight: 700; cursor: pointer; transition: var(--transition);
     }
-
     .newsletter-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
 
     /* Footer */
     footer { background: var(--dark); color: white; padding: 3rem 0 1rem; }
-
     .footer-brand {
-      font-family: 'Nunito', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 800;
-      background: var(--gradient-primary);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 1rem;
+      font-family: 'Nunito', sans-serif; font-size: 1.8rem; font-weight: 800;
+      background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem;
     }
-
     .footer-links { list-style: none; padding: 0; }
     .footer-links li { margin-bottom: 0.6rem; }
     .footer-links a { color: #ccc; text-decoration: none; transition: var(--transition); }
     .footer-links a:hover { color: var(--primary); }
-
     .social-links { display: flex; gap: 0.8rem; margin-top: 1.5rem; }
-
     .social-link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      background: var(--gradient-primary);
-      color: white;
-      border-radius: 50%;
-      text-decoration: none;
-      transition: var(--transition);
+      display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;
+      background: var(--gradient-primary); color: white; border-radius: 50%; text-decoration: none; transition: var(--transition);
     }
-
     .social-link:hover { transform: translateY(-3px); box-shadow: var(--shadow); color: white; }
-
-    .footer-bottom {
-      border-top: 1px solid #444;
-      margin-top: 2rem;
-      padding-top: 1.5rem;
-      text-align: center;
-      color: #999;
-    }
+    .footer-bottom { border-top: 1px solid #444; margin-top: 2rem; padding-top: 1.5rem; text-align: center; color: #999; }
 
     /* Modal */
     .checkout-modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      z-index: 2000;
-      display: none;
-      justify-content: center;
-      align-items: center;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000;
+      display: none; justify-content: center; align-items: center;
     }
-
     .checkout-modal.show { display: flex; }
-
     .checkout-content {
-      background: white;
-      border-radius: var(--radius);
-      padding: 2.5rem;
-      max-width: 450px;
-      width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
+      background: white; border-radius: var(--radius); padding: 2.5rem;
+      max-width: 450px; width: 90%; max-height: 90vh; overflow-y: auto;
     }
-
     .form-group { margin-bottom: 1.2rem; }
     .form-label { display: block; margin-bottom: 0.4rem; color: var(--dark); font-weight: 600; }
-
     .form-input {
-      width: 100%;
-      padding: 0.8rem;
-      border: 2px solid #eee;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      transition: var(--transition);
+      width: 100%; padding: 0.8rem; border: 2px solid #eee; border-radius: 8px;
+      font-size: 0.95rem; transition: var(--transition);
     }
-
-    .form-input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(240, 98, 146, 0.1);
+    .form-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(240, 98, 146, 0.1); }
+    .amazon-pay-button {
+      background: #ff9900; color: white; padding: 15px; border-radius: 8px; border: none;
+      font-weight: bold; cursor: pointer; width: 100%; margin: 1rem 0; transition: var(--transition);
     }
-
-    .stripe-element {
-      background: white;
-      padding: 0.8rem;
-      border-radius: 8px;
-      border: 2px solid #eee;
-      margin-bottom: 1rem;
-      transition: var(--transition);
-    }
-
-    /* Amazon Pay Button Styles */
-    #amazon-pay-button {
-      border-radius: 8px;
-      overflow: hidden;
-    }
+    .amazon-pay-button:hover { background: #e68900; transform: translateY(-2px); }
 
     /* Toast */
     .toast-container { position: fixed; top: 100px; right: 20px; z-index: 3000; }
-
     .toast {
-      background: white;
-      border-radius: 10px;
-      padding: 1rem 1.2rem;
-      margin-bottom: 1rem;
-      box-shadow: var(--shadow);
-      border-left: 4px solid var(--primary);
-      transform: translateX(350px);
-      transition: var(--transition);
-      max-width: 300px;
+      background: white; border-radius: 10px; padding: 1rem 1.2rem; margin-bottom: 1rem;
+      box-shadow: var(--shadow); border-left: 4px solid var(--primary); transform: translateX(350px);
+      transition: var(--transition); max-width: 300px;
     }
-
     .toast.show { transform: translateX(0); }
     .toast.success { border-left-color: var(--secondary); }
     .toast.error { border-left-color: #dc3545; }
-
-    .toast-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.5rem;
-    }
-
+    .toast-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
     .toast-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #999; }
 
     /* Animations */
-    @keyframes spin { 
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    @keyframes fadeInBounce {
-      0% { opacity: 0; transform: translateY(-30px) scale(0.8); }
-      50% { opacity: 0.8; transform: translateY(10px) scale(1.05); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes fadeInBounce { 0% { opacity: 0; transform: translateY(-30px) scale(0.8); } 50% { opacity: 0.8; transform: translateY(10px) scale(1.05); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
     @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
     @keyframes wiggle { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(3deg); } 75% { transform: rotate(-3deg); } }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
@@ -735,28 +318,8 @@
     }
   </style>
 
-  <!-- Schema.org structured data -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Global Organic States",
-    "url": "https://globalorganicstates.com",
-    "description": "Premium onion-based hair care products made in Delaware, USA",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "8 The Green STE R",
-      "addressLocality": "Dover",
-      "addressRegion": "DE",
-      "postalCode": "19901",
-      "addressCountry": "US"
-    },
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+1-302-547-6454",
-      "contactType": "customer service"
-    }
-  }
+  {"@context": "https://schema.org","@type": "Organization","name": "Global Organic States","url": "https://globalorganicstates.com","description": "Premium onion-based hair care products made in Delaware, USA","address": {"@type": "PostalAddress","streetAddress": "8 The Green STE R","addressLocality": "Dover","addressRegion": "DE","postalCode": "19901","addressCountry": "US"},"contactPoint": {"@type": "ContactPoint","telephone": "+1-302-547-6454","contactType": "customer service"}}
   </script>
 </head>
 
@@ -776,11 +339,9 @@
   <nav class="navbar navbar-expand-lg fixed-top" id="navbar">
     <div class="container">
       <a class="navbar-brand text-gradient" href="#home">Global Organic States</a>
-      
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
-      
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto">
           <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
@@ -788,7 +349,6 @@
           <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
         </ul>
-        
         <button class="cart-icon" id="cartToggle">
           <i class="fas fa-shopping-cart me-2"></i>Cart
           <span class="cart-badge" id="cartCount">0</span>
@@ -806,94 +366,39 @@
     </div>
     <div class="cart-items" id="cartItems"></div>
     <div class="cart-total" id="cartTotal">
-      <div class="total-row">
-        <span class="total-label">Subtotal:</span>
-        <span class="total-amount">$<span id="subtotal">0.00</span></span>
-      </div>
-      <div class="total-row">
-        <span class="total-label">Shipping:</span>
-        <span class="total-amount">$<span id="shipping">0.00</span></span>
-      </div>
-      <div class="total-row">
-        <span class="total-label">Tax:</span>
-        <span class="total-amount">$<span id="tax">0.00</span></span>
-      </div>
-      <div class="total-row final-total">
-        <span class="total-label">Total:</span>
-        <span class="total-amount">$<span id="finalTotal">0.00</span></span>
-      </div>
-      <button class="btn-checkout" id="checkoutBtn">
-        <i class="fas fa-credit-card me-2"></i>Secure Checkout
-      </button>
+      <div class="total-row"><span class="total-label">Subtotal:</span><span class="total-amount">$<span id="subtotal">0.00</span></span></div>
+      <div class="total-row"><span class="total-label">Shipping:</span><span class="total-amount">$<span id="shipping">0.00</span></span></div>
+      <div class="total-row"><span class="total-label">Tax:</span><span class="total-amount">$<span id="tax">0.00</span></span></div>
+      <div class="total-row final-total"><span class="total-label">Total:</span><span class="total-amount">$<span id="finalTotal">0.00</span></span></div>
+      <button class="btn-checkout" id="checkoutBtn"><i class="fas fa-credit-card me-2"></i>Secure Checkout</button>
     </div>
   </div>
 
   <!-- Checkout Modal -->
   <div class="checkout-modal" id="checkoutModal">
     <div class="checkout-content">
-      <div class="checkout-header" style="text-align: center; margin-bottom: 2rem;">
+      <div style="text-align: center; margin-bottom: 2rem;">
         <h2 style="font-size: 1.8rem; color: var(--dark); margin-bottom: 0.5rem;">Secure Checkout</h2>
-        <p style="color: #666;">Complete your order with Stripe</p>
+        <p style="color: #666;">Complete your order securely</p>
       </div>
-      
       <form id="checkout-form">
-        <div class="form-group">
-          <label class="form-label">Full Name</label>
-          <input type="text" class="form-input" id="customerName" required>
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label">Email Address</label>
-          <input type="email" class="form-input" id="customerEmail" required>
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label">Phone Number</label>
-          <input type="tel" class="form-input" id="customerPhone" required>
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label">Shipping Address</label>
-          <input type="text" class="form-input" id="shippingAddress" required>
-        </div>
-        
+        <div class="form-group"><label class="form-label">Full Name</label><input type="text" class="form-input" id="customerName" required></div>
+        <div class="form-group"><label class="form-label">Email Address</label><input type="email" class="form-input" id="customerEmail" required></div>
+        <div class="form-group"><label class="form-label">Phone Number</label><input type="tel" class="form-input" id="customerPhone" required></div>
+        <div class="form-group"><label class="form-label">Shipping Address</label><input type="text" class="form-input" id="shippingAddress" required></div>
         <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label class="form-label">City</label>
-              <input type="text" class="form-input" id="city" required>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <label class="form-label">State</label>
-              <input type="text" class="form-input" id="state" required>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <label class="form-label">ZIP Code</label>
-              <input type="text" class="form-input" id="zipCode" required>
-            </div>
-          </div>
+          <div class="col-md-6"><div class="form-group"><label class="form-label">City</label><input type="text" class="form-input" id="city" required></div></div>
+          <div class="col-md-3"><div class="form-group"><label class="form-label">State</label><input type="text" class="form-input" id="state" required></div></div>
+          <div class="col-md-3"><div class="form-group"><label class="form-label">ZIP</label><input type="text" class="form-input" id="zipCode" required></div></div>
         </div>
-        
         <div class="form-group">
           <label class="form-label">Payment Method</label>
-          <div id="amazon-pay-button" style="max-width: 400px; min-height: 55px;"></div>
-          <div class="mt-3">
-            <p style="font-size: 0.9rem; color: #666;">
-              <i class="fas fa-shield-alt me-2"></i>
-              Secure payment processing - Your order will be processed immediately
-            </p>
-          </div>
+          <div id="amazon-pay-button" style="min-height: 55px;"></div>
+          <p style="font-size: 0.9rem; color: #666; margin-top: 8px;"><i class="fas fa-shield-alt me-2"></i>Secure payment processing</p>
         </div>
-        
         <div class="d-flex gap-3">
           <button type="button" class="btn btn-outline-secondary" id="cancelCheckout">Cancel</button>
-          <button type="button" class="btn-checkout" id="submitPayment" onclick="CheckoutManager.processSimpleOrder()">
-            Complete Order ($<span id="checkoutTotal">0.00</span>)
-          </button>
+          <button type="button" class="btn-checkout" id="submitPayment">Complete Order ($<span id="checkoutTotal">0.00</span>)</button>
         </div>
       </form>
     </div>
@@ -905,60 +410,35 @@
       <div class="row align-items-center">
         <div class="col-lg-6">
           <div class="hero-content">
-            <h1 class="hero-title fade-in">
-              Transform Your Hair with 
-              <span class="hero-highlight">Pure Onion Power</span>
-            </h1>
-            <p class="hero-subtitle fade-in" style="animation-delay: 0.2s">
-              Premium onion-based hair care products made in Delaware, USA. 
-              Scientifically proven to promote hair growth, reduce hair fall, and restore natural shine.
-            </p>
-            
+            <h1 class="hero-title fade-in">Transform Your Hair with <span class="hero-highlight">Pure Onion Power</span></h1>
+            <p class="hero-subtitle fade-in" style="animation-delay: 0.2s">Premium onion-based hair care products made in Delaware, USA. Scientifically proven to promote hair growth, reduce hair fall, and restore natural shine.</p>
             <div class="hero-buttons fade-in" style="animation-delay: 0.4s">
-              <a href="#products" class="btn-hero">
-                <i class="fas fa-shopping-bag me-2"></i>Shop Onion Products
-              </a>
-              <a href="#benefits" class="btn-secondary-hero">
-                <i class="fas fa-leaf me-2"></i>Learn More
-              </a>
+              <a href="#products" class="btn-hero"><i class="fas fa-shopping-bag me-2"></i>Shop Onion Products</a>
+              <a href="#benefits" class="btn-secondary-hero"><i class="fas fa-leaf me-2"></i>Learn More</a>
             </div>
-            
             <div class="hero-stats fade-in" style="animation-delay: 0.6s">
               <div class="row text-center">
-                <div class="col-4">
-                  <div class="stat-number">50K+</div>
-                  <div class="stat-label">Happy Customers</div>
-                </div>
-                <div class="col-4">
-                  <div class="stat-number">95%</div>
-                  <div class="stat-label">Success Rate</div>
-                </div>
-                <div class="col-4">
-                  <div class="stat-number">30</div>
-                  <div class="stat-label">Days Results</div>
-                </div>
+                <div class="col-4"><div class="stat-number">50K+</div><div class="stat-label">Happy Customers</div></div>
+                <div class="col-4"><div class="stat-number">95%</div><div class="stat-label">Success Rate</div></div>
+                <div class="col-4"><div class="stat-number">30</div><div class="stat-label">Days Results</div></div>
               </div>
             </div>
           </div>
         </div>
         <div class="col-lg-6 text-center">
-          <img src="https://uploads.onecompiler.io/434pwjffd/43hc8tejs/ChatGPT%20Image%20May%2010,%202025,%2001_11_57%20PM.png" 
-               alt="Premium Onion Hair Care Products" 
-               class="img-fluid rounded-3 shadow-lg slide-in-right" 
-               style="animation-delay: 0.8s; max-height: 450px;">
+          <img src="https://uploads.onecompiler.io/434pwjffd/43hc8tejs/ChatGPT%20Image%20May%2010,%202025,%2001_11_57%20PM.png" alt="Premium Onion Hair Care Products" class="img-fluid rounded-3 shadow-lg slide-in-right" style="animation-delay: 0.8s; max-height: 450px;">
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Onion Benefits Section -->
+  <!-- Benefits Section -->
   <section id="benefits" class="onion-benefits section-padding">
     <div class="container">
       <div class="section-header">
         <h2 class="section-title fade-in">Why Onion for Hair Care?</h2>
         <p class="section-subtitle fade-in">Scientifically proven benefits of onion extract for hair health</p>
       </div>
-      
       <div class="row" id="benefitsGrid"></div>
     </div>
   </section>
@@ -970,7 +450,6 @@
         <h2 class="section-title fade-in">Our Premium Onion Hair Care Collection</h2>
         <p class="section-subtitle fade-in">Made in Delaware, USA with the finest organic onion extracts</p>
       </div>
-      
       <div class="row" id="productsGrid"></div>
     </div>
   </section>
@@ -980,11 +459,8 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title" style="color: white;">Get in Touch</h2>
-        <p class="section-subtitle" style="color: rgba(255,255,255,0.9);">
-          Questions about our onion hair care products? We're here to help!
-        </p>
+        <p class="section-subtitle" style="color: rgba(255,255,255,0.9);">Questions about our onion hair care products? We're here to help!</p>
       </div>
-      
       <div class="row" id="contactGrid"></div>
     </div>
   </section>
@@ -994,14 +470,10 @@
     <div class="container">
       <div style="max-width: 600px; margin: 0 auto;">
         <h2 style="font-size: 2.2rem; margin-bottom: 1rem;">Stay Updated with Our Hair Care Tips</h2>
-        <p style="font-size: 1.1rem; margin-bottom: 2.5rem; opacity: 0.9;">
-          Get exclusive offers, hair care tips, and product updates delivered to your inbox.
-        </p>
+        <p style="font-size: 1.1rem; margin-bottom: 2.5rem; opacity: 0.9;">Get exclusive offers, hair care tips, and product updates delivered to your inbox.</p>
         <form class="newsletter-form" id="newsletterForm">
           <input type="email" class="newsletter-input" placeholder="Enter your email address" required>
-          <button type="submit" class="newsletter-btn">
-            <i class="fas fa-paper-plane me-2"></i>Subscribe
-          </button>
+          <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane me-2"></i>Subscribe</button>
         </form>
       </div>
     </div>
@@ -1013,10 +485,7 @@
       <div class="row">
         <div class="col-lg-4 col-md-6 mb-4">
           <div class="footer-brand">Global Organic States</div>
-          <p style="color: #ccc; margin-bottom: 1.5rem; line-height: 1.6;">
-            Premium onion-based hair care products made in Delaware, USA. 
-            Transform your hair naturally with our scientifically proven formulations.
-          </p>
+          <p style="color: #ccc; margin-bottom: 1.5rem; line-height: 1.6;">Premium onion-based hair care products made in Delaware, USA. Transform your hair naturally with our scientifically proven formulations.</p>
           <div class="social-links">
             <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
             <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
@@ -1024,59 +493,39 @@
             <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
           </div>
         </div>
-        
         <div class="col-lg-2 col-md-6 mb-4">
           <h5 style="color: white; margin-bottom: 1rem; font-weight: 700;">Quick Links</h5>
           <ul class="footer-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#benefits">Benefits</a></li>
-            <li><a href="#products">Products</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#home">Home</a></li><li><a href="#benefits">Benefits</a></li><li><a href="#products">Products</a></li><li><a href="#contact">Contact</a></li>
           </ul>
         </div>
-        
         <div class="col-lg-3 col-md-6 mb-4">
           <h5 style="color: white; margin-bottom: 1rem; font-weight: 700;">Customer Care</h5>
           <ul class="footer-links">
-            <li><a href="#">Shipping Info</a></li>
-            <li><a href="#">Returns</a></li>
-            <li><a href="#">Size Guide</a></li>
-            <li><a href="#">FAQ</a></li>
-            <li><a href="#">Track Order</a></li>
+            <li><a href="#">Shipping Info</a></li><li><a href="#">Returns</a></li><li><a href="#">Size Guide</a></li><li><a href="#">FAQ</a></li><li><a href="#">Track Order</a></li>
           </ul>
         </div>
-        
         <div class="col-lg-3 col-md-6 mb-4">
           <h5 style="color: white; margin-bottom: 1rem; font-weight: 700;">Legal</h5>
           <ul class="footer-links">
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">Refund Policy</a></li>
-            <li><a href="#">Disclaimer</a></li>
+            <li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Refund Policy</a></li><li><a href="#">Disclaimer</a></li>
           </ul>
         </div>
       </div>
-      
       <div class="footer-bottom">
         <p>&copy; 2025 Global Organic States. All rights reserved. Made with ❤️ in Delaware, USA.</p>
       </div>
     </div>
   </footer>
 
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- JavaScript -->
   <script>
-    // Constants
+    // Configuration & Data
     const CONFIG = {
-      AMAZON_MERCHANT_ID: 'A2D0FIAQLBKO92', // Your actual Merchant ID
-      AMAZON_CLIENT_ID: 'amzn1.application-oa2-client.97be686d21e54635bb4359ed066173f2', // Your actual Client ID
-      API_ENDPOINT: 'https://backendgos.onrender.com', 
-      FREE_SHIPPING_THRESHOLD: 0,
-      SHIPPING_COST: 9.99,
-      TAX_RATE: 0, // Delaware has no sales tax
-      ENVIRONMENT: 'live' // Change to 'live' for production
+      AMAZON_MERCHANT_ID: 'A2D0FIAQLBKO92',
+      AMAZON_CLIENT_ID: 'amzn1.application-oa2-client.97be686d21e54635bb4359ed066173f2',
+      API_ENDPOINT: 'https://backendgos.onrender.com/process-payment',
+      FREE_SHIPPING_THRESHOLD: 50, SHIPPING_COST: 9.99, TAX_RATE: 0, ENVIRONMENT: 'sandbox'
     };
 
     const DATA = {
@@ -1092,7 +541,7 @@
         { id: 'onion-oil', name: 'Premium Onion Hair Oil', price: 29.99, originalPrice: 39.99, badge: 'Best Seller', reviews: 2547, description: 'Cold-pressed onion oil enriched with argan and coconut oil. Perfect for daily hair massage and deep nourishment.', discount: '25% OFF' },
         { id: 'onion-shampoo', name: 'Onion Hair Growth Shampoo', price: 19.99, originalPrice: 24.99, badge: 'New', reviews: 1823, description: 'Sulfate-free formula with onion extract, biotin, and natural herbs. Gently cleanses while promoting hair growth.', discount: '20% OFF' },
         { id: 'onion-mask', name: 'Onion Hair Mask Treatment', price: 24.99, originalPrice: 32.99, badge: 'Popular', reviews: 1456, description: 'Intensive weekly treatment with concentrated onion extract. Repairs damaged hair and prevents breakage.', discount: '24% OFF' },
-        { id: 'onion-conditioner', name: 'Onion Strengthening Conditioner', price: 0.59, originalPrice: 22.99, badge: null, reviews: 987, description: 'Deep conditioning formula with onion oil and keratin. Smooths and strengthens hair cuticles.', discount: '22% OFF' },
+        { id: 'onion-conditioner', name: 'Onion Strengthening Conditioner', price: 17.99, originalPrice: 22.99, badge: null, reviews: 987, description: 'Deep conditioning formula with onion oil and keratin. Smooths and strengthens hair cuticles.', discount: '22% OFF' },
         { id: 'onion-serum', name: 'Onion Hair Growth Serum', price: 34.99, originalPrice: 44.99, badge: 'Trending', reviews: 1234, description: 'Lightweight serum with concentrated onion extract and peptides. Targets hair thinning and promotes regrowth.', discount: '22% OFF' },
         { id: 'complete-kit', name: 'Complete Onion Hair Care Kit', price: 79.99, originalPrice: 119.99, badge: 'Best Value', reviews: 3456, description: 'Complete hair care solution including oil, shampoo, conditioner, and mask. Perfect for comprehensive hair transformation.', discount: '33% OFF' }
       ],
@@ -1108,47 +557,82 @@
       formatPrice: (price) => `${price.toFixed(2)}`,
       formatNumber: (num) => num.toLocaleString(),
       validateEmail: (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
-      
-      createElement: (tag, className, content) => {
-        const el = document.createElement(tag);
-        if (className) el.className = className;
-        if (content) el.innerHTML = content;
-        return el;
-      },
-      
       debounce: (func, wait) => {
         let timeout;
         return function executedFunction(...args) {
-          const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-          };
-          clearTimeout(timeout);
-          timeout = setTimeout(later, wait);
+          const later = () => { clearTimeout(timeout); func(...args); };
+          clearTimeout(timeout); timeout = setTimeout(later, wait);
         };
       }
     };
 
-    // State Management
-    class AppState {
+    // Enhanced Cart System Class
+    class CartSystem {
       constructor() {
-        this.cart = [];
-        this.productQuantities = {};
-        this.amazonPay = null;
-        this.init();
+        this.cart = []; this.productQuantities = {}; this.init();
       }
 
       init() {
-        DATA.PRODUCTS.forEach(product => {
-          this.productQuantities[product.id] = 1;
-        });
-        this.loadCart();
+        DATA.PRODUCTS.forEach(product => this.productQuantities[product.id] = 1);
+        this.loadCart(); this.renderAll(); this.setupEvents();
+      }
+
+      renderAll() {
+        this.renderBenefits(); this.renderProducts(); this.renderContact(); this.updateCartUI(); this.setupAnimations();
+      }
+
+      renderBenefits() {
+        document.getElementById('benefitsGrid').innerHTML = DATA.BENEFITS.map((benefit, index) => 
+          `<div class="col-lg-4 col-md-6"><div class="card-base fade-in" style="animation-delay: ${index * 0.2}s">
+            <div class="benefit-icon">${benefit.icon}</div><h4 class="benefit-title">${benefit.title}</h4>
+            <p class="benefit-description">${benefit.description}</p></div></div>`
+        ).join('');
+      }
+
+      renderProducts() {
+        document.getElementById('productsGrid').innerHTML = DATA.PRODUCTS.map((product, index) => 
+          `<div class="col-lg-4 col-md-6"><div class="product-card card-base fade-in" style="animation-delay: ${index * 0.2}s">
+            <div class="product-image-container">
+              <img src="https://uploads.onecompiler.io/434pwjffd/43rfxzj2z/Onion%20Oil.png" alt="${product.name}" class="product-image">
+              ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
+            </div>
+            <div class="product-info">
+              <h3 class="product-title">${product.name}</h3>
+              <div class="product-rating"><span class="stars">⭐⭐⭐⭐⭐</span><span class="rating-count">(${utils.formatNumber(product.reviews)} reviews)</span></div>
+              <p class="product-description">${product.description}</p>
+              <div class="product-price">
+                <span class="current-price">${utils.formatPrice(product.price)}</span>
+                <span class="original-price">${utils.formatPrice(product.originalPrice)}</span>
+                <span class="discount-badge">${product.discount}</span>
+              </div>
+              <div class="quantity-selector">
+                <button class="quantity-btn" onclick="cart.updateProductQuantity('${product.id}', -1)"><i class="fas fa-minus"></i></button>
+                <div class="quantity-display" id="quantity-${product.id}">1</div>
+                <button class="quantity-btn" onclick="cart.updateProductQuantity('${product.id}', 1)"><i class="fas fa-plus"></i></button>
+              </div>
+              <button class="btn-add-cart" onclick="cart.addToCart('${product.id}', '${product.name}', ${product.price})">
+                <i class="fas fa-cart-plus me-2"></i>Add to Cart
+              </button>
+            </div>
+          </div></div>`
+        ).join('');
+      }
+
+      renderContact() {
+        document.getElementById('contactGrid').innerHTML = DATA.CONTACT.map(contact => 
+          `<div class="col-lg-4 col-md-6 mb-4"><div class="contact-card">
+            <div class="contact-icon"><i class="${contact.icon}"></i></div>
+            <h4 style="font-size: 1.5rem; margin-bottom: 1rem;">${contact.title}</h4>
+            <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">${contact.content}</p>
+          </div></div>`
+        ).join('');
       }
 
       updateProductQuantity(productId, change) {
         const current = this.productQuantities[productId] || 1;
         this.productQuantities[productId] = Math.max(1, current + change);
-        ui.updateQuantityDisplay(productId, this.productQuantities[productId]);
+        const element = document.getElementById(`quantity-${productId}`);
+        if (element) element.textContent = this.productQuantities[productId];
       }
 
       addToCart(productId, productName, price) {
@@ -1159,42 +643,31 @@
           this.cart[existingIndex].quantity += quantity;
         } else {
           this.cart.push({
-            id: productId,
-            name: productName,
-            price,
-            quantity,
+            id: productId, name: productName, price, quantity,
             image: 'https://uploads.onecompiler.io/434pwjffd/43rfxzj2z/Onion%20Oil.png'
           });
         }
         
-        ui.updateCartUI();
-        this.saveCart();
-        toast.show('success', 'Added to Cart', `${productName} has been added to your cart!`);
+        this.updateCartUI(); this.saveCart();
+        this.showToast('success', 'Added to Cart', `${productName} has been added to your cart!`);
       }
 
       updateCartQuantity(index, change) {
         if (this.cart[index]) {
           this.cart[index].quantity = Math.max(1, this.cart[index].quantity + change);
-          ui.updateCartUI();
-          this.saveCart();
+          this.updateCartUI(); this.saveCart();
         }
       }
 
       removeFromCart(index) {
         if (this.cart[index]) {
           const itemName = this.cart[index].name;
-          this.cart.splice(index, 1);
-          ui.updateCartUI();
-          this.saveCart();
-          toast.show('info', 'Removed from Cart', `${itemName} has been removed from your cart.`);
+          this.cart.splice(index, 1); this.updateCartUI(); this.saveCart();
+          this.showToast('info', 'Removed from Cart', `${itemName} has been removed from your cart.`);
         }
       }
 
-      clearCart() {
-        this.cart = [];
-        ui.updateCartUI();
-        this.saveCart();
-      }
+      clearCart() { this.cart = []; this.updateCartUI(); this.saveCart(); }
 
       getCartTotal() {
         const subtotal = this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -1203,162 +676,42 @@
         return { subtotal, shipping, tax, total: subtotal + shipping + tax };
       }
 
-      saveCart() {
-        try {
-          localStorage.setItem('onionHairCareCart', JSON.stringify(this.cart));
-        } catch (e) {
-          console.warn('Could not save cart to localStorage:', e);
-        }
-      }
-
-      loadCart() {
-        try {
-          const savedCart = localStorage.getItem('onionHairCareCart');
-          if (savedCart) {
-            this.cart = JSON.parse(savedCart);
-          }
-        } catch (e) {
-          console.warn('Could not load cart from localStorage:', e);
-        }
-      }
-    }
-
-    // UI Management
-    class UIManager {
-      constructor() {
-        this.observer = null;
-        this.init();
-      }
-
-      init() {
-        this.renderBenefits();
-        this.renderProducts();
-        this.renderContact();
-        this.updateCartUI();
-        this.setupAnimations();
-      }
-
-      renderBenefits() {
-        const grid = document.getElementById('benefitsGrid');
-        grid.innerHTML = DATA.BENEFITS.map((benefit, index) => `
-          <div class="col-lg-4 col-md-6">
-            <div class="card-base fade-in" style="animation-delay: ${index * 0.2}s">
-              <div class="benefit-icon">${benefit.icon}</div>
-              <h4 class="benefit-title">${benefit.title}</h4>
-              <p class="benefit-description">${benefit.description}</p>
-            </div>
-          </div>
-        `).join('');
-      }
-
-      renderProducts() {
-        const grid = document.getElementById('productsGrid');
-        grid.innerHTML = DATA.PRODUCTS.map((product, index) => `
-          <div class="col-lg-4 col-md-6">
-            <div class="product-card card-base fade-in" style="animation-delay: ${index * 0.2}s">
-              <div class="product-image-container">
-                <img src="https://uploads.onecompiler.io/434pwjffd/43rfxzj2z/Onion%20Oil.png" 
-                     alt="${product.name}" class="product-image">
-                ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ''}
-              </div>
-              <div class="product-info">
-                <h3 class="product-title">${product.name}</h3>
-                <div class="product-rating">
-                  <span class="stars">⭐⭐⭐⭐⭐</span>
-                  <span class="rating-count">(${utils.formatNumber(product.reviews)} reviews)</span>
-                </div>
-                <p class="product-description">${product.description}</p>
-                <div class="product-price">
-                  <span class="current-price">${utils.formatPrice(product.price)}</span>
-                  <span class="original-price">${utils.formatPrice(product.originalPrice)}</span>
-                  <span class="discount-badge">${product.discount}</span>
-                </div>
-                <div class="quantity-selector">
-                  <button class="quantity-btn" onclick="state.updateProductQuantity('${product.id}', -1)">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <div class="quantity-display" id="quantity-${product.id}">1</div>
-                  <button class="quantity-btn" onclick="state.updateProductQuantity('${product.id}', 1)">
-                    <i class="fas fa-plus"></i>
-                  </button>
-                </div>
-                <button class="btn-add-cart" onclick="state.addToCart('${product.id}', '${product.name}', ${product.price})">
-                  <i class="fas fa-cart-plus me-2"></i>Add to Cart
-                </button>
-              </div>
-            </div>
-          </div>
-        `).join('');
-      }
-
-      renderContact() {
-        const grid = document.getElementById('contactGrid');
-        grid.innerHTML = DATA.CONTACT.map(contact => `
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="contact-card">
-              <div class="contact-icon"><i class="${contact.icon}"></i></div>
-              <h4 style="font-size: 1.5rem; margin-bottom: 1rem;">${contact.title}</h4>
-              <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">${contact.content}</p>
-            </div>
-          </div>
-        `).join('');
-      }
-
-      updateQuantityDisplay(productId, quantity) {
-        const element = document.getElementById(`quantity-${productId}`);
-        if (element) element.textContent = quantity;
-      }
-
       updateCartUI() {
-        this.updateCartCount();
-        this.updateCartItems();
-        this.updateCartTotals();
+        this.updateCartCount(); this.updateCartItems(); this.updateCartTotals();
       }
 
       updateCartCount() {
+        const totalItems = this.cart.reduce((sum, item) => sum + item.quantity, 0);
         const cartCount = document.getElementById('cartCount');
-        const totalItems = state.cart.reduce((sum, item) => sum + item.quantity, 0);
         cartCount.textContent = totalItems;
         cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
       }
 
       updateCartItems() {
         const cartItems = document.getElementById('cartItems');
-        
-        if (state.cart.length === 0) {
-          cartItems.innerHTML = `
-            <div class="text-center py-4">
-              <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
-              <p class="text-muted">Your cart is empty</p>
-            </div>`;
+        if (this.cart.length === 0) {
+          cartItems.innerHTML = `<div class="text-center py-4"><i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i><p class="text-muted">Your cart is empty</p></div>`;
         } else {
-          cartItems.innerHTML = state.cart.map((item, index) => `
-            <div class="cart-item">
+          cartItems.innerHTML = this.cart.map((item, index) => 
+            `<div class="cart-item">
               <img src="${item.image}" alt="${item.name}" class="cart-item-image">
               <div class="cart-item-info">
                 <div class="cart-item-title">${item.name}</div>
                 <div class="cart-item-price">${utils.formatPrice(item.price)}</div>
                 <div class="cart-quantity-controls">
-                  <button class="cart-quantity-btn" onclick="state.updateCartQuantity(${index}, -1)">
-                    <i class="fas fa-minus"></i>
-                  </button>
+                  <button class="cart-quantity-btn" onclick="cart.updateCartQuantity(${index}, -1)"><i class="fas fa-minus"></i></button>
                   <span class="cart-quantity">${item.quantity}</span>
-                  <button class="cart-quantity-btn" onclick="state.updateCartQuantity(${index}, 1)">
-                    <i class="fas fa-plus"></i>
-                  </button>
-                  <button class="remove-item" onclick="state.removeFromCart(${index})">
-                    <i class="fas fa-trash"></i>
-                  </button>
+                  <button class="cart-quantity-btn" onclick="cart.updateCartQuantity(${index}, 1)"><i class="fas fa-plus"></i></button>
+                  <button class="remove-item" onclick="cart.removeFromCart(${index})"><i class="fas fa-trash"></i></button>
                 </div>
               </div>
-            </div>
-          `).join('');
+            </div>`
+          ).join('');
         }
       }
 
       updateCartTotals() {
-        const { subtotal, shipping, tax, total } = state.getCartTotal();
-        
+        const { subtotal, shipping, tax, total } = this.getCartTotal();
         document.getElementById('subtotal').textContent = subtotal.toFixed(2);
         document.getElementById('shipping').textContent = shipping.toFixed(2);
         document.getElementById('tax').textContent = tax.toFixed(2);
@@ -1366,8 +719,167 @@
         document.getElementById('checkoutTotal').textContent = total.toFixed(2);
       }
 
+      saveCart() {
+        try { localStorage.setItem('onionHairCareCart', JSON.stringify(this.cart)); } 
+        catch (e) { console.warn('Could not save cart:', e); }
+      }
+
+      loadCart() {
+        try {
+          const savedCart = localStorage.getItem('onionHairCareCart');
+          if (savedCart) this.cart = JSON.parse(savedCart);
+        } catch (e) { console.warn('Could not load cart:', e); }
+      }
+
+      setupEvents() {
+        const handleScroll = utils.debounce(() => {
+          const navbar = document.getElementById('navbar');
+          navbar.classList.toggle('scrolled', window.scrollY > 50);
+          
+          const sections = document.querySelectorAll('section[id]');
+          const navLinks = document.querySelectorAll('.nav-link');
+          let current = '';
+          sections.forEach(section => {
+            if (window.scrollY >= (section.offsetTop - 200)) current = section.getAttribute('id');
+          });
+          navLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+          });
+        }, 10);
+
+        const smoothScroll = (e) => {
+          e.preventDefault();
+          const target = document.querySelector(e.target.getAttribute('href'));
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+
+        const handleNewsletter = (e) => {
+          e.preventDefault();
+          const email = e.target.querySelector('input').value.trim();
+          if (email && utils.validateEmail(email)) {
+            this.showToast('success', 'Subscribed!', 'Thank you for subscribing to our newsletter!');
+            e.target.reset();
+          } else {
+            this.showToast('error', 'Invalid Email', 'Please enter a valid email address.');
+          }
+        };
+
+        // Event Listeners
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => anchor.addEventListener('click', smoothScroll));
+        document.getElementById('cartToggle').addEventListener('click', () => this.openCart());
+        document.getElementById('cartClose').addEventListener('click', () => this.closeCart());
+        document.getElementById('cartOverlay').addEventListener('click', () => this.closeCart());
+        document.getElementById('checkoutBtn').addEventListener('click', () => this.openCheckout());
+        document.getElementById('cancelCheckout').addEventListener('click', () => this.closeCheckout());
+        document.getElementById('submitPayment').addEventListener('click', () => this.processOrder());
+        document.getElementById('newsletterForm').addEventListener('submit', handleNewsletter);
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') { this.closeCart(); this.closeCheckout(); }
+        });
+      }
+
+      openCart() {
+        document.getElementById('cartSidebar').classList.add('open');
+        document.getElementById('cartOverlay').classList.add('show');
+      }
+
+      closeCart() {
+        document.getElementById('cartSidebar').classList.remove('open');
+        document.getElementById('cartOverlay').classList.remove('show');
+      }
+
+      openCheckout() {
+        if (this.cart.length === 0) {
+          this.showToast('error', 'Cart Empty', 'Please add items to your cart before checkout.');
+          return;
+        }
+        document.getElementById('checkoutModal').classList.add('show');
+        this.updateCartTotals(); this.initAmazonPayButton();
+      }
+
+      closeCheckout() { document.getElementById('checkoutModal').classList.remove('show'); }
+
+      initAmazonPayButton() {
+        const { total } = this.getCartTotal();
+        document.getElementById('amazon-pay-button').innerHTML = 
+          `<div class="amazon-pay-button" onclick="cart.processOrder()">
+            <i class="fab fa-amazon me-2"></i>Pay with Amazon Pay - ${utils.formatPrice(total)}
+          </div>
+          <p style="font-size: 0.85rem; color: #666; margin-top: 8px; text-align: center;">Click to complete your order securely</p>`;
+      }
+
+      async processOrder() {
+        const submitButton = document.getElementById('submitPayment');
+        submitButton.disabled = true; submitButton.textContent = 'Processing...';
+        
+        try {
+          const customerData = {
+            name: document.getElementById('customerName').value,
+            email: document.getElementById('customerEmail').value,
+            phone: document.getElementById('customerPhone').value,
+            address: document.getElementById('shippingAddress').value,
+            city: document.getElementById('city').value,
+            state: document.getElementById('state').value,
+            zipCode: document.getElementById('zipCode').value
+          };
+          
+          if (!customerData.name || !customerData.email || !customerData.phone) {
+            throw new Error('Please fill in all required fields');
+          }
+          
+          const { total } = this.getCartTotal();
+          const response = await fetch(CONFIG.API_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              customer_data: customerData, cart_items: this.cart, total_amount: total,
+              currency: 'USD', payment_method: 'amazon_pay'
+            })
+          });
+          
+          const result = await response.json();
+          
+          if (result.success) {
+            this.showToast('success', 'Order Placed Successfully!', `Order #${result.order_id} has been placed. You will receive a confirmation email shortly.`);
+            this.clearCart(); this.closeCheckout(); this.closeCart();
+            document.getElementById('checkout-form').reset();
+          } else {
+            throw new Error(result.error || 'Payment processing failed');
+          }
+          
+        } catch (error) {
+          console.error('Payment error:', error);
+          this.showToast('error', 'Order Failed', error.message || 'There was an error processing your order. Please try again.');
+        } finally {
+          submitButton.disabled = false;
+          submitButton.innerHTML = `Complete Order ($<span id="checkoutTotal">${this.getCartTotal().total.toFixed(2)}</span>)`;
+        }
+      }
+
+      showToast(type, title, message) {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerHTML = 
+          `<div class="toast-header">
+            <div style="font-weight: 600; color: var(--dark); font-size: 0.9rem;">${title}</div>
+            <button class="toast-close" onclick="this.parentElement.parentElement.remove()">×</button>
+          </div>
+          <div style="color: #666; font-size: 0.85rem;">${message}</div>`;
+        
+        container.appendChild(toast);
+        setTimeout(() => toast.classList.add('show'), 100);
+        setTimeout(() => {
+          if (toast.parentElement) {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+          }
+        }, 5000);
+      }
+
       setupAnimations() {
-        this.observer = new IntersectionObserver((entries) => {
+        const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.style.animationDelay = entry.target.dataset.delay || '0s';
@@ -1376,333 +888,27 @@
           });
         }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-        document.querySelectorAll('.fade-in, .slide-in-right').forEach(el => this.observer.observe(el));
+        document.querySelectorAll('.fade-in, .slide-in-right').forEach(el => observer.observe(el));
       }
     }
 
-    // Cart Management
-    class CartManager {
-      static open() {
-        document.getElementById('cartSidebar').classList.add('open');
-        document.getElementById('cartOverlay').classList.add('show');
-      }
-
-      static close() {
-        document.getElementById('cartSidebar').classList.remove('open');
-        document.getElementById('cartOverlay').classList.remove('show');
-      }
-    }
-
-    // Checkout Management
-    class CheckoutManager {
-      static open() {
-        if (state.cart.length === 0) {
-          toast.show('error', 'Cart Empty', 'Please add items to your cart before checkout.');
-          return;
-        }
-        document.getElementById('checkoutModal').classList.add('show');
-        ui.updateCartTotals();
-        
-        // Initialize Amazon Pay button
-        this.initAmazonPayButton();
-      }
-
-      static close() {
-        document.getElementById('checkoutModal').classList.remove('show');
-      }
-
-      static initAmazonPayButton() {
-        const { total } = state.getCartTotal();
-        
-        // Clear existing button
-        document.getElementById('amazon-pay-button').innerHTML = '';
-        
-        // Update order total in button
-        document.getElementById('submitPayment').innerHTML = `Complete Order (${utils.formatPrice(total)})`;
-        
-        // For now, we'll use a simple order processing approach
-        // Amazon Pay button integration can be added later when you're ready for full Amazon Pay integration
-        document.getElementById('amazon-pay-button').innerHTML = `
-          <div style="background: #ff9900; color: white; padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; font-weight: bold;" onclick="CheckoutManager.processSimpleOrder()">
-            <i class="fab fa-amazon me-2"></i>Pay with Amazon Pay - ${total.toFixed(2)}
-          </div>
-          <p style="font-size: 0.85rem; color: #666; margin-top: 8px; text-align: center;">
-            Click to complete your order securely
-          </p>
-        `;
-      }
-
-      static async processSimpleOrder() {
-        const submitButton = document.getElementById('submitPayment');
-        submitButton.classList.add('btn-loading');
-        submitButton.disabled = true;
-        
-        try {
-          const customerData = this.getCustomerData();
-          const { total } = state.getCartTotal();
-          
-          // Validate customer data
-          if (!customerData.name || !customerData.email || !customerData.phone) {
-            throw new Error('Please fill in all required fields');
-          }
-          
-          // Send order data to your Python backend
-          const response = await fetch(CONFIG.API_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              customer_data: customerData,
-              cart_items: state.cart,
-              total_amount: total,
-              currency: 'USD',
-              payment_method: 'amazon_pay'
-            })
-          });
-          
-          const result = await response.json();
-          
-          if (result.success) {
-            toast.show('success', 'Order Placed Successfully!', `Order #${result.order_id} has been placed. You will receive a confirmation email shortly.`);
-            state.clearCart();
-            this.close();
-            CartManager.close();
-            document.getElementById('checkout-form').reset();
-          } else {
-            throw new Error(result.error || 'Payment processing failed');
-          }
-          
-        } catch (error) {
-          console.error('Payment error:', error);
-          toast.show('error', 'Order Failed', error.message || 'There was an error processing your order. Please try again.');
-        } finally {
-          submitButton.classList.remove('btn-loading');
-          submitButton.disabled = false;
-        }
-      }
-
-      static async processWithAmazon() {
-        // This calls the simple order processing
-        return this.processSimpleOrder();
-      }
-
-      static getCustomerData() {
-        return {
-          name: document.getElementById('customerName').value,
-          email: document.getElementById('customerEmail').value,
-          phone: document.getElementById('customerPhone').value,
-          address: document.getElementById('shippingAddress').value,
-          city: document.getElementById('city').value,
-          state: document.getElementById('state').value,
-          zipCode: document.getElementById('zipCode').value
-        };
-      }
-
-      static getBillingDetails(customerData) {
-        return {
-          name: customerData.name,
-          email: customerData.email,
-          phone: customerData.phone,
-          address: {
-            line1: customerData.address,
-            city: customerData.city,
-            state: customerData.state,
-            postal_code: customerData.zipCode,
-            country: 'US'
-          }
-        };
-      }
-    }
-
-    // Toast Notifications
-    class ToastManager {
-      static show(type, title, message) {
-        const container = document.getElementById('toastContainer');
-        const toast = utils.createElement('div', `toast ${type}`, `
-          <div class="toast-header">
-            <div style="font-weight: 600; color: var(--dark); font-size: 0.9rem;">${title}</div>
-            <button class="toast-close" onclick="ToastManager.remove(this)">×</button>
-          </div>
-          <div style="color: #666; font-size: 0.85rem;">${message}</div>
-        `);
-        
-        container.appendChild(toast);
-        
-        setTimeout(() => toast.classList.add('show'), 100);
-        setTimeout(() => this.remove(toast.querySelector('.toast-close')), 5000);
-      }
-
-      static remove(closeBtn) {
-        const toast = closeBtn.closest('.toast');
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-      }
-    }
-
-    // Event Management
-    class EventManager {
-      constructor() {
-        this.handleScroll = utils.debounce(this.handleScroll.bind(this), 10);
-        this.init();
-      }
-
-      init() {
-        this.setupNavigation();
-        this.setupCart();
-        this.setupCheckout();
-        this.setupForms();
-        this.setupKeyboard();
-        this.setupMobile();
-        this.setupImages();
-        this.setupNetwork();
-      }
-
-      setupNavigation() {
-        window.addEventListener('scroll', this.handleScroll, { passive: true });
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-          anchor.addEventListener('click', this.smoothScroll);
-        });
-      }
-
-      setupCart() {
-        document.getElementById('cartToggle').addEventListener('click', CartManager.open);
-        document.getElementById('cartClose').addEventListener('click', CartManager.close);
-        document.getElementById('cartOverlay').addEventListener('click', CartManager.close);
-      }
-
-      setupCheckout() {
-        document.getElementById('checkoutBtn').addEventListener('click', CheckoutManager.open);
-        document.getElementById('cancelCheckout').addEventListener('click', CheckoutManager.close);
-        // Removed form submit listener since we're using Amazon Pay button
-      }
-
-      setupForms() {
-        document.getElementById('newsletterForm').addEventListener('submit', this.handleNewsletter);
-      }
-
-      setupKeyboard() {
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape') {
-            CartManager.close();
-            CheckoutManager.close();
-          }
-        });
-      }
-
-      setupMobile() {
-        if (window.innerWidth <= 768) {
-          document.querySelectorAll('.quantity-btn, .cart-quantity-btn').forEach(btn => {
-            btn.addEventListener('touchstart', () => btn.style.transform = 'scale(0.95)', { passive: true });
-            btn.addEventListener('touchend', () => btn.style.transform = 'scale(1)', { passive: true });
-          });
-        }
-      }
-
-      setupImages() {
-        document.querySelectorAll('img').forEach(img => {
-          img.addEventListener('error', function() {
-            this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNHB4IiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2UgTm90IEZvdW5kPC90ZXh0Pjwvc3ZnPg==';
-          });
-        });
-      }
-
-      setupNetwork() {
-        window.addEventListener('online', () => toast.show('success', 'Back Online', 'Your connection has been restored.'));
-        window.addEventListener('offline', () => toast.show('info', 'Offline Mode', 'You are currently offline. Some features may be limited.'));
-      }
-
-      handleScroll() {
-        const navbar = document.getElementById('navbar');
-        navbar.classList.toggle('scrolled', window.scrollY > 50);
-        
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.nav-link');
-        
-        let current = '';
-        sections.forEach(section => {
-          if (window.scrollY >= (section.offsetTop - 200)) {
-            current = section.getAttribute('id');
-          }
-        });
-
-        navLinks.forEach(link => {
-          link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
-        });
-      }
-
-      smoothScroll(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }
-
-      handleNewsletter(e) {
-        e.preventDefault();
-        const email = this.querySelector('input').value.trim();
-        if (email && utils.validateEmail(email)) {
-          toast.show('success', 'Subscribed!', 'Thank you for subscribing to our newsletter!');
-          this.reset();
-        } else {
-          toast.show('error', 'Invalid Email', 'Please enter a valid email address.');
-        }
-      }
-    }
-
-    // Amazon Pay Management
-    class AmazonPayManager {
-      static async init() {
-        try {
-          // Backend is ready to process orders
-          console.log('Payment system ready');
-        } catch (error) {
-          console.error('Payment system initialization error:', error);
-          toast.show('error', 'Payment System Error', 'Payment system could not be initialized.');
-        }
-      }
-    }
-
-    // Application Class
-    class App {
-      static async init() {
-        try {
-          // Show loading screen
-          document.getElementById('loading').style.display = 'flex';
-          
-          // Initialize core systems
-          window.state = new AppState();
-          window.ui = new UIManager();
-          window.events = new EventManager();
-          window.toast = ToastManager;
-          
-          // Initialize payment system
-          await AmazonPayManager.init();
-          
-          // Hide loading screen
-          setTimeout(() => {
-            const loading = document.getElementById('loading');
-            loading.style.opacity = '0';
-            setTimeout(() => loading.style.display = 'none', 300);
-          }, 1500);
-          
-        } catch (error) {
-          console.error('App initialization error:', error);
-          toast.show('error', 'Initialization Error', 'Please refresh the page to try again.');
-        }
-      }
-    }
-
-    // Global aliases for backward compatibility with inline handlers
-    window.state = null;
-    window.ui = null;
-    window.events = null;
-    window.toast = null;
-    window.CartManager = CartManager;
-    window.CheckoutManager = CheckoutManager;
-    window.AmazonPayManager = AmazonPayManager;
-
-    // Initialize app when DOM is ready
-    document.addEventListener('DOMContentLoaded', App.init);
+    // Initialize Application
+    let cart;
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Show loading screen
+      document.getElementById('loading').style.display = 'flex';
+      
+      // Initialize cart system
+      cart = new CartSystem();
+      window.cart = cart; // Global access
+      
+      // Hide loading screen
+      setTimeout(() => {
+        const loading = document.getElementById('loading');
+        loading.classList.add('fade-out');
+        setTimeout(() => loading.style.display = 'none', 800);
+      }, 2000);
+    });
   </script>
 </body>
 </html>
