@@ -294,6 +294,8 @@
     .toast.show { transform: translateX(0); }
     .toast.success { border-left-color: var(--secondary); }
     .toast.error { border-left-color: #dc3545; }
+    .toast.warning { border-left-color: #ff9800; }
+    .toast.info { border-left-color: #2196F3; }
     .toast-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
     .toast-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #999; }
 
@@ -432,6 +434,17 @@
     </div>
   </section>
 
+  <!-- Products Section -->
+  <section id="products" class="products-section section-padding">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title fade-in">Our Premium Onion Hair Care Collection</h2>
+        <p class="section-subtitle fade-in">Made in Delaware, USA with the finest organic onion extracts</p>
+      </div>
+      <div class="row" id="productsGrid"></div>
+    </div>
+  </section>
+
   <!-- Benefits Section -->
   <section id="benefits" class="onion-benefits section-padding">
     <div class="container">
@@ -443,16 +456,6 @@
     </div>
   </section>
 
-  <!-- Products Section -->
-  <section id="products" class="products-section section-padding">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title fade-in">Our Premium Onion Hair Care Collection</h2>
-        <p class="section-subtitle fade-in">Made in Delaware, USA with the finest organic onion extracts</p>
-      </div>
-      <div class="row" id="productsGrid"></div>
-    </div>
-  </section>
 
   <!-- Contact Section -->
   <section id="contact" class="contact-section section-padding">
@@ -520,12 +523,15 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Configuration & Data
+    // Updated Configuration - FIXED API ENDPOINT
     const CONFIG = {
       AMAZON_MERCHANT_ID: 'A2D0FIAQLBKO92',
       AMAZON_CLIENT_ID: 'amzn1.application-oa2-client.97be686d21e54635bb4359ed066173f2',
-      API_ENDPOINT: 'https://backendgos.onrender.com/',
-      FREE_SHIPPING_THRESHOLD: 50, SHIPPING_COST: 9.99, TAX_RATE: 0, ENVIRONMENT: 'sandbox'
+      API_ENDPOINT: 'https://backendgos.onrender.com', // FIXED: Removed /process-payment
+      FREE_SHIPPING_THRESHOLD: 50, 
+      SHIPPING_COST: 9.99, 
+      TAX_RATE: 0, 
+      ENVIRONMENT: 'sandbox'
     };
 
     const DATA = {
@@ -557,6 +563,10 @@
       formatPrice: (price) => `${price.toFixed(2)}`,
       formatNumber: (num) => num.toLocaleString(),
       validateEmail: (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
+      validatePhone: (phone) => {
+        const cleanPhone = phone.replace(/[\s\-\(\)]/g, '');
+        return cleanPhone.length >= 10 && /^[\+]?[1-9][\d]{0,15}$/.test(cleanPhone);
+      },
       debounce: (func, wait) => {
         let timeout;
         return function executedFunction(...args) {
@@ -566,19 +576,29 @@
       }
     };
 
-    // Enhanced Cart System Class
+    // Enhanced Cart System Class with FIXED Payment Flow
     class CartSystem {
       constructor() {
-        this.cart = []; this.productQuantities = {}; this.init();
+        this.cart = []; 
+        this.productQuantities = {}; 
+        this.paymentInProgress = false;
+        this.init();
       }
 
       init() {
         DATA.PRODUCTS.forEach(product => this.productQuantities[product.id] = 1);
-        this.loadCart(); this.renderAll(); this.setupEvents();
+        this.loadCart(); 
+        this.renderAll(); 
+        this.setupEvents();
+        this.checkForReturnFromPayment(); // Check on page load
       }
 
       renderAll() {
-        this.renderBenefits(); this.renderProducts(); this.renderContact(); this.updateCartUI(); this.setupAnimations();
+        this.renderBenefits(); 
+        this.renderProducts(); 
+        this.renderContact(); 
+        this.updateCartUI(); 
+        this.setupAnimations();
       }
 
       renderBenefits() {
@@ -648,7 +668,8 @@
           });
         }
         
-        this.updateCartUI(); this.saveCart();
+        this.updateCartUI(); 
+        this.saveCart();
         this.showToast('success', 'Added to Cart', `${productName} has been added to your cart!`);
       }
 
@@ -662,12 +683,18 @@
       removeFromCart(index) {
         if (this.cart[index]) {
           const itemName = this.cart[index].name;
-          this.cart.splice(index, 1); this.updateCartUI(); this.saveCart();
+          this.cart.splice(index, 1); 
+          this.updateCartUI(); 
+          this.saveCart();
           this.showToast('info', 'Removed from Cart', `${itemName} has been removed from your cart.`);
         }
       }
 
-      clearCart() { this.cart = []; this.updateCartUI(); this.saveCart(); }
+      clearCart() { 
+        this.cart = []; 
+        this.updateCartUI(); 
+        this.saveCart(); 
+      }
 
       getCartTotal() {
         const subtotal = this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -677,7 +704,9 @@
       }
 
       updateCartUI() {
-        this.updateCartCount(); this.updateCartItems(); this.updateCartTotals();
+        this.updateCartCount(); 
+        this.updateCartItems(); 
+        this.updateCartTotals();
       }
 
       updateCartCount() {
@@ -720,15 +749,226 @@
       }
 
       saveCart() {
-        try { localStorage.setItem('onionHairCareCart', JSON.stringify(this.cart)); } 
-        catch (e) { console.warn('Could not save cart:', e); }
+        try { 
+          localStorage.setItem('onionHairCareCart', JSON.stringify(this.cart)); 
+        } catch (e) { 
+          console.warn('Could not save cart:', e); 
+        }
       }
 
       loadCart() {
         try {
           const savedCart = localStorage.getItem('onionHairCareCart');
           if (savedCart) this.cart = JSON.parse(savedCart);
-        } catch (e) { console.warn('Could not load cart:', e); }
+        } catch (e) { 
+          console.warn('Could not load cart:', e); 
+        }
+      }
+
+      // FIXED: Check for payment return URL parameters
+      checkForReturnFromPayment() {
+        try {
+          const urlParams = new URLSearchParams(window.location.search);
+          const sessionId = urlParams.get('session_id');
+          const orderId = urlParams.get('order_id');
+          const status = urlParams.get('status');
+          
+          if (sessionId || orderId) {
+            console.log('🔄 Payment return detected:', { sessionId, orderId, status });
+            
+            // Clear URL parameters to clean up browser history
+            window.history.replaceState({}, document.title, window.location.pathname);
+            
+            if (status === 'completed' || orderId) {
+              // Payment successful
+              this.showToast('success', 'Payment Successful!', `Order ${orderId || sessionId} completed successfully!`);
+              this.clearCart();
+              this.closeCheckout();
+              this.closeCart();
+            } else if (status === 'cancelled') {
+              // Payment cancelled
+              this.showToast('warning', 'Payment Cancelled', 'Your payment was cancelled. Your cart items are still saved.');
+            } else if (status === 'error') {
+              // Payment error
+              this.showToast('error', 'Payment Error', 'There was an issue processing your payment. Please try again.');
+            }
+            
+            // Clear any pending order data
+            localStorage.removeItem('pendingOrder');
+          }
+        } catch (e) {
+          console.warn('Error checking payment return:', e);
+        }
+      }
+
+      // FIXED: Process order with proper payment session creation
+      async processOrder() {
+        if (this.paymentInProgress) {
+          this.showToast('info', 'Processing...', 'Payment is already being processed.');
+          return;
+        }
+
+        const submitButton = document.getElementById('submitPayment');
+        
+        // Prevent double submission
+        this.paymentInProgress = true;
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.textContent = 'Creating Payment Session...';
+        }
+        
+        try {
+          // Validate cart
+          if (this.cart.length === 0) {
+            throw new Error('Your cart is empty');
+          }
+
+          // Get and validate customer data
+          const customerData = this.getCustomerData();
+          const { total } = this.getCartTotal();
+          
+          console.log('🚀 Initiating payment process...');
+          console.log('Customer:', customerData.customerName);
+          console.log('Total:', total);
+          console.log('Items:', this.cart.length);
+
+          // FIXED: Create payment session using the correct endpoint
+          const response = await fetch(`${CONFIG.API_ENDPOINT}/create-payment-session`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              customer_data: customerData,
+              cart_items: this.cart,
+              total_amount: total,
+              currency: 'USD',
+              payment_method: 'amazon_pay'
+            })
+          });
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`HTTP ${response.status}: ${errorText}`);
+          }
+
+          const result = await response.json();
+          console.log('💳 Payment session response:', result);
+
+          if (result.success && result.checkout_url) {
+            // Show success message before redirect
+            this.showToast('success', 'Redirecting...', 'Redirecting to secure payment gateway...');
+            
+            console.log('✅ Payment session created successfully');
+            console.log('🔗 Redirecting to:', result.checkout_url);
+            
+            // Save order data before redirect (optional)
+            this.saveOrderDataBeforeRedirect(result);
+            
+            // Redirect to payment gateway after a short delay
+            setTimeout(() => {
+              window.location.href = result.checkout_url;
+            }, 1500);
+            
+          } else {
+            throw new Error(result.error || 'Failed to create payment session');
+          }
+
+        } catch (error) {
+          console.error('❌ Payment error:', error);
+          
+          // Show user-friendly error message
+          this.showToast('error', 'Payment Failed', this.getErrorMessage(error));
+          
+          // Reset form state
+          this.resetPaymentForm();
+        }
+      }
+
+      // Get and validate customer data
+      getCustomerData() {
+        const requiredFields = [
+          'customerName', 'customerEmail', 'customerPhone', 
+          'shippingAddress', 'city', 'state', 'zipCode'
+        ];
+        
+        const data = {};
+        
+        for (const field of requiredFields) {
+          const element = document.getElementById(field);
+          if (!element || !element.value.trim()) {
+            throw new Error(`Please fill in the ${this.formatFieldName(field)} field`);
+          }
+          data[field] = element.value.trim();
+        }
+        
+        // Validate email
+        if (!utils.validateEmail(data.customerEmail)) {
+          throw new Error('Please enter a valid email address');
+        }
+        
+        // Validate phone
+        if (!utils.validatePhone(data.customerPhone)) {
+          throw new Error('Please enter a valid phone number');
+        }
+        
+        return data;
+      }
+
+      formatFieldName(field) {
+        return field
+          .replace('customer', '')
+          .replace(/([A-Z])/g, ' $1')
+          .toLowerCase()
+          .trim()
+          .replace(/^\w/, c => c.toUpperCase());
+      }
+
+      getErrorMessage(error) {
+        const message = error.message || 'Unknown error occurred';
+        
+        // Provide user-friendly error messages
+        if (message.includes('fetch') || message.includes('network')) {
+          return 'Unable to connect to payment server. Please check your internet connection and try again.';
+        }
+        if (message.includes('HTTP 500')) {
+          return 'Server error occurred. Please try again in a few moments.';
+        }
+        if (message.includes('HTTP 404')) {
+          return 'Payment service is temporarily unavailable. Please try again later.';
+        }
+        if (message.includes('session')) {
+          return 'Unable to create payment session. Please refresh the page and try again.';
+        }
+        
+        return message;
+      }
+
+      saveOrderDataBeforeRedirect(paymentResult) {
+        try {
+          const orderData = {
+            session_id: paymentResult.session_id,
+            order_id: paymentResult.order_id,
+            checkout_url: paymentResult.checkout_url,
+            timestamp: new Date().toISOString(),
+            cart_backup: [...this.cart]
+          };
+          
+          localStorage.setItem('pendingOrder', JSON.stringify(orderData));
+          console.log('💾 Order data saved before redirect');
+        } catch (e) {
+          console.warn('Could not save order data:', e);
+        }
+      }
+
+      resetPaymentForm() {
+        this.paymentInProgress = false;
+        
+        const submitButton = document.getElementById('submitPayment');
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.innerHTML = `Complete Order ($<span id="checkoutTotal">${this.getCartTotal().total.toFixed(2)}</span>)`;
+        }
       }
 
       setupEvents() {
@@ -794,253 +1034,121 @@
           this.showToast('error', 'Cart Empty', 'Please add items to your cart before checkout.');
           return;
         }
+        
+        // Check for payment return first
+        this.checkForReturnFromPayment();
+        
         document.getElementById('checkoutModal').classList.add('show');
-        this.updateCartTotals(); this.initAmazonPayButton();
+        this.updateCartTotals(); 
+        this.initPaymentButton();
       }
 
-      closeCheckout() { document.getElementById('checkoutModal').classList.remove('show'); }
+      closeCheckout() { 
+        document.getElementById('checkoutModal').classList.remove('show'); 
+        this.resetPaymentForm();
+      }
 
-      initAmazonPayButton() {
+      
+      initPaymentButton() {
         const { total } = this.getCartTotal();
-        document.getElementById('amazon-pay-button').innerHTML = 
-          `<div class="amazon-pay-button" onclick="cart.processAmazonPay()">
-            <i class="fab fa-amazon me-2"></i>Pay with Amazon Pay - ${utils.formatPrice(total)}
-          </div>
-          <div class="mt-2">
-            <button type="button" class="btn btn-outline-primary w-100" onclick="cart.processManualPayment()">
-              <i class="fas fa-credit-card me-2"></i>Manual Payment Confirmation
-            </button>
-          </div>
-          <p style="font-size: 0.85rem; color: #666; margin-top: 8px; text-align: center;">Choose your payment method above</p>`;
-      }
-
-      async processAmazonPay() {
-        const submitButton = document.getElementById('submitPayment');
-        submitButton.disabled = true; submitButton.textContent = 'Redirecting to Amazon...';
+        const buttonContainer = document.getElementById('amazon-pay-button');
         
-        try {
-          const customerData = {
-            name: document.getElementById('customerName').value,
-            email: document.getElementById('customerEmail').value,
-            phone: document.getElementById('customerPhone').value,
-            address: document.getElementById('shippingAddress').value,
-            city: document.getElementById('city').value,
-            state: document.getElementById('state').value,
-            zipCode: document.getElementById('zipCode').value
-          };
-          
-          if (!customerData.name || !customerData.email || !customerData.phone) {
-            throw new Error('Please fill in all required fields');
-          }
-          
-          const { total } = this.getCartTotal();
-          
-          // Simulate Amazon Pay redirect
-          this.showToast('info', 'Redirecting to Amazon Pay', 'You will be redirected to Amazon Pay to complete your payment...');
-          
-          // Wait 2 seconds to simulate redirect
-          await new Promise(resolve => setTimeout(resolve, 2000));
-          
-          // For now, show a mock Amazon Pay interface
-          const proceedWithPayment = confirm(
-            `🔒 Amazon Pay - Secure Checkout\n\n` +
-            `Order Total: ${utils.formatPrice(total)}\n` +
-            `Email: ${customerData.email}\n\n` +
-            `Click OK to confirm payment, or Cancel to return to checkout.`
-          );
-          
-          if (proceedWithPayment) {
-            // Process the payment
-            const orderId = `AMZ-${Date.now().toString().slice(-6)}`;
-            
-            console.log('Amazon Pay Order processed:', {
-              order_id: orderId,
-              customer_data: customerData,
-              cart_items: this.cart,
-              total_amount: total,
-              payment_method: 'amazon_pay',
-              payment_status: 'completed'
-            });
-            
-            this.showToast('success', 'Payment Successful!', `Order #${orderId} paid via Amazon Pay. Confirmation email sent to ${customerData.email}`);
-            this.clearCart(); 
-            this.closeCheckout(); 
-            this.closeCart();
-            document.getElementById('checkout-form').reset();
-          } else {
-            this.showToast('info', 'Payment Cancelled', 'Payment was cancelled. Your cart items are saved.');
-          }
-          
-        } catch (error) {
-          console.error('Amazon Pay error:', error);
-          this.showToast('error', 'Payment Failed', error.message || 'Amazon Pay processing failed. Please try again.');
-        } finally {
-          submitButton.disabled = false;
-          submitButton.innerHTML = `Complete Order ($<span id="checkoutTotal">${this.getCartTotal().total.toFixed(2)}</span>)`;
+        if (buttonContainer) {
+          buttonContainer.innerHTML = `
+            <div class="amazon-pay-button" onclick="cart.processOrder()" style="
+              background: #ff9900; 
+              color: white; 
+              padding: 15px; 
+              border-radius: 8px; 
+              border: none;
+              font-weight: bold; 
+              cursor: pointer; 
+              width: 100%; 
+              margin: 1rem 0; 
+              transition: all 0.3s ease;
+              text-align: center;
+              font-size: 1.1rem;
+            ">
+              <i class="fab fa-amazon me-2"></i>
+              Pay with Amazon Pay - ${total.toFixed(2)}
+            </div>
+            <p style="font-size: 0.85rem; color: #666; margin-top: 8px; text-align: center;">
+              <i class="fas fa-shield-alt me-1"></i>
+              Secure payment processing with 256-bit SSL encryption
+            </p>
+          `;
         }
       }
 
-      async processManualPayment() {
-        const submitButton = document.getElementById('submitPayment');
-        submitButton.disabled = true; submitButton.textContent = 'Processing Payment...';
-        
-        try {
-          const customerData = {
-            name: document.getElementById('customerName').value,
-            email: document.getElementById('customerEmail').value,
-            phone: document.getElementById('customerPhone').value,
-            address: document.getElementById('shippingAddress').value,
-            city: document.getElementById('city').value,
-            state: document.getElementById('state').value,
-            zipCode: document.getElementById('zipCode').value
-          };
-          
-          if (!customerData.name || !customerData.email || !customerData.phone) {
-            throw new Error('Please fill in all required fields');
-          }
-          
-          const { total } = this.getCartTotal();
-          
-          // Show payment confirmation dialog
-          const paymentMethod = prompt(
-            `💳 Payment Confirmation Required\n\n` +
-            `Order Total: ${utils.formatPrice(total)}\n\n` +
-            `Please enter your payment method:\n` +
-            `1. Credit Card\n` +
-            `2. PayPal\n` +
-            `3. Bank Transfer\n\n` +
-            `Type: 1, 2, or 3 (or cancel to abort)`
-          );
-          
-          if (!paymentMethod || !['1', '2', '3'].includes(paymentMethod)) {
-            this.showToast('info', 'Payment Cancelled', 'No payment method selected. Order not processed.');
-            return;
-          }
-          
-          const paymentMethods = {
-            '1': 'Credit Card',
-            '2': 'PayPal', 
-            '3': 'Bank Transfer'
-          };
-          
-          // Simulate payment processing
-          this.showToast('info', 'Processing Payment', `Processing ${paymentMethods[paymentMethod]} payment...`);
-          await new Promise(resolve => setTimeout(resolve, 3000)); // 3 second processing
-          
-          // Simulate payment confirmation
-          const confirmPayment = confirm(
-            `✅ Payment Confirmation\n\n` +
-            `Payment Method: ${paymentMethods[paymentMethod]}\n` +
-            `Amount: ${utils.formatPrice(total)}\n` +
-            `Customer: ${customerData.name}\n\n` +
-            `Confirm this payment was successful?`
-          );
-          
-          if (confirmPayment) {
-            const orderId = `PAY-${Date.now().toString().slice(-6)}`;
-            
-            console.log('Manual Payment processed:', {
-              order_id: orderId,
-              customer_data: customerData,
-              cart_items: this.cart,
-              total_amount: total,
-              payment_method: paymentMethods[paymentMethod],
-              payment_status: 'manually_confirmed'
-            });
-            
-            this.showToast('success', 'Payment Confirmed!', `Order #${orderId} payment confirmed. Processing your order now.`);
-            this.clearCart(); 
-            this.closeCheckout(); 
-            this.closeCart();
-            document.getElementById('checkout-form').reset();
-          } else {
-            this.showToast('error', 'Payment Failed', 'Payment could not be confirmed. Please try again or contact support.');
-          }
-          
-        } catch (error) {
-          console.error('Payment error:', error);
-          this.showToast('error', 'Payment Failed', error.message || 'Payment processing failed. Please try again.');
-        } finally {
-          submitButton.disabled = false;
-          submitButton.innerHTML = `Complete Order ($<span id="checkoutTotal">${this.getCartTotal().total.toFixed(2)}</span>)`;
-        }
-      }
-
-      async processOrder() {
-        const submitButton = document.getElementById('submitPayment');
-        submitButton.disabled = true; submitButton.textContent = 'Processing...';
-        
-        try {
-          const customerData = {
-            name: document.getElementById('customerName').value,
-            email: document.getElementById('customerEmail').value,
-            phone: document.getElementById('customerPhone').value,
-            address: document.getElementById('shippingAddress').value,
-            city: document.getElementById('city').value,
-            state: document.getElementById('state').value,
-            zipCode: document.getElementById('zipCode').value
-          };
-          
-          if (!customerData.name || !customerData.email || !customerData.phone) {
-            throw new Error('Please fill in all required fields');
-          }
-          
-          const { total } = this.getCartTotal();
-          
-          // For now, simulate a successful order since your backend is working but doesn't have the payment endpoint yet
-          console.log('Order data that would be sent to backend:', {
-            customer_data: customerData,
-            cart_items: this.cart,
-            total_amount: total,
-            currency: 'USD',
-            payment_method: 'amazon_pay'
-          });
-          
-          // Simulate order processing
-          await new Promise(resolve => setTimeout(resolve, 2000)); // 2 second delay to simulate processing
-          
-          // Generate a mock order ID
-          const orderId = `ORD-${Date.now().toString().slice(-6)}`;
-          
-          this.showToast('success', 'Order Placed Successfully!', `Order #${orderId} has been placed. You will receive a confirmation email shortly.`);
-          this.clearCart(); 
-          this.closeCheckout(); 
-          this.closeCart();
-          document.getElementById('checkout-form').reset();
-          
-          // Log successful order for now
-          console.log(`✅ Order ${orderId} processed successfully for ${customerData.name}`);
-          console.log(`📧 Confirmation email would be sent to: ${customerData.email}`);
-          console.log(`💰 Total amount: ${total.toFixed(2)}`);
-          
-        } catch (error) {
-          console.error('Order error:', error);
-          this.showToast('error', 'Order Failed', error.message || 'There was an error processing your order. Please try again.');
-        } finally {
-          submitButton.disabled = false;
-          submitButton.innerHTML = `Complete Order ($<span id="checkoutTotal">${this.getCartTotal().total.toFixed(2)}</span>)`;
-        }
-      }
-
+      // Enhanced toast system with better positioning and styling
       showToast(type, title, message) {
         const container = document.getElementById('toastContainer');
+        const toastId = 'toast_' + Date.now();
+        
         const toast = document.createElement('div');
+        toast.id = toastId;
         toast.className = `toast ${type}`;
-        toast.innerHTML = 
-          `<div class="toast-header">
-            <div style="font-weight: 600; color: var(--dark); font-size: 0.9rem;">${title}</div>
-            <button class="toast-close" onclick="this.parentElement.parentElement.remove()">×</button>
+        toast.style.cssText = `
+          background: white; 
+          border-radius: 10px; 
+          padding: 1rem 1.2rem; 
+          margin-bottom: 1rem;
+          box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+          border-left: 4px solid ${this.getToastColor(type)}; 
+          transform: translateX(350px);
+          transition: all 0.3s ease; 
+          max-width: 300px;
+          position: relative;
+          z-index: 10000;
+        `;
+        
+        toast.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <div style="font-weight: 600; color: var(--dark); font-size: 0.9rem; display: flex; align-items: center;">
+              ${this.getToastIcon(type)} ${title}
+            </div>
+            <button onclick="document.getElementById('${toastId}').remove()" style="
+              background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #999;
+              padding: 0; margin: 0; line-height: 1;
+            ">×</button>
           </div>
-          <div style="color: #666; font-size: 0.85rem;">${message}</div>`;
+          <div style="color: #666; font-size: 0.85rem; line-height: 1.4;">${message}</div>
+        `;
         
         container.appendChild(toast);
-        setTimeout(() => toast.classList.add('show'), 100);
+        
+        // Animate in
+        setTimeout(() => {
+          toast.style.transform = 'translateX(0)';
+        }, 100);
+        
+        // Auto remove
         setTimeout(() => {
           if (toast.parentElement) {
-            toast.classList.remove('show');
+            toast.style.transform = 'translateX(350px)';
             setTimeout(() => toast.remove(), 300);
           }
         }, 5000);
+      }
+
+      getToastColor(type) {
+        switch (type) {
+          case 'success': return '#4CAF50';
+          case 'error': return '#dc3545';
+          case 'warning': return '#ff9800';
+          case 'info': return '#2196F3';
+          default: return '#F06292';
+        }
+      }
+
+      getToastIcon(type) {
+        switch (type) {
+          case 'success': return '✅';
+          case 'error': return '❌';
+          case 'warning': return '⚠️';
+          case 'info': return 'ℹ️';
+          default: return '🔔';
+        }
       }
 
       setupAnimations() {
@@ -1055,25 +1163,127 @@
 
         document.querySelectorAll('.fade-in, .slide-in-right').forEach(el => observer.observe(el));
       }
+
+      // Debug helper method
+      debugPaymentFlow() {
+        console.log('🔍 Payment Flow Debug Info:');
+        console.log('Cart items:', this.cart.length);
+        console.log('Total amount:', this.getCartTotal().total);
+        console.log('API endpoint:', CONFIG.API_ENDPOINT);
+        console.log('Payment in progress:', this.paymentInProgress);
+        
+        // Test backend connectivity
+        fetch(`${CONFIG.API_ENDPOINT}/test`)
+          .then(response => response.json())
+          .then(data => console.log('✅ Backend test:', data))
+          .catch(error => console.error('❌ Backend test failed:', error));
+      }
     }
 
-    // Initialize Application
-    let cart;
+    // Enhanced initialization with better error handling
     document.addEventListener('DOMContentLoaded', async () => {
-      // Show loading screen
-      document.getElementById('loading').style.display = 'flex';
+      console.log('🚀 Initializing Global Organic States...');
       
-      // Initialize cart system
-      cart = new CartSystem();
-      window.cart = cart; // Global access
-      
-      // Hide loading screen
-      setTimeout(() => {
+      try {
+        // Show loading screen
         const loading = document.getElementById('loading');
-        loading.classList.add('fade-out');
-        setTimeout(() => loading.style.display = 'none', 800);
-      }, 2000);
+        if (loading) loading.style.display = 'flex';
+        
+        // Test backend connectivity first
+        const healthCheck = await fetch(`${CONFIG.API_ENDPOINT}/test`).catch(() => null);
+        if (healthCheck && healthCheck.ok) {
+          const healthData = await healthCheck.json();
+          console.log('✅ Backend health check:', healthData);
+        } else {
+          console.warn('⚠️ Backend health check failed - some features may not work');
+        }
+        
+        // Initialize cart system
+        window.cart = new CartSystem();
+        console.log('✅ Cart system initialized');
+        
+        // Hide loading screen
+        setTimeout(() => {
+          if (loading) {
+            loading.classList.add('fade-out');
+            setTimeout(() => loading.style.display = 'none', 800);
+          }
+        }, 2000);
+        
+        console.log('🎉 Initialization complete!');
+        
+      } catch (error) {
+        console.error('❌ Initialization error:', error);
+        
+        // Still try to initialize basic functionality
+        window.cart = new CartSystem();
+        
+        // Hide loading screen even on error
+        const loading = document.getElementById('loading');
+        if (loading) {
+          setTimeout(() => {
+            loading.classList.add('fade-out');
+            setTimeout(() => loading.style.display = 'none', 800);
+          }, 1000);
+        }
+      }
     });
+
+    // Global debug function
+    window.debugPayment = () => {
+      if (window.cart) {
+        window.cart.debugPaymentFlow();
+      } else {
+        console.error('Cart system not initialized');
+      }
+    };
+
+    // Test backend connectivity function
+    window.testBackend = async () => {
+      try {
+        console.log('🧪 Testing backend connectivity...');
+        const response = await fetch(`${CONFIG.API_ENDPOINT}/test`);
+        const data = await response.json();
+        console.log('✅ Backend test result:', data);
+        return data;
+      } catch (error) {
+        console.error('❌ Backend test failed:', error);
+        return { error: error.message };
+      }
+    };
+
+    // Test payment session creation
+    window.testPaymentSession = async () => {
+      try {
+        console.log('🧪 Testing payment session creation...');
+        const response = await fetch(`${CONFIG.API_ENDPOINT}/create-payment-session`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            customer_data: {
+              customerName: 'Test Customer',
+              customerEmail: 'test@example.com',
+              customerPhone: '+1234567890',
+              shippingAddress: '123 Test St',
+              city: 'Test City',
+              state: 'TS',
+              zipCode: '12345'
+            },
+            cart_items: [{ id: 'test', name: 'Test Product', price: 29.99, quantity: 1 }],
+            total_amount: 29.99,
+            currency: 'USD',
+            payment_method: 'amazon_pay'
+          })
+        });
+        const data = await response.json();
+        console.log('✅ Payment session test result:', data);
+        return data;
+      } catch (error) {
+        console.error('❌ Payment session test failed:', error);
+        return { error: error.message };
+      }
+    };
   </script>
 </body>
-</html>
+</html>('section[id]');
+          const navLinks = document.querySelectorAll
