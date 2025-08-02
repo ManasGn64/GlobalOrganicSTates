@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Premium onion hair care products - oils, shampoos & treatments. Made in Delaware, USA. Fast shipping nationwide with Amazon Pay secure checkout.">
+  <meta name="description" content="Premium onion hair care products - oils, shampoos & treatments. Made in Delaware, USA. Fast shipping nationwide with secure checkout.">
   <meta name="keywords" content="onion hair oil, onion shampoo, hair growth, natural hair care, organic hair products, Delaware USA">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Global Organic States">
@@ -261,29 +261,6 @@
     .social-link:hover { transform: translateY(-3px); box-shadow: var(--shadow); color: white; }
     .footer-bottom { border-top: 1px solid #444; margin-top: 2rem; padding-top: 1.5rem; text-align: center; color: #999; }
 
-    /* Modal */
-    .checkout-modal {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000;
-      display: none; justify-content: center; align-items: center;
-    }
-    .checkout-modal.show { display: flex; }
-    .checkout-content {
-      background: white; border-radius: var(--radius); padding: 2.5rem;
-      max-width: 450px; width: 90%; max-height: 90vh; overflow-y: auto;
-    }
-    .form-group { margin-bottom: 1.2rem; }
-    .form-label { display: block; margin-bottom: 0.4rem; color: var(--dark); font-weight: 600; }
-    .form-input {
-      width: 100%; padding: 0.8rem; border: 2px solid #eee; border-radius: 8px;
-      font-size: 0.95rem; transition: var(--transition);
-    }
-    .form-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(240, 98, 146, 0.1); }
-    .amazon-pay-button {
-      background: #ff9900; color: white; padding: 15px; border-radius: 8px; border: none;
-      font-weight: bold; cursor: pointer; width: 100%; margin: 1rem 0; transition: var(--transition);
-    }
-    .amazon-pay-button:hover { background: #e68900; transform: translateY(-2px); }
-
     /* Toast */
     .toast-container { position: fixed; top: 100px; right: 20px; z-index: 3000; }
     .toast {
@@ -376,36 +353,6 @@
     </div>
   </div>
 
-  <!-- Checkout Modal -->
-  <div class="checkout-modal" id="checkoutModal">
-    <div class="checkout-content">
-      <div style="text-align: center; margin-bottom: 2rem;">
-        <h2 style="font-size: 1.8rem; color: var(--dark); margin-bottom: 0.5rem;">Secure Checkout</h2>
-        <p style="color: #666;">Complete your order securely</p>
-      </div>
-      <form id="checkout-form">
-        <div class="form-group"><label class="form-label">Full Name</label><input type="text" class="form-input" id="customerName" required></div>
-        <div class="form-group"><label class="form-label">Email Address</label><input type="email" class="form-input" id="customerEmail" required></div>
-        <div class="form-group"><label class="form-label">Phone Number</label><input type="tel" class="form-input" id="customerPhone" required></div>
-        <div class="form-group"><label class="form-label">Shipping Address</label><input type="text" class="form-input" id="shippingAddress" required></div>
-        <div class="row">
-          <div class="col-md-6"><div class="form-group"><label class="form-label">City</label><input type="text" class="form-input" id="city" required></div></div>
-          <div class="col-md-3"><div class="form-group"><label class="form-label">State</label><input type="text" class="form-input" id="state" required></div></div>
-          <div class="col-md-3"><div class="form-group"><label class="form-label">ZIP</label><input type="text" class="form-input" id="zipCode" required></div></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Payment Method</label>
-          <div id="amazon-pay-button" style="min-height: 55px;"></div>
-          <p style="font-size: 0.9rem; color: #666; margin-top: 8px;"><i class="fas fa-shield-alt me-2"></i>Secure payment processing</p>
-        </div>
-        <div class="d-flex gap-3">
-          <button type="button" class="btn btn-outline-secondary" id="cancelCheckout">Cancel</button>
-          <button type="button" class="btn-checkout" id="submitPayment">Complete Order ($<span id="checkoutTotal">0.00</span>)</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
   <!-- Hero Section -->
   <section id="home" class="hero-section">
     <div class="container">
@@ -455,7 +402,6 @@
       <div class="row" id="benefitsGrid"></div>
     </div>
   </section>
-
 
   <!-- Contact Section -->
   <section id="contact" class="contact-section section-padding">
@@ -523,15 +469,11 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Updated Configuration - FIXED API ENDPOINT
+    // Configuration
     const CONFIG = {
-      AMAZON_MERCHANT_ID: 'A2D0FIAQLBKO92',
-      AMAZON_CLIENT_ID: 'amzn1.application-oa2-client.97be686d21e54635bb4359ed066173f2',
-      API_ENDPOINT: 'https://backendgos.onrender.com', // FIXED: Removed /process-payment
       FREE_SHIPPING_THRESHOLD: 50, 
       SHIPPING_COST: 9.99, 
-      TAX_RATE: 0, 
-      ENVIRONMENT: 'sandbox'
+      TAX_RATE: 0.08, // 8% tax rate
     };
 
     const DATA = {
@@ -560,13 +502,9 @@
 
     // Utility Functions
     const utils = {
-      formatPrice: (price) => `${price.toFixed(2)}`,
+      formatPrice: (price) => price.toFixed(2),
       formatNumber: (num) => num.toLocaleString(),
       validateEmail: (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
-      validatePhone: (phone) => {
-        const cleanPhone = phone.replace(/[\s\-\(\)]/g, '');
-        return cleanPhone.length >= 10 && /^[\+]?[1-9][\d]{0,15}$/.test(cleanPhone);
-      },
       debounce: (func, wait) => {
         let timeout;
         return function executedFunction(...args) {
@@ -576,12 +514,11 @@
       }
     };
 
-    // Enhanced Cart System Class with FIXED Payment Flow
+    // Enhanced Cart System
     class CartSystem {
       constructor() {
         this.cart = []; 
         this.productQuantities = {}; 
-        this.paymentInProgress = false;
         this.init();
       }
 
@@ -590,7 +527,6 @@
         this.loadCart(); 
         this.renderAll(); 
         this.setupEvents();
-        this.checkForReturnFromPayment(); // Check on page load
       }
 
       renderAll() {
@@ -676,7 +612,8 @@
       updateCartQuantity(index, change) {
         if (this.cart[index]) {
           this.cart[index].quantity = Math.max(1, this.cart[index].quantity + change);
-          this.updateCartUI(); this.saveCart();
+          this.updateCartUI(); 
+          this.saveCart();
         }
       }
 
@@ -741,16 +678,17 @@
 
       updateCartTotals() {
         const { subtotal, shipping, tax, total } = this.getCartTotal();
+        
         document.getElementById('subtotal').textContent = subtotal.toFixed(2);
         document.getElementById('shipping').textContent = shipping.toFixed(2);
         document.getElementById('tax').textContent = tax.toFixed(2);
         document.getElementById('finalTotal').textContent = total.toFixed(2);
-        document.getElementById('checkoutTotal').textContent = total.toFixed(2);
       }
 
       saveCart() {
         try { 
-          localStorage.setItem('onionHairCareCart', JSON.stringify(this.cart)); 
+          // Using a simple variable instead of localStorage since it's not supported
+          window.cartData = this.cart;
         } catch (e) { 
           console.warn('Could not save cart:', e); 
         }
@@ -758,217 +696,27 @@
 
       loadCart() {
         try {
-          const savedCart = localStorage.getItem('onionHairCareCart');
-          if (savedCart) this.cart = JSON.parse(savedCart);
+          if (window.cartData) this.cart = window.cartData;
         } catch (e) { 
           console.warn('Could not load cart:', e); 
         }
       }
 
-      // FIXED: Check for payment return URL parameters
-      checkForReturnFromPayment() {
-        try {
-          const urlParams = new URLSearchParams(window.location.search);
-          const sessionId = urlParams.get('session_id');
-          const orderId = urlParams.get('order_id');
-          const status = urlParams.get('status');
-          
-          if (sessionId || orderId) {
-            console.log('🔄 Payment return detected:', { sessionId, orderId, status });
-            
-            // Clear URL parameters to clean up browser history
-            window.history.replaceState({}, document.title, window.location.pathname);
-            
-            if (status === 'completed' || orderId) {
-              // Payment successful
-              this.showToast('success', 'Payment Successful!', `Order ${orderId || sessionId} completed successfully!`);
-              this.clearCart();
-              this.closeCheckout();
-              this.closeCart();
-            } else if (status === 'cancelled') {
-              // Payment cancelled
-              this.showToast('warning', 'Payment Cancelled', 'Your payment was cancelled. Your cart items are still saved.');
-            } else if (status === 'error') {
-              // Payment error
-              this.showToast('error', 'Payment Error', 'There was an issue processing your payment. Please try again.');
-            }
-            
-            // Clear any pending order data
-            localStorage.removeItem('pendingOrder');
-          }
-        } catch (e) {
-          console.warn('Error checking payment return:', e);
-        }
-      }
-
-      // FIXED: Process order with proper payment session creation
-      async processOrder() {
-        if (this.paymentInProgress) {
-          this.showToast('info', 'Processing...', 'Payment is already being processed.');
+      handleCheckout() {
+        if (this.cart.length === 0) {
+          this.showToast('error', 'Cart Empty', 'Please add items to your cart before checkout.');
           return;
         }
-
-        const submitButton = document.getElementById('submitPayment');
         
-        // Prevent double submission
-        this.paymentInProgress = true;
-        if (submitButton) {
-          submitButton.disabled = true;
-          submitButton.textContent = 'Creating Payment Session...';
-        }
+        const { total } = this.getCartTotal();
+        this.showToast('success', 'Checkout Started', `Proceeding to checkout with total: ${total.toFixed(2)}`);
         
-        try {
-          // Validate cart
-          if (this.cart.length === 0) {
-            throw new Error('Your cart is empty');
-          }
-
-          // Get and validate customer data
-          const customerData = this.getCustomerData();
-          const { total } = this.getCartTotal();
-          
-          console.log('🚀 Initiating payment process...');
-          console.log('Customer:', customerData.customerName);
-          console.log('Total:', total);
-          console.log('Items:', this.cart.length);
-
-          // FIXED: Create payment session using the correct endpoint
-          const response = await fetch(`${CONFIG.API_ENDPOINT}/create-payment-session`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              customer_data: customerData,
-              cart_items: this.cart,
-              total_amount: total,
-              currency: 'USD',
-              payment_method: 'amazon_pay'
-            })
-          });
-
-          if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`HTTP ${response.status}: ${errorText}`);
-          }
-
-          const result = await response.json();
-          console.log('💳 Payment session response:', result);
-
-          if (result.success && result.checkout_url) {
-            // Show success message before redirect
-            this.showToast('success', 'Redirecting...', 'Redirecting to secure payment gateway...');
-            
-            console.log('✅ Payment session created successfully');
-            console.log('🔗 Redirecting to:', result.checkout_url);
-            
-            // Save order data before redirect (optional)
-            this.saveOrderDataBeforeRedirect(result);
-            
-            // Redirect to payment gateway after a short delay
-            setTimeout(() => {
-              window.location.href = result.checkout_url;
-            }, 1500);
-            
-          } else {
-            throw new Error(result.error || 'Failed to create payment session');
-          }
-
-        } catch (error) {
-          console.error('❌ Payment error:', error);
-          
-          // Show user-friendly error message
-          this.showToast('error', 'Payment Failed', this.getErrorMessage(error));
-          
-          // Reset form state
-          this.resetPaymentForm();
-        }
-      }
-
-      // Get and validate customer data
-      getCustomerData() {
-        const requiredFields = [
-          'customerName', 'customerEmail', 'customerPhone', 
-          'shippingAddress', 'city', 'state', 'zipCode'
-        ];
-        
-        const data = {};
-        
-        for (const field of requiredFields) {
-          const element = document.getElementById(field);
-          if (!element || !element.value.trim()) {
-            throw new Error(`Please fill in the ${this.formatFieldName(field)} field`);
-          }
-          data[field] = element.value.trim();
-        }
-        
-        // Validate email
-        if (!utils.validateEmail(data.customerEmail)) {
-          throw new Error('Please enter a valid email address');
-        }
-        
-        // Validate phone
-        if (!utils.validatePhone(data.customerPhone)) {
-          throw new Error('Please enter a valid phone number');
-        }
-        
-        return data;
-      }
-
-      formatFieldName(field) {
-        return field
-          .replace('customer', '')
-          .replace(/([A-Z])/g, ' $1')
-          .toLowerCase()
-          .trim()
-          .replace(/^\w/, c => c.toUpperCase());
-      }
-
-      getErrorMessage(error) {
-        const message = error.message || 'Unknown error occurred';
-        
-        // Provide user-friendly error messages
-        if (message.includes('fetch') || message.includes('network')) {
-          return 'Unable to connect to payment server. Please check your internet connection and try again.';
-        }
-        if (message.includes('HTTP 500')) {
-          return 'Server error occurred. Please try again in a few moments.';
-        }
-        if (message.includes('HTTP 404')) {
-          return 'Payment service is temporarily unavailable. Please try again later.';
-        }
-        if (message.includes('session')) {
-          return 'Unable to create payment session. Please refresh the page and try again.';
-        }
-        
-        return message;
-      }
-
-      saveOrderDataBeforeRedirect(paymentResult) {
-        try {
-          const orderData = {
-            session_id: paymentResult.session_id,
-            order_id: paymentResult.order_id,
-            checkout_url: paymentResult.checkout_url,
-            timestamp: new Date().toISOString(),
-            cart_backup: [...this.cart]
-          };
-          
-          localStorage.setItem('pendingOrder', JSON.stringify(orderData));
-          console.log('💾 Order data saved before redirect');
-        } catch (e) {
-          console.warn('Could not save order data:', e);
-        }
-      }
-
-      resetPaymentForm() {
-        this.paymentInProgress = false;
-        
-        const submitButton = document.getElementById('submitPayment');
-        if (submitButton) {
-          submitButton.disabled = false;
-          submitButton.innerHTML = `Complete Order ($<span id="checkoutTotal">${this.getCartTotal().total.toFixed(2)}</span>)`;
-        }
+        // Simulate checkout process
+        setTimeout(() => {
+          this.showToast('success', 'Order Placed!', 'Thank you for your order! You will receive a confirmation email shortly.');
+          this.clearCart();
+          this.closeCart();
+        }, 2000);
       }
 
       setupEvents() {
@@ -1007,15 +755,17 @@
         // Event Listeners
         window.addEventListener('scroll', handleScroll, { passive: true });
         document.querySelectorAll('a[href^="#"]').forEach(anchor => anchor.addEventListener('click', smoothScroll));
+        
+        // Cart Events
         document.getElementById('cartToggle').addEventListener('click', () => this.openCart());
         document.getElementById('cartClose').addEventListener('click', () => this.closeCart());
         document.getElementById('cartOverlay').addEventListener('click', () => this.closeCart());
-        document.getElementById('checkoutBtn').addEventListener('click', () => this.openCheckout());
-        document.getElementById('cancelCheckout').addEventListener('click', () => this.closeCheckout());
-        document.getElementById('submitPayment').addEventListener('click', () => this.processOrder());
+        document.getElementById('checkoutBtn').addEventListener('click', () => this.handleCheckout());
+        
+        // Other Events
         document.getElementById('newsletterForm').addEventListener('submit', handleNewsletter);
         document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape') { this.closeCart(); this.closeCheckout(); }
+          if (e.key === 'Escape') { this.closeCart(); }
         });
       }
 
@@ -1029,58 +779,6 @@
         document.getElementById('cartOverlay').classList.remove('show');
       }
 
-      openCheckout() {
-        if (this.cart.length === 0) {
-          this.showToast('error', 'Cart Empty', 'Please add items to your cart before checkout.');
-          return;
-        }
-        
-        // Check for payment return first
-        this.checkForReturnFromPayment();
-        
-        document.getElementById('checkoutModal').classList.add('show');
-        this.updateCartTotals(); 
-        this.initPaymentButton();
-      }
-
-      closeCheckout() { 
-        document.getElementById('checkoutModal').classList.remove('show'); 
-        this.resetPaymentForm();
-      }
-
-      
-      initPaymentButton() {
-        const { total } = this.getCartTotal();
-        const buttonContainer = document.getElementById('amazon-pay-button');
-        
-        if (buttonContainer) {
-          buttonContainer.innerHTML = `
-            <div class="amazon-pay-button" onclick="cart.processOrder()" style="
-              background: #ff9900; 
-              color: white; 
-              padding: 15px; 
-              border-radius: 8px; 
-              border: none;
-              font-weight: bold; 
-              cursor: pointer; 
-              width: 100%; 
-              margin: 1rem 0; 
-              transition: all 0.3s ease;
-              text-align: center;
-              font-size: 1.1rem;
-            ">
-              <i class="fab fa-amazon me-2"></i>
-              Pay with Amazon Pay - ${total.toFixed(2)}
-            </div>
-            <p style="font-size: 0.85rem; color: #666; margin-top: 8px; text-align: center;">
-              <i class="fas fa-shield-alt me-1"></i>
-              Secure payment processing with 256-bit SSL encryption
-            </p>
-          `;
-        }
-      }
-
-      // Enhanced toast system with better positioning and styling
       showToast(type, title, message) {
         const container = document.getElementById('toastContainer');
         const toastId = 'toast_' + Date.now();
@@ -1117,12 +815,10 @@
         
         container.appendChild(toast);
         
-        // Animate in
         setTimeout(() => {
           toast.style.transform = 'translateX(0)';
         }, 100);
         
-        // Auto remove
         setTimeout(() => {
           if (toast.parentElement) {
             toast.style.transform = 'translateX(350px)';
@@ -1163,127 +859,29 @@
 
         document.querySelectorAll('.fade-in, .slide-in-right').forEach(el => observer.observe(el));
       }
-
-      // Debug helper method
-      debugPaymentFlow() {
-        console.log('🔍 Payment Flow Debug Info:');
-        console.log('Cart items:', this.cart.length);
-        console.log('Total amount:', this.getCartTotal().total);
-        console.log('API endpoint:', CONFIG.API_ENDPOINT);
-        console.log('Payment in progress:', this.paymentInProgress);
-        
-        // Test backend connectivity
-        fetch(`${CONFIG.API_ENDPOINT}/test`)
-          .then(response => response.json())
-          .then(data => console.log('✅ Backend test:', data))
-          .catch(error => console.error('❌ Backend test failed:', error));
-      }
     }
 
-    // Enhanced initialization with better error handling
-    document.addEventListener('DOMContentLoaded', async () => {
+    // Initialize the cart system
+    document.addEventListener('DOMContentLoaded', () => {
       console.log('🚀 Initializing Global Organic States...');
       
-      try {
-        // Show loading screen
-        const loading = document.getElementById('loading');
-        if (loading) loading.style.display = 'flex';
-        
-        // Test backend connectivity first
-        const healthCheck = await fetch(`${CONFIG.API_ENDPOINT}/test`).catch(() => null);
-        if (healthCheck && healthCheck.ok) {
-          const healthData = await healthCheck.json();
-          console.log('✅ Backend health check:', healthData);
-        } else {
-          console.warn('⚠️ Backend health check failed - some features may not work');
-        }
-        
-        // Initialize cart system
-        window.cart = new CartSystem();
-        console.log('✅ Cart system initialized');
-        
-        // Hide loading screen
-        setTimeout(() => {
-          if (loading) {
-            loading.classList.add('fade-out');
-            setTimeout(() => loading.style.display = 'none', 800);
-          }
-        }, 2000);
-        
-        console.log('🎉 Initialization complete!');
-        
-      } catch (error) {
-        console.error('❌ Initialization error:', error);
-        
-        // Still try to initialize basic functionality
-        window.cart = new CartSystem();
-        
-        // Hide loading screen even on error
-        const loading = document.getElementById('loading');
+      const loading = document.getElementById('loading');
+      if (loading) loading.style.display = 'flex';
+      
+      // Initialize cart system
+      window.cart = new CartSystem();
+      console.log('✅ Cart system initialized');
+      
+      // Hide loading screen
+      setTimeout(() => {
         if (loading) {
-          setTimeout(() => {
-            loading.classList.add('fade-out');
-            setTimeout(() => loading.style.display = 'none', 800);
-          }, 1000);
+          loading.classList.add('fade-out');
+          setTimeout(() => loading.style.display = 'none', 800);
         }
-      }
+      }, 2000);
+      
+      console.log('🎉 Initialization complete!');
     });
-
-    // Global debug function
-    window.debugPayment = () => {
-      if (window.cart) {
-        window.cart.debugPaymentFlow();
-      } else {
-        console.error('Cart system not initialized');
-      }
-    };
-
-    // Test backend connectivity function
-    window.testBackend = async () => {
-      try {
-        console.log('🧪 Testing backend connectivity...');
-        const response = await fetch(`${CONFIG.API_ENDPOINT}/test`);
-        const data = await response.json();
-        console.log('✅ Backend test result:', data);
-        return data;
-      } catch (error) {
-        console.error('❌ Backend test failed:', error);
-        return { error: error.message };
-      }
-    };
-
-    // Test payment session creation
-    window.testPaymentSession = async () => {
-      try {
-        console.log('🧪 Testing payment session creation...');
-        const response = await fetch(`${CONFIG.API_ENDPOINT}/create-payment-session`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            customer_data: {
-              customerName: 'Test Customer',
-              customerEmail: 'test@example.com',
-              customerPhone: '+1234567890',
-              shippingAddress: '123 Test St',
-              city: 'Test City',
-              state: 'TS',
-              zipCode: '12345'
-            },
-            cart_items: [{ id: 'test', name: 'Test Product', price: 29.99, quantity: 1 }],
-            total_amount: 29.99,
-            currency: 'USD',
-            payment_method: 'amazon_pay'
-          })
-        });
-        const data = await response.json();
-        console.log('✅ Payment session test result:', data);
-        return data;
-      } catch (error) {
-        console.error('❌ Payment session test failed:', error);
-        return { error: error.message };
-      }
-    };
   </script>
 </body>
-</html>('section[id]');
-          const navLinks = document.querySelectorAll
+</html>
