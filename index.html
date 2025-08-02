@@ -240,7 +240,7 @@
     }
 
     .checkout-left {
-      flex: 1; padding: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      flex: 1; padding: 2rem; background: var(--gradient-primary);
       color: white; display: flex; flex-direction: column; justify-content: space-between;
     }
 
@@ -582,18 +582,21 @@
             </div>
           </div>
 
-          <div style="background: #f8f9fa; border-radius: 10px; padding: 1.5rem; margin: 2rem 0;">
-            <h5 style="color: var(--dark); margin-bottom: 1rem; display: flex; align-items: center;">
-              <i class="fas fa-info-circle me-2" style="color: var(--primary);"></i>
-              What happens next?
-            </h5>
-            <ul style="color: #666; margin: 0; padding-left: 1.5rem; line-height: 1.6;">
-              <li>You'll be redirected to our secure payment page</li>
-              <li>Enter your payment details on encrypted servers</li>
-              <li>Complete your payment and return to our site</li>
-              <li>Receive instant order confirmation via email</li>
-            </ul>
-          </div>
+              <div style="background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; border-radius: 15px; padding: 2rem; text-align: center;">
+                <h4 style="margin-bottom: 1rem;">
+                  <i class="fas fa-rocket me-2"></i>Ready to Complete Your Order?
+                </h4>
+                <p style="margin-bottom: 2rem; opacity: 0.9;">
+                  You're about to be redirected to Bank of America's secure payment gateway to complete your purchase.
+                </p>
+                
+                <div style="background: rgba(255,255,255,0.1); border-radius: 10px; padding: 1.5rem; margin-bottom: 2rem;">
+                  <div style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">
+                    $<span id="checkoutDisplayTotal">0.00</span>
+                  </div>
+                  <div style="opacity: 0.9;">Total Amount</div>
+                </div>
+              </div>
 
           <div class="checkout-actions">
             <button type="button" class="btn-back" id="backToCart">
@@ -601,7 +604,7 @@
             </button>
             <button type="submit" class="btn-pay" id="completeOrder">
               <div class="loading-spinner"></div>
-              <i class="fas fa-lock me-2"></i>Complete Secure Payment
+              <i class="fas fa-university me-2"></i>Pay with Bank of America
             </button>
           </div>
         </form>
@@ -725,11 +728,13 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Configuration
+    // Configuration with Bank of America integration
     const CONFIG = {
+      API_ENDPOINT: 'https://bofa-backend.onrender.com',
       FREE_SHIPPING_THRESHOLD: 50, 
       SHIPPING_COST: 9.99, 
-      TAX_RATE: 0.08, // 8% tax rate
+      TAX_RATE: 0.08,
+      PAYMENT_METHOD: 'bank_of_america'
     };
 
     const DATA = {
@@ -788,6 +793,41 @@
         this.loadCart(); 
         this.renderAll(); 
         this.setupEvents();
+        this.checkForReturnFromPayment();
+      }
+
+      checkForReturnFromPayment() {
+        try {
+          const urlParams = new URLSearchParams(window.location.search);
+          const sessionId = urlParams.get('session_id');
+          const orderId = urlParams.get('order_id');
+          const status = urlParams.get('status');
+          
+          if (sessionId || orderId) {
+            console.log('🔄 Payment return detected:', { sessionId, orderId, status });
+            
+            // Clean URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+            
+            if (status === 'completed' || orderId) {
+              this.showToast('success', 'Payment Successful!', `Order ${orderId || sessionId} completed successfully!`);
+              this.clearCart();
+              this.closeCheckout();
+              this.closeCart();
+            } else if (status === 'cancelled') {
+              this.showToast('warning', 'Payment Cancelled', 'Your payment was cancelled. Your cart items are still saved.');
+            } else if (status === 'error') {
+              this.showToast('error', 'Payment Error', 'There was an issue processing your payment. Please try again.');
+            }
+            
+            // Clear saved order data
+            if (window.pendingOrderData) {
+              delete window.pendingOrderData;
+            }
+          }
+        } catch (e) {
+          console.warn('Error checking payment return:', e);
+        }
       }
 
       renderAll() {
@@ -951,6 +991,8 @@
         document.getElementById('checkoutShipping').textContent = shipping.toFixed(2);
         document.getElementById('checkoutTax').textContent = tax.toFixed(2);
         document.getElementById('checkoutFinalTotal').textContent = total.toFixed(2);
+        // Update checkout display total
+        document.getElementById('checkoutDisplayTotal').textContent = total.toFixed(2);
       }
 
       updateCheckoutCartItems() {
@@ -1012,7 +1054,7 @@
         const submitButton = document.getElementById('completeOrder');
         if (submitButton) {
           submitButton.disabled = false;
-          submitButton.innerHTML = '<i class="fas fa-lock me-2"></i>Complete Secure Payment';
+          submitButton.innerHTML = '<i class="fas fa-university me-2"></i>Pay with Bank of America';
         }
       }
 
@@ -1078,35 +1120,99 @@
         this.paymentInProgress = true;
         submitButton.disabled = true;
         spinner.style.display = 'inline-block';
-        submitButton.innerHTML = '<div class="loading-spinner" style="display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid white; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 0.5rem;"></div>Processing Payment...';
+        submitButton.innerHTML = '<div class="loading-spinner" style="display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid white; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 0.5rem;"></div>Creating Bank of America Session...';
 
         try {
-          // Get customer data
+          if (this.cart.length === 0) {
+            throw new Error('Your cart is empty');
+          }
+
           const customerData = this.getCustomerData();
           const { total } = this.getCartTotal();
           
-          // Simulate payment processing
-          this.showToast('info', 'Processing Payment...', 'Please wait while we process your payment.');
-          
-          // Simulate API call delay
-          await new Promise(resolve => setTimeout(resolve, 3000));
-          
-          // Simulate successful payment
-          const orderId = 'ORD-' + Date.now();
-          
-          this.showToast('success', 'Payment Successful!', `Order ${orderId} completed successfully! You will receive a confirmation email shortly.`);
-          
-          // Clear cart and close checkout
-          setTimeout(() => {
-            this.clearCart();
-            this.closeCheckout();
-            this.closeCart();
-          }, 2000);
-          
+          console.log('🚀 Initiating Bank of America payment process...');
+          console.log('Customer:', customerData.customerName);
+          console.log('Total:', total);
+          console.log('Items:', this.cart.length);
+
+          const response = await fetch(`${CONFIG.API_ENDPOINT}/create-payment-session`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              customer_data: customerData,
+              cart_items: this.cart,
+              total_amount: total,
+              currency: 'USD',
+              payment_method: 'bank_of_america'
+            })
+          });
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`HTTP ${response.status}: ${errorText}`);
+          }
+
+          const result = await response.json();
+          console.log('💳 Payment session response:', result);
+
+          if (result.success && result.checkout_url) {
+            this.showToast('success', 'Redirecting...', 'Redirecting to Bank of America secure payment gateway...');
+            
+            console.log('✅ Payment session created successfully');
+            console.log('🔗 Redirecting to:', result.checkout_url);
+            
+            this.saveOrderDataBeforeRedirect(result);
+            
+            setTimeout(() => {
+              window.location.href = result.checkout_url;
+            }, 1500);
+            
+          } else {
+            throw new Error(result.error || 'Failed to create payment session');
+          }
+
         } catch (error) {
-          console.error('Payment error:', error);
-          this.showToast('error', 'Payment Failed', 'There was an issue processing your payment. Please try again.');
+          console.error('❌ Payment error:', error);
+          this.showToast('error', 'Payment Failed', this.getErrorMessage(error));
           this.resetCheckoutForm();
+        }
+      }
+
+      getErrorMessage(error) {
+        const message = error.message || 'Unknown error occurred';
+        
+        if (message.includes('fetch') || message.includes('network')) {
+          return 'Unable to connect to Bank of America payment server. Please check your internet connection and try again.';
+        }
+        if (message.includes('HTTP 500')) {
+          return 'Bank of America server error occurred. Please try again in a few moments.';
+        }
+        if (message.includes('HTTP 404')) {
+          return 'Bank of America payment service is temporarily unavailable. Please try again later.';
+        }
+        if (message.includes('session')) {
+          return 'Unable to create Bank of America payment session. Please refresh the page and try again.';
+        }
+        
+        return message;
+      }
+
+      saveOrderDataBeforeRedirect(paymentResult) {
+        try {
+          const orderData = {
+            session_id: paymentResult.session_id,
+            order_id: paymentResult.order_id,
+            checkout_url: paymentResult.checkout_url,
+            timestamp: new Date().toISOString(),
+            cart_backup: [...this.cart]
+          };
+          
+          window.pendingOrderData = orderData;
+          console.log('💾 Order data saved before redirect');
+        } catch (e) {
+          console.warn('Could not save order data:', e);
         }
       }
 
