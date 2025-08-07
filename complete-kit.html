@@ -1,0 +1,2207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Complete Onion Hair Care Kit - Full system with shampoo, conditioner, serum, mask, and oil for complete hair transformation. Save $49.96!">
+  <meta name="keywords" content="complete onion hair kit, hair care system, hair growth kit, onion shampoo conditioner, Delaware USA">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Global Organic States">
+  <meta property="og:title" content="Complete Onion Hair Care Kit | Global Organic States">
+  <meta property="og:description" content="Transform your hair with our complete 5-product system. Save $49.96 with professional-grade onion hair care kit.">
+  <meta property="og:image" content="https://uploads.onecompiler.io/434pwjffd/43rfxzj2z/Onion%20Oil.png">
+  <meta property="og:type" content="product">
+  
+  <title>Complete Onion Hair Care Kit | Global Organic States</title>
+  
+  <!-- React & ReactDOM from CDN - Production builds -->
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  
+  <!-- TailwindCSS from CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #F06292;
+      --secondary: #4CAF50;
+      --accent: #F48FB1;
+      --onion: #8B4513;
+      --dark: #2c3e50;
+      --light-bg: #FFF8F0;
+      --gradient-primary: linear-gradient(135deg, var(--primary), var(--accent));
+      --gradient-secondary: linear-gradient(135deg, var(--secondary), #66BB6A);
+      --gradient-onion: linear-gradient(135deg, var(--onion), #CD853F);
+      --shadow: 0 10px 25px rgba(0,0,0,0.08);
+      --shadow-hover: 0 20px 40px rgba(0,0,0,0.15);
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: var(--light-bg);
+      color: var(--dark);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      margin: 0;
+      padding: 0;
+    }
+
+    .font-nunito { font-family: 'Nunito', sans-serif; }
+    .font-open-sans { font-family: 'Open Sans', sans-serif; }
+    .bg-gradient-primary { background: var(--gradient-primary); }
+    .bg-gradient-secondary { background: var(--gradient-secondary); }
+    .bg-gradient-onion { background: var(--gradient-onion); }
+    .text-primary { color: var(--primary); }
+    .text-secondary { color: var(--secondary); }
+    .text-onion { color: var(--onion); }
+    .text-dark { color: var(--dark); }
+    .bg-light { background-color: var(--light-bg); }
+    .shadow-custom { box-shadow: var(--shadow); }
+    .shadow-hover { box-shadow: var(--shadow-hover); }
+    .transition-custom { transition: var(--transition); }
+    .rounded-custom { border-radius: var(--radius); }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.4s ease forwards;
+    }
+
+    .slide-in-left {
+      opacity: 0;
+      transform: translateX(-30px);
+      animation: slideInLeft 0.4s ease forwards;
+    }
+
+    .slide-in-right {
+      opacity: 0;
+      transform: translateX(30px);
+      animation: slideInRight 0.4s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideInLeft {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideInRight {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .aspect-ratio-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+    }
+
+    .aspect-ratio-container img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-backdrop {
+      backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.75);
+    }
+
+    .btn-hover-lift:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .grid-auto-fit {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
+    .image-loading {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    .error-boundary {
+      background: #fee;
+      border: 2px solid #fcc;
+      padding: 20px;
+      margin: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .kit-highlight {
+      background: linear-gradient(135deg, rgba(240, 98, 146, 0.1), rgba(244, 143, 177, 0.1));
+      border-left: 4px solid var(--primary);
+    }
+
+    .value-badge {
+      background: linear-gradient(135deg, #4CAF50, #66BB6A);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+
+    .step-connector {
+      position: relative;
+    }
+
+    .step-connector::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -1rem;
+      width: 2rem;
+      height: 2px;
+      background: var(--gradient-primary);
+      transform: translateY(-50%);
+    }
+
+    .step-connector:last-child::after {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .step-connector::after {
+        display: none;
+      }
+    }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "Complete Onion Hair Care Kit",
+    "image": "https://uploads.onecompiler.io/434pwjffd/43rfxzj2z/Onion%20Oil.png",
+    "description": "Complete 5-product system with onion shampoo, conditioner, serum, mask, and oil for total hair transformation.",
+    "brand": {
+      "@type": "Brand",
+      "name": "Global Organic States"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": "https://globalorganicstates.com/complete-kit.html",
+      "priceCurrency": "USD",
+      "price": "79.99",
+      "priceValidUntil": "2025-12-31",
+      "availability": "https://schema.org/InStock"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "3247"
+    }
+  }
+  </script>
+</head>
+
+<body>
+  <div id="root">
+    <div class="error-boundary" id="loading">
+      <h2>Loading Complete Onion Hair Care Kit...</h2>
+      <p>If this message persists, please refresh the page.</p>
+    </div>
+  </div>
+
+  <script>
+    'use strict';
+
+    // Check if React is loaded
+    if (typeof React === 'undefined') {
+      document.getElementById('loading').innerHTML = '<h2>Error Loading</h2><p>React library failed to load. Please check your internet connection and refresh.</p>';
+      throw new Error('React not loaded');
+    }
+
+    const { useState, useEffect, useCallback, useMemo, useRef } = React;
+    const { createElement: e, Fragment } = React;
+
+    // Configuration
+    const CONFIG = {
+      API_ENDPOINT: 'https://bofa-backend.onrender.com',
+      FREE_SHIPPING_THRESHOLD: 50,
+      SHIPPING_COST: 9.99,
+      TAX_RATE: 0.08,
+      PAYMENT_METHOD: 'bank_of_america'
+    };
+
+    // Product Data - Complete Kit
+    const PRODUCT_DATA = {
+      id: 'complete-hair-kit',
+      name: 'Complete Onion Hair Care Kit',
+      price: 79.99,
+      originalPrice: 129.95,
+      discount: '38% OFF',
+      rating: 4.8,
+      reviewCount: 3247,
+      badge: 'Complete System',
+      savings: 49.96,
+      images: [
+        'https://uploads.onecompiler.io/434pwjffd/43rfxzj2z/Onion%20Oil.png',
+        'https://uploads.onecompiler.io/434pwjffd/43hc8tejs/ChatGPT%20Image%20May%2010,%202025,%2001_11_57%20PM.png',
+        'https://uploads.onecompiler.io/434pwjffd/43rfxzj2z/Onion%20Oil.png',
+        'https://uploads.onecompiler.io/434pwjffd/43hc8tejs/ChatGPT%20Image%20May%2010,%202025,%2001_11_57%20PM.png',
+        'https://uploads.onecompiler.io/434pwjffd/43rfxzj2z/Onion%20Oil.png'
+      ],
+      description: 'Complete 5-product system with onion shampoo, conditioner, serum, mask, and oil for total hair transformation. Save $49.96 vs buying separately.',
+      features: [
+        'Complete 5-Product System',
+        'Maximum Hair Growth Acceleration', 
+        'Synergistic Formula Technology',
+        'Professional Treatment Results',
+        'Best Value - Save $49.96',
+        '94% Success Rate in Clinical Studies'
+      ],
+      kitContents: [
+        { name: 'Onion Hair Growth Shampoo', size: '250ml', price: 19.99, description: 'Deep cleansing with onion extract stimulation' },
+        { name: 'Onion Strengthening Conditioner', size: '250ml', price: 17.99, description: 'Intensive nourishment and strengthening' },
+        { name: 'Onion Hair Growth Serum', size: '50ml', price: 39.99, description: 'Targeted growth acceleration treatment' },
+        { name: 'Onion Hair Mask Treatment', size: '200ml', price: 24.99, description: 'Weekly deep repair and restoration' },
+        { name: 'Premium Onion Hair Oil', size: '100ml', price: 29.99, description: 'Daily nourishment and scalp massage' }
+      ],
+      ingredients: [
+        { name: 'Onion Extract Complex', percentage: '12-25%', benefit: 'Different concentrations across products for comprehensive follicle stimulation and growth acceleration.', icon: '🧅' },
+        { name: 'Biotin & B-Vitamin Complex', percentage: 'In All Products', benefit: 'Essential vitamins that strengthen hair structure and promote cellular regeneration.', icon: '🌿' },
+        { name: 'Growth Peptides', percentage: '5%', benefit: 'Advanced peptides in serum and oil that signal hair follicles for accelerated growth cycles.', icon: '🧬' },
+        { name: 'Natural Oil Blend', percentage: '30%', benefit: 'Coconut, Argan, Jojoba oils in conditioner and mask for deep nourishment and moisture retention.', icon: '🥥' },
+        { name: 'Adenosine & Caffeine', percentage: '3%', benefit: 'Clinically proven ingredients in serum that extend growth phase and improve circulation.', icon: '🌸' },
+        { name: 'Protein Complex', percentage: '8%', benefit: 'Keratin and plant proteins in mask and conditioner rebuild and strengthen hair structure.', icon: '🌾' }
+      ]
+    };
+
+    const RELATED_PRODUCTS = [
+      { id: 'onion-hair-oil', name: 'Premium Onion Hair Oil', price: 29.99, image: 'https://uploads.onecompiler.io/434pwjffd/43rfxzj2z/Onion%20Oil.png' },
+      { id: 'onion-shampoo', name: 'Onion Hair Growth Shampoo', price: 19.99, image: 'https://uploads.onecompiler.io/434pwjffd/43rfxzj2z/Onion%20Oil.png' },
+      { id: 'onion-serum', name: 'Onion Hair Growth Serum', price: 39.99, image: 'https://uploads.onecompiler.io/434pwjffd/43rfxzj2z/Onion%20Oil.png' },
+      { id: 'onion-mask', name: 'Onion Hair Mask Treatment', price: 24.99, image: 'https://uploads.onecompiler.io/434pwjffd/43rfxzj2z/Onion%20Oil.png' }
+    ];
+
+    const REVIEWS_DATA = [
+      {
+        id: 1,
+        name: 'Samantha Rodriguez',
+        rating: 5,
+        date: '1 week ago',
+        verified: true,
+        text: 'The complete kit is absolutely worth it! I\'ve been using the full system for 3 months and the transformation is incredible. My hair went from thin and lifeless to thick and healthy. Having all the products work together makes such a difference. The routine is easy to follow and the results speak for themselves!'
+      },
+      {
+        id: 2,
+        name: 'Michael Chen',
+        rating: 5,
+        date: '2 weeks ago',
+        verified: true,
+        text: 'Best investment I\'ve made for my hair! I was losing hair rapidly and tried individual products before, but this complete system is on another level. The step-by-step guide made it so easy to follow. After 10 weeks, my hairline is growing back and my hair is the thickest it\'s been in years. The value is amazing compared to buying separately.'
+      },
+      {
+        id: 3,
+        name: 'Rebecca Thompson',
+        rating: 5,
+        date: '3 weeks ago',
+        verified: true,
+        text: 'I cannot recommend this kit enough! After pregnancy, my hair was falling out terribly. This complete system saved my hair! I love that everything works together - the shampoo cleanses, conditioner nourishes, serum stimulates growth, mask repairs, and oil deeply conditions. It\'s like having a professional treatment at home. Results are visible in just 6 weeks!'
+      }
+    ];
+
+    // Custom Hooks (same as original template)
+    const useCart = () => {
+      const [cart, setCart] = useState([]);
+      const [quantities, setQuantities] = useState({ [PRODUCT_DATA.id]: 1 });
+
+      const updateQuantity = useCallback((productId, change) => {
+        setQuantities(prev => ({
+          ...prev,
+          [productId]: Math.max(1, (prev[productId] || 1) + change)
+        }));
+      }, []);
+
+      const addToCart = useCallback((product, quantity = 1) => {
+        setCart(prev => {
+          const existingIndex = prev.findIndex(item => item.id === product.id);
+          if (existingIndex > -1) {
+            const updated = [...prev];
+            updated[existingIndex].quantity += quantity;
+            return updated;
+          } else {
+            return [...prev, { ...product, quantity }];
+          }
+        });
+      }, []);
+
+      const cartTotal = useMemo(() => {
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const shipping = subtotal > CONFIG.FREE_SHIPPING_THRESHOLD ? 0 : CONFIG.SHIPPING_COST;
+        const tax = subtotal * CONFIG.TAX_RATE;
+        return { subtotal, shipping, tax, total: subtotal + shipping + tax };
+      }, [cart]);
+
+      const totalItems = useMemo(() => 
+        cart.reduce((sum, item) => sum + item.quantity, 0)
+      , [cart]);
+
+      return {
+        cart,
+        quantities,
+        updateQuantity,
+        addToCart,
+        cartTotal,
+        totalItems
+      };
+    };
+
+    const useToast = () => {
+      const [toasts, setToasts] = useState([]);
+
+      const showToast = useCallback((type, title, message) => {
+        const id = Date.now();
+        const newToast = { id, type, title, message };
+        
+        setToasts(prev => [...prev, newToast]);
+        
+        setTimeout(() => {
+          setToasts(prev => prev.filter(toast => toast.id !== id));
+        }, 4000);
+      }, []);
+
+      const removeToast = useCallback((id) => {
+        setToasts(prev => prev.filter(toast => toast.id !== id));
+      }, []);
+
+      return { toasts, showToast, removeToast };
+    };
+
+    const useIntersectionObserver = () => {
+      const [isVisible, setIsVisible] = useState(false);
+      const ref = useRef();
+
+      useEffect(() => {
+        if (!ref.current) return;
+
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              setIsVisible(true);
+              observer.disconnect();
+            }
+          },
+          { threshold: 0.1, rootMargin: '50px' }
+        );
+
+        observer.observe(ref.current);
+        return () => observer.disconnect();
+      }, []);
+
+      return [ref, isVisible];
+    };
+
+    // Components (reusing core components from template)
+    const OptimizedImage = ({ src, alt, className = "", priority = false }) => {
+      const [isLoaded, setIsLoaded] = useState(false);
+      const [error, setError] = useState(false);
+
+      const handleLoad = useCallback(() => {
+        setIsLoaded(true);
+      }, []);
+
+      const handleError = useCallback(() => {
+        setError(true);
+      }, []);
+
+      if (error) {
+        return e('div', {
+          className: `flex items-center justify-center bg-gray-200 rounded-lg ${className}`
+        }, e('div', {
+          className: 'text-center text-gray-500 p-4'
+        }, [
+          e('i', { key: 'icon', className: 'fas fa-image text-4xl mb-2' }),
+          e('p', { key: 'text', className: 'text-sm' }, 'Image not available')
+        ]));
+      }
+
+      return e('img', {
+        src,
+        alt,
+        onLoad: handleLoad,
+        onError: handleError,
+        className: `w-full h-full object-cover rounded-lg ${className}`,
+        style: { display: isLoaded ? 'block' : 'none' }
+      });
+    };
+
+    const Toast = ({ toast, onRemove }) => {
+      const getToastStyles = (type) => {
+        const styles = {
+          success: 'border-green-500 bg-green-50',
+          error: 'border-red-500 bg-red-50',
+          warning: 'border-yellow-500 bg-yellow-50',
+          info: 'border-blue-500 bg-blue-50'
+        };
+        return styles[type] || 'border-primary bg-pink-50';
+      };
+
+      const getToastIcon = (type) => {
+        const icons = {
+          success: '✅',
+          error: '❌',
+          warning: '⚠️',
+          info: 'ℹ️'
+        };
+        return icons[type] || '🔔';
+      };
+
+      return e('div', {
+        className: `${getToastStyles(toast.type)} rounded-lg p-4 mb-3 shadow-custom border-l-4 max-w-sm transform transition-all duration-300`
+      }, [
+        e('div', {
+          key: 'header',
+          className: 'flex justify-between items-center mb-2'
+        }, [
+          e('div', {
+            key: 'title',
+            className: 'flex items-center font-semibold text-dark text-sm'
+          }, [
+            e('span', { key: 'icon', className: 'mr-2' }, getToastIcon(toast.type)),
+            toast.title
+          ]),
+          e('button', {
+            key: 'close',
+            onClick: () => onRemove(toast.id),
+            className: 'text-gray-500 hover:text-gray-700 transition-colors'
+          }, '×')
+        ]),
+        e('div', {
+          key: 'message',
+          className: 'text-gray-600 text-xs leading-relaxed'
+        }, toast.message)
+      ]);
+    };
+
+    const Header = () => {
+      return e('header', {
+        className: 'bg-white shadow-lg sticky top-0 z-40 border-b border-gray-100'
+      }, e('div', {
+        className: 'container mx-auto px-4 py-4'
+      }, [
+        e('div', {
+          key: 'top',
+          className: 'flex justify-between items-center'
+        }, [
+          e('button', {
+            key: 'back',
+            onClick: () => window.history.back(),
+            className: 'bg-gradient-primary text-white px-6 py-2 rounded-full font-semibold transition-custom btn-hover-lift flex items-center gap-2'
+          }, [
+            e('i', { key: 'icon', className: 'fas fa-arrow-left' }),
+            'Back to Shop'
+          ]),
+          e('h1', {
+            key: 'title',
+            className: 'text-2xl font-nunito font-bold bg-gradient-primary bg-clip-text text-transparent'
+          }, 'Global Organic States')
+        ]),
+        e('nav', {
+          key: 'nav',
+          className: 'mt-2 text-sm text-gray-600'
+        }, [
+          e('a', { key: 'home', href: '#', className: 'text-primary hover:underline' }, 'Home'),
+          e('span', { key: 'sep1', className: 'mx-2' }, '/'),
+          e('a', { key: 'products', href: '#products', className: 'text-primary hover:underline' }, 'Products'),
+          e('span', { key: 'sep2', className: 'mx-2' }, '/'),
+          e('span', { key: 'current' }, 'Complete Onion Hair Care Kit')
+        ])
+      ]));
+    };
+
+    const ImageGallery = ({ images, productName }) => {
+      const [currentImageIndex, setCurrentImageIndex] = useState(0);
+      const [isModalOpen, setIsModalOpen] = useState(false);
+
+      const changeImage = useCallback((index) => {
+        setCurrentImageIndex(index);
+      }, []);
+
+      return e('div', {
+        className: 'sticky top-24'
+      }, [
+        e('div', {
+          key: 'main-image',
+          className: 'aspect-ratio-container mb-4 rounded-custom overflow-hidden shadow-custom cursor-pointer transition-custom hover:shadow-hover',
+          onClick: () => setIsModalOpen(true)
+        }, e(OptimizedImage, {
+          src: images[currentImageIndex],
+          alt: `${productName} - View ${currentImageIndex + 1}`,
+          priority: true
+        })),
+        e('div', {
+          key: 'thumbnails',
+          className: 'flex gap-3 justify-center flex-wrap'
+        }, images.map((image, index) => 
+          e('div', {
+            key: index,
+            className: `w-20 h-20 rounded-lg cursor-pointer transition-custom border-2 overflow-hidden ${
+              index === currentImageIndex 
+                ? 'border-primary shadow-lg scale-105' 
+                : 'border-transparent hover:border-primary hover:scale-105'
+            }`,
+            onClick: () => changeImage(index)
+          }, e(OptimizedImage, {
+            src: image,
+            alt: `${productName} thumbnail ${index + 1}`,
+            className: 'w-full h-full'
+          }))
+        )),
+        isModalOpen && e('div', {
+          key: 'modal',
+          className: 'fixed inset-0 modal-backdrop z-50 flex items-center justify-center p-4',
+          onClick: () => setIsModalOpen(false)
+        }, [
+          e('button', {
+            key: 'close',
+            className: 'absolute top-4 right-4 text-white text-4xl hover:text-gray-300 transition-colors z-10',
+            onClick: () => setIsModalOpen(false)
+          }, '×'),
+          e(OptimizedImage, {
+            key: 'enlarged',
+            src: images[currentImageIndex],
+            alt: `${productName} enlarged view`,
+            className: 'max-w-full max-h-full rounded-lg'
+          })
+        ])
+      ]);
+    };
+
+    const QuantitySelector = ({ quantity, onUpdate, className = "" }) => {
+      return e('div', {
+        className: `flex items-center gap-4 ${className}`
+      }, [
+        e('button', {
+          key: 'minus',
+          onClick: () => onUpdate(-1),
+          className: 'w-10 h-10 bg-gradient-primary text-white rounded-full flex items-center justify-center transition-custom hover:scale-110'
+        }, e('i', { className: 'fas fa-minus' })),
+        e('div', {
+          key: 'quantity',
+          className: 'bg-white border-2 border-primary rounded-lg px-6 py-2 font-bold text-primary min-w-[80px] text-center'
+        }, quantity),
+        e('button', {
+          key: 'plus',
+          onClick: () => onUpdate(1),
+          className: 'w-10 h-10 bg-gradient-primary text-white rounded-full flex items-center justify-center transition-custom hover:scale-110'
+        }, e('i', { className: 'fas fa-plus' }))
+      ]);
+    };
+
+    const ProductInfo = ({ product, quantity, onQuantityUpdate, onAddToCart, onBuyNow }) => {
+      const totalPrice = (product.price * quantity).toFixed(2);
+
+      return e('div', {
+        className: 'bg-white rounded-custom shadow-custom p-8 sticky top-24'
+      }, [
+        e('div', {
+          key: 'value-badge',
+          className: 'text-center mb-4'
+        }, e('span', {
+          className: 'value-badge'
+        }, `Save $${product.savings} vs Buying Separately!`)),
+
+        e('h1', {
+          key: 'title',
+          className: 'text-3xl font-nunito font-bold text-dark mb-4'
+        }, product.name),
+        
+        e('div', {
+          key: 'rating',
+          className: 'flex items-center gap-4 mb-6'
+        }, [
+          e('div', {
+            key: 'stars',
+            className: 'flex text-yellow-400 text-xl'
+          }, [...Array(5)].map((_, i) => 
+            e('i', { key: i, className: 'fas fa-star' })
+          )),
+          e('span', {
+            key: 'rating-text',
+            className: 'text-gray-600'
+          }, [
+            e('strong', { key: 'score' }, `${product.rating}/5`),
+            ` (${product.reviewCount.toLocaleString()} reviews) | `,
+            e('strong', { key: 'badge', className: 'text-primary ml-2' }, product.badge)
+          ])
+        ]),
+
+        e('div', {
+          key: 'price',
+          className: 'bg-light p-6 rounded-2xl mb-6'
+        }, [
+          e('div', {
+            key: 'price-row',
+            className: 'flex items-center flex-wrap gap-4 mb-2'
+          }, [
+            e('span', {
+              key: 'current-price',
+              className: 'text-4xl font-bold text-primary'
+            }, `${product.price}`),
+            e('span', {
+              key: 'original-price',
+              className: 'text-xl text-gray-500 line-through'
+            }, `${product.originalPrice}`),
+            e('span', {
+              key: 'discount',
+              className: 'bg-onion text-white px-3 py-1 rounded-full text-sm font-bold'
+            }, product.discount)
+          ]),
+          e('div', {
+            key: 'savings',
+            className: 'text-secondary font-semibold'
+          }, `You save ${product.savings}! (vs buying separately)`)
+        ]),
+
+        // Kit Contents Section
+        e('div', {
+          key: 'kit-contents',
+          className: 'kit-highlight p-4 rounded-2xl mb-6'
+        }, [
+          e('h4', {
+            key: 'contents-title',
+            className: 'font-bold mb-3 flex items-center gap-2'
+          }, [
+            e('i', { key: 'icon', className: 'fas fa-box text-primary' }),
+            'What\'s Included in Your Complete Kit:'
+          ]),
+          e('div', {
+            key: 'contents-grid',
+            className: 'space-y-2'
+          }, product.kitContents.map((item, index) => 
+            e('div', {
+              key: index,
+              className: 'flex items-center justify-between text-sm'
+            }, [
+              e('div', {
+                key: 'item-info',
+                className: 'flex items-center gap-2'
+              }, [
+                e('i', { key: 'check', className: 'fas fa-check-circle text-secondary' }),
+                e('strong', { key: 'name' }, `${item.name} (${item.size})`)
+              ]),
+              e('span', {
+                key: 'price',
+                className: 'text-gray-600'
+              }, `${item.price}`)
+            ])
+          )),
+          e('div', {
+            key: 'total-value',
+            className: 'border-t pt-2 mt-2 flex justify-between items-center font-bold'
+          }, [
+            e('span', { key: 'label' }, 'Individual Total Value:'),
+            e('span', { key: 'value', className: 'text-gray-500 line-through' }, `${product.originalPrice}`)
+          ])
+        ]),
+
+        e('div', {
+          key: 'shipping',
+          className: 'bg-green-50 border-l-4 border-secondary p-4 rounded mb-6'
+        }, e('p', {
+          className: 'text-secondary font-semibold flex items-center gap-2'
+        }, [
+          e('i', { key: 'icon', className: 'fas fa-truck' }),
+          e('strong', { key: 'free' }, 'Free Shipping'),
+          ' on orders over $50 | ',
+          e('strong', { key: 'made' }, 'Made in Delaware, USA')
+        ])),
+
+        e('div', {
+          key: 'quantity-section',
+          className: 'mb-6'
+        }, [
+          e('label', {
+            key: 'label',
+            className: 'block font-bold mb-3'
+          }, 'Quantity:'),
+          e(QuantitySelector, {
+            key: 'selector',
+            quantity: quantity,
+            onUpdate: onQuantityUpdate
+          })
+        ]),
+
+        e('div', {
+          key: 'action-buttons',
+          className: 'space-y-4 mb-8'
+        }, [
+          e('button', {
+            key: 'add-to-cart',
+            onClick: onAddToCart,
+            className: 'w-full bg-gradient-primary text-white py-4 px-6 rounded-2xl font-bold text-lg transition-custom btn-hover-lift flex items-center justify-center gap-3'
+          }, [
+            e('i', { key: 'icon', className: 'fas fa-cart-plus' }),
+            `Add Complete Kit - ${totalPrice}`
+          ]),
+          e('button', {
+            key: 'buy-now',
+            onClick: onBuyNow,
+            className: 'w-full bg-gradient-onion text-white py-4 px-6 rounded-2xl font-bold text-lg transition-custom btn-hover-lift flex items-center justify-center gap-3'
+          }, [
+            e('i', { key: 'icon', className: 'fas fa-bolt' }),
+            'Buy Now - Express Checkout'
+          ])
+        ]),
+
+        e('div', {
+          key: 'guarantee-badges',
+          className: 'grid grid-cols-2 md:grid-cols-4 gap-4 text-center'
+        }, [
+          { icon: 'fas fa-shield-alt', text: '30-Day\nGuarantee' },
+          { icon: 'fas fa-leaf', text: 'Complete\nSystem' },
+          { icon: 'fas fa-award', text: 'Best\nValue' },
+          { icon: 'fas fa-heart', text: '3K+\nHappy Customers' }
+        ].map((badge, index) => 
+          e('div', {
+            key: index,
+            className: 'flex flex-col items-center'
+          }, [
+            e('i', {
+              key: 'icon',
+              className: `${badge.icon} text-3xl text-primary mb-2`
+            }),
+            e('div', {
+              key: 'text',
+              className: 'text-xs font-semibold text-gray-600 whitespace-pre-line'
+            }, badge.text)
+          ])
+        ))
+      ]);
+    };
+
+    // Additional Components for Complete Kit Experience
+
+    const TrustIndicators = () => {
+      const [ref, isVisible] = useIntersectionObserver();
+
+      return e('div', {
+        ref: ref,
+        className: `bg-white rounded-custom shadow-custom p-8 mb-12 transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`
+      }, [
+        e('div', {
+          key: 'trust-grid',
+          className: 'grid md:grid-cols-4 gap-6 text-center'
+        }, [
+          {
+            icon: 'fas fa-users',
+            number: '50,000+',
+            text: 'Happy Customers',
+            color: 'text-blue-600'
+          },
+          {
+            icon: 'fas fa-star',
+            number: '4.8/5',
+            text: 'Average Rating',
+            color: 'text-yellow-500'
+          },
+          {
+            icon: 'fas fa-chart-line',
+            number: '94%',
+            text: 'Success Rate',
+            color: 'text-green-600'
+          },
+          {
+            icon: 'fas fa-medal',
+            number: '#1',
+            text: 'Bestselling Kit',
+            color: 'text-primary'
+          }
+        ].map((item, index) => 
+          e('div', {
+            key: index,
+            className: 'transform hover:scale-105 transition-custom'
+          }, [
+            e('i', {
+              key: 'icon',
+              className: `${item.icon} ${item.color} text-4xl mb-3`
+            }),
+            e('div', {
+              key: 'number',
+              className: 'text-2xl font-bold text-dark mb-1'
+            }, item.number),
+            e('div', {
+              key: 'text',
+              className: 'text-gray-600 font-semibold'
+            }, item.text)
+          ])
+        ))
+      ]);
+    };
+
+    const BeforeAfterSection = () => {
+      const [ref, isVisible] = useIntersectionObserver();
+
+      return e('div', {
+        ref: ref,
+        className: `bg-gradient-primary text-white rounded-custom p-8 mb-12 transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`
+      }, [
+        e('h3', {
+          key: 'title',
+          className: 'text-3xl font-nunito font-bold text-center mb-8'
+        }, 'Real Results from Real Customers'),
+        e('div', {
+          key: 'results-grid',
+          className: 'grid md:grid-cols-3 gap-8'
+        }, [
+          {
+            timeframe: 'After 4 Weeks',
+            result: 'Reduced Hair Fall by 70%',
+            description: 'Customers report significantly less hair in their brush and shower drain'
+          },
+          {
+            timeframe: 'After 8 Weeks', 
+            result: 'New Baby Hair Growth',
+            description: 'Visible new hair sprouts along hairline and crown area'
+          },
+          {
+            timeframe: 'After 12 Weeks',
+            result: '40% Thicker Hair Density',
+            description: 'Measurable increase in hair thickness and overall volume'
+          }
+        ].map((item, index) => 
+          e('div', {
+            key: index,
+            className: 'bg-white bg-opacity-10 backdrop-blur rounded-2xl p-6 text-center'
+          }, [
+            e('div', {
+              key: 'timeframe',
+              className: 'text-sm font-semibold mb-3 opacity-90'
+            }, item.timeframe),
+            e('h4', {
+              key: 'result',
+              className: 'text-xl font-bold mb-3'
+            }, item.result),
+            e('p', {
+              key: 'description',
+              className: 'text-sm opacity-90 leading-relaxed'
+            }, item.description)
+          ])
+        ))
+      ]);
+    };
+
+    const HowItWorksSection = () => {
+      const [ref, isVisible] = useIntersectionObserver();
+
+      return e('div', {
+        ref: ref,
+        className: `bg-white rounded-custom shadow-custom p-8 mb-12 transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`
+      }, [
+        e('h3', {
+          key: 'title',
+          className: 'text-3xl font-nunito font-bold text-center mb-8 text-dark'
+        }, 'How Our Complete System Works'),
+        e('div', {
+          key: 'steps-container',
+          className: 'relative'
+        }, [
+          e('div', {
+            key: 'steps-grid',
+            className: 'grid md:grid-cols-5 gap-6 relative'
+          }, [
+            {
+              step: 1,
+              product: 'Shampoo',
+              icon: '🧴',
+              action: 'Cleanse & Prepare',
+              description: 'Removes buildup and preps scalp for maximum absorption'
+            },
+            {
+              step: 2,
+              product: 'Conditioner',
+              icon: '💧',
+              action: 'Nourish & Strengthen',
+              description: 'Deep conditioning repairs damage and adds moisture'
+            },
+            {
+              step: 3,
+              product: 'Serum',
+              icon: '💉',
+              action: 'Activate Growth',
+              description: 'Concentrated growth factors stimulate follicles'
+            },
+            {
+              step: 4,
+              product: 'Mask',
+              icon: '🎭',
+              action: 'Repair & Restore',
+              description: 'Weekly intensive treatment rebuilds hair structure'
+            },
+            {
+              step: 5,
+              product: 'Oil',
+              icon: '🛢️',
+              action: 'Seal & Protect',
+              description: 'Locks in nutrients and provides ongoing nourishment'
+            }
+          ].map((item, index) => 
+            e('div', {
+              key: index,
+              className: 'text-center group hover:transform hover:scale-105 transition-custom relative step-connector'
+            }, [
+              e('div', {
+                key: 'step-circle',
+                className: 'w-12 h-12 bg-gradient-primary text-white rounded-full flex items-center justify-center font-bold text-lg mb-4 mx-auto'
+              }, item.step),
+              e('div', {
+                key: 'icon',
+                className: 'text-4xl mb-3'
+              }, item.icon),
+              e('h5', {
+                key: 'product',
+                className: 'font-bold text-dark mb-2'
+              }, item.product),
+              e('div', {
+                key: 'action',
+                className: 'text-primary font-semibold mb-2 text-sm'
+              }, item.action),
+              e('p', {
+                key: 'description',
+                className: 'text-xs text-gray-600 leading-relaxed'
+              }, item.description)
+            ])
+          ))
+        ])
+      ]);
+    };
+
+    const FAQSection = () => {
+      const [openFAQ, setOpenFAQ] = useState(0);
+      const [ref, isVisible] = useIntersectionObserver();
+
+      const faqs = [
+        {
+          question: 'How long does the complete kit last?',
+          answer: 'The complete kit provides approximately 2-3 months of daily use when following our recommended routine. This gives you enough time to see the full transformation results while ensuring you don\'t run out of any products.'
+        },
+        {
+          question: 'Can I use individual products from the kit separately?',
+          answer: 'While each product works independently, they are specifically formulated to work together synergistically. Using the complete system provides 40% better results than using individual products alone, as shown in our clinical studies.'
+        },
+        {
+          question: 'Is this kit suitable for all hair types?',
+          answer: 'Yes! Our complete kit is formulated to work on all hair types - straight, wavy, curly, coily, thick, thin, damaged, or healthy hair. The natural ingredients are gentle yet effective for everyone.'
+        },
+        {
+          question: 'When will I see results?',
+          answer: 'Most customers notice reduced hair fall within 1-2 weeks. New hair growth typically becomes visible around 4-6 weeks, with significant improvement in thickness and length by 8-12 weeks of consistent use.'
+        },
+        {
+          question: 'Are there any side effects?',
+          answer: 'Our products are made with natural ingredients and are generally well-tolerated. However, we recommend doing a patch test before first use. If you experience any irritation, discontinue use and consult a healthcare provider.'
+        },
+        {
+          question: 'What makes this better than buying products separately?',
+          answer: 'Besides saving $49.96, the products are formulated to complement each other. Each product prepares your hair for the next step, creating a synergistic effect that amplifies results beyond what individual products can achieve.'
+        }
+      ];
+
+      return e('div', {
+        ref: ref,
+        className: `bg-white rounded-custom shadow-custom p-8 mb-12 transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`
+      }, [
+        e('h3', {
+          key: 'title',
+          className: 'text-3xl font-nunito font-bold text-center mb-8 text-dark'
+        }, 'Frequently Asked Questions'),
+        e('div', {
+          key: 'faq-list',
+          className: 'space-y-4'
+        }, faqs.map((faq, index) => 
+          e('div', {
+            key: index,
+            className: 'border border-gray-200 rounded-lg overflow-hidden'
+          }, [
+            e('button', {
+              key: 'question',
+              onClick: () => setOpenFAQ(openFAQ === index ? -1 : index),
+              className: 'w-full text-left p-4 bg-gray-50 hover:bg-gray-100 transition-colors flex justify-between items-center'
+            }, [
+              e('span', {
+                key: 'text',
+                className: 'font-semibold text-dark'
+              }, faq.question),
+              e('i', {
+                key: 'icon',
+                className: `fas fa-chevron-down transition-transform ${openFAQ === index ? 'rotate-180' : ''}`
+              })
+            ]),
+            openFAQ === index && e('div', {
+              key: 'answer',
+              className: 'p-4 text-gray-700 leading-relaxed border-t border-gray-200'
+            }, faq.answer)
+          ])
+        ))
+      ]);
+    };
+
+    const GuaranteeSection = () => {
+      const [ref, isVisible] = useIntersectionObserver();
+
+      return e('div', {
+        ref: ref,
+        className: `bg-gradient-secondary text-white rounded-custom p-8 mb-12 transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`
+      }, [
+        e('div', {
+          key: 'content',
+          className: 'text-center max-w-4xl mx-auto'
+        }, [
+          e('i', {
+            key: 'shield',
+            className: 'fas fa-shield-alt text-6xl mb-6 opacity-90'
+          }),
+          e('h3', {
+            key: 'title',
+            className: 'text-3xl font-nunito font-bold mb-6'
+          }, '30-Day Money-Back Guarantee'),
+          e('p', {
+            key: 'description',
+            className: 'text-lg mb-8 opacity-90 leading-relaxed'
+          }, 'We\'re so confident in our Complete Onion Hair Care Kit that we offer a full 30-day money-back guarantee. If you\'re not completely satisfied with your results, return the products for a full refund - no questions asked.'),
+          e('div', {
+            key: 'features',
+            className: 'grid md:grid-cols-3 gap-6 text-center'
+          }, [
+            {
+              icon: 'fas fa-undo',
+              title: 'Easy Returns',
+              text: 'Simple return process with prepaid shipping'
+            },
+            {
+              icon: 'fas fa-dollar-sign',
+              title: 'Full Refund',
+              text: '100% money back, no restocking fees'
+            },
+            {
+              icon: 'fas fa-headset',
+              title: '24/7 Support',
+              text: 'Customer service team ready to help'
+            }
+          ].map((item, index) => 
+            e('div', {
+              key: index,
+              className: 'bg-white bg-opacity-10 backdrop-blur rounded-xl p-4'
+            }, [
+              e('i', {
+                key: 'icon',
+                className: `${item.icon} text-2xl mb-3`
+              }),
+              e('h5', {
+                key: 'title',
+                className: 'font-bold mb-2'
+              }, item.title),
+              e('p', {
+                key: 'text',
+                className: 'text-sm opacity-90'
+              }, item.text)
+            ])
+          ))
+        ])
+      ]);
+    };
+
+    const FinalCTASection = ({ product, quantity, onAddToCart, onBuyNow }) => {
+      const [ref, isVisible] = useIntersectionObserver();
+      const totalPrice = (product.price * quantity).toFixed(2);
+
+      return e('div', {
+        ref: ref,
+        className: `bg-gradient-onion text-white rounded-custom p-8 text-center mb-12 transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`
+      }, [
+        e('h3', {
+          key: 'title',
+          className: 'text-3xl font-nunito font-bold mb-4'
+        }, 'Ready for Your Hair Transformation?'),
+        e('p', {
+          key: 'urgency',
+          className: 'text-lg mb-6 opacity-90'
+        }, 'Join thousands of satisfied customers and start your complete hair transformation today!'),
+        e('div', {
+          key: 'final-value',
+          className: 'bg-white bg-opacity-20 backdrop-blur rounded-2xl p-6 mb-6'
+        }, [
+          e('div', {
+            key: 'price-display',
+            className: 'text-4xl font-bold mb-2'
+          }, [
+            e('span', { key: 'price' }, `${totalPrice}`),
+            e('span', {
+              key: 'original',
+              className: 'text-2xl line-through opacity-60 ml-4'
+            }, `${product.originalPrice}`)
+          ]),
+          e('div', {
+            key: 'savings',
+            className: 'text-lg font-semibold'
+          }, `Save ${product.savings} + FREE Shipping!`)
+        ]),
+        e('div', {
+          key: 'cta-buttons',
+          className: 'flex flex-col sm:flex-row gap-4 justify-center max-w-lg mx-auto'
+        }, [
+          e('button', {
+            key: 'buy-now',
+            onClick: onBuyNow,
+            className: 'bg-white text-onion py-4 px-8 rounded-2xl font-bold text-lg transition-custom hover:scale-105 hover:shadow-2xl flex items-center justify-center gap-3'
+          }, [
+            e('i', { key: 'icon', className: 'fas fa-bolt' }),
+            'Get Complete Kit Now'
+          ]),
+          e('button', {
+            key: 'add-cart',
+            onClick: onAddToCart,
+            className: 'border-2 border-white text-white py-4 px-8 rounded-2xl font-bold text-lg transition-custom hover:bg-white hover:text-onion flex items-center justify-center gap-3'
+          }, [
+            e('i', { key: 'icon', className: 'fas fa-cart-plus' }),
+            'Add to Cart'
+          ])
+        ])
+      ]);
+    };
+
+    const Footer = () => {
+      return e('footer', {
+        className: 'bg-dark text-white py-12 mt-16'
+      }, [
+        e('div', {
+          key: 'footer-content',
+          className: 'container mx-auto px-4'
+        }, [
+          e('div', {
+            key: 'footer-grid',
+            className: 'grid md:grid-cols-4 gap-8 mb-8'
+          }, [
+            e('div', { key: 'brand' }, [
+              e('h5', {
+                key: 'brand-name',
+                className: 'text-xl font-nunito font-bold mb-4 bg-gradient-primary bg-clip-text text-transparent'
+              }, 'Global Organic States'),
+              e('p', {
+                key: 'brand-desc',
+                className: 'text-gray-400 leading-relaxed text-sm'
+              }, 'Premium natural hair care products made in Delaware, USA. Transform your hair with science-backed organic formulations.')
+            ]),
+            e('div', { key: 'products' }, [
+              e('h6', {
+                key: 'products-title',
+                className: 'font-bold mb-4'
+              }, 'Products'),
+              e('ul', {
+                key: 'products-list',
+                className: 'space-y-2 text-sm'
+              }, [
+                e('li', { key: '1' }, e('a', { href: '#', className: 'text-gray-400 hover:text-primary transition-colors' }, 'Complete Hair Kit')),
+                e('li', { key: '2' }, e('a', { href: '#', className: 'text-gray-400 hover:text-primary transition-colors' }, 'Onion Hair Oil')),
+                e('li', { key: '3' }, e('a', { href: '#', className: 'text-gray-400 hover:text-primary transition-colors' }, 'Hair Growth Serum')),
+                e('li', { key: '4' }, e('a', { href: '#', className: 'text-gray-400 hover:text-primary transition-colors' }, 'Onion Shampoo'))
+              ])
+            ]),
+            e('div', { key: 'support' }, [
+              e('h6', {
+                key: 'support-title',
+                className: 'font-bold mb-4'
+              }, 'Customer Support'),
+              e('ul', {
+                key: 'support-list',
+                className: 'space-y-2 text-sm'
+              }, [
+                e('li', { key: '1' }, e('a', { href: '#', className: 'text-gray-400 hover:text-primary transition-colors' }, 'Contact Us')),
+                e('li', { key: '2' }, e('a', { href: '#', className: 'text-gray-400 hover:text-primary transition-colors' }, 'Shipping Info')),
+                e('li', { key: '3' }, e('a', { href: '#', className: 'text-gray-400 hover:text-primary transition-colors' }, 'Returns & Refunds')),
+                e('li', { key: '4' }, e('a', { href: '#', className: 'text-gray-400 hover:text-primary transition-colors' }, 'FAQ'))
+              ])
+            ]),
+            e('div', { key: 'contact' }, [
+              e('h6', {
+                key: 'contact-title',
+                className: 'font-bold mb-4'
+              }, 'Get in Touch'),
+              e('div', {
+                key: 'contact-info',
+                className: 'space-y-3 text-sm'
+              }, [
+                e('div', {
+                  key: 'email',
+                  className: 'flex items-center gap-3 text-gray-400'
+                }, [
+                  e('i', { key: 'icon', className: 'fas fa-envelope' }),
+                  'support@globalorganicstates.com'
+                ]),
+                e('div', {
+                  key: 'phone',
+                  className: 'flex items-center gap-3 text-gray-400'
+                }, [
+                  e('i', { key: 'icon', className: 'fas fa-phone' }),
+                  '+1 (555) 123-4567'
+                ]),
+                e('div', {
+                  key: 'location',
+                  className: 'flex items-center gap-3 text-gray-400'
+                }, [
+                  e('i', { key: 'icon', className: 'fas fa-map-marker-alt' }),
+                  'Delaware, USA'
+                ])
+              ])
+            ])
+          ]),
+          e('div', {
+            key: 'footer-bottom',
+            className: 'border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center'
+          }, [
+            e('div', {
+              key: 'copyright',
+              className: 'text-gray-400 text-sm mb-4 md:mb-0'
+            }, '© 2025 Global Organic States. All rights reserved.'),
+            e('div', {
+              key: 'social-links',
+              className: 'flex gap-4'
+            }, [
+              e('a', {
+                key: 'facebook',
+                href: '#',
+                className: 'w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-primary transition-colors'
+              }, e('i', { className: 'fab fa-facebook-f' })),
+              e('a', {
+                key: 'instagram',
+                href: '#',
+                className: 'w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-primary transition-colors'
+              }, e('i', { className: 'fab fa-instagram' })),
+              e('a', {
+                key: 'twitter',
+                href: '#',
+                className: 'w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-primary transition-colors'
+              }, e('i', { className: 'fab fa-twitter' }))
+            ])
+          ])
+        ])
+      ]);
+    };
+
+    // Tab Components
+    const Tab = ({ activeTab, setActiveTab, tabs, children }) => {
+      return e('div', {
+        className: 'mt-12'
+      }, [
+        e('div', {
+          key: 'tab-nav',
+          className: 'flex border-b-2 border-gray-200 mb-8 overflow-x-auto'
+        }, tabs.map((tab) => 
+          e('button', {
+            key: tab.id,
+            onClick: () => setActiveTab(tab.id),
+            className: `px-6 py-4 font-semibold transition-custom whitespace-nowrap border-b-2 ${
+              activeTab === tab.id
+                ? 'text-primary border-primary'
+                : 'text-gray-600 border-transparent hover:text-primary'
+            }`
+          }, [
+            e('i', { key: 'icon', className: `${tab.icon} mr-2` }),
+            tab.label
+          ])
+        )),
+        e('div', {
+          key: 'tab-content',
+          className: 'bg-white rounded-custom shadow-custom p-8'
+        }, children)
+      ]);
+    };
+
+    const DescriptionTab = ({ product }) => {
+      return e('div', {
+        className: 'prose max-w-none'
+      }, [
+        e('h3', {
+          key: 'title',
+          className: 'text-2xl font-nunito font-bold mb-6'
+        }, 'Complete Hair Transformation System'),
+        e('p', {
+          key: 'description',
+          className: 'text-lg text-gray-700 mb-8 leading-relaxed'
+        }, 'Our Complete Onion Hair Care Kit includes everything you need for total hair transformation. This comprehensive 5-product system works synergistically to deliver maximum hair growth, strength, and health benefits.'),
+        
+        e('div', {
+          key: 'whats-included',
+          className: 'bg-blue-50 border-l-4 border-blue-400 p-6 rounded mb-8'
+        }, [
+          e('h5', {
+            key: 'included-title',
+            className: 'font-bold text-lg mb-3 flex items-center gap-2'
+          }, [
+            e('i', { key: 'icon', className: 'fas fa-box text-blue-600' }),
+            'What\'s Included in Your Kit:'
+          ]),
+          e('div', {
+            key: 'included-grid',
+            className: 'grid md:grid-cols-2 gap-4'
+          }, product.kitContents.map((item, index) => 
+            e('div', {
+              key: index,
+              className: 'flex items-start gap-3'
+            }, [
+              e('i', {
+                key: 'check',
+                className: 'fas fa-check text-green-600 mt-1'
+              }),
+              e('div', { key: 'info' }, [
+                e('strong', { key: 'name', className: 'text-dark' }, `${item.name} (${item.size})`),
+                e('div', { key: 'price', className: 'text-sm text-gray-600' }, `${item.price} value`),
+                e('div', { key: 'desc', className: 'text-sm text-gray-700' }, item.description)
+              ])
+            ])
+          )),
+          e('div', {
+            key: 'total-value',
+            className: 'mt-4 p-3 bg-white rounded border-l-4 border-green-500'
+          }, [
+            e('strong', { key: 'text' }, 'Total Individual Value: '),
+            e('span', { key: 'strike', className: 'line-through text-gray-500' }, `${product.originalPrice}`),
+            e('span', { key: 'save', className: 'text-green-600 font-bold ml-2' }, `Save ${product.savings}!`)
+          ])
+        ]),
+        
+        e('h4', {
+          key: 'benefits-title',
+          className: 'text-xl font-nunito font-bold mb-6'
+        }, 'Complete System Benefits:'),
+        e('div', {
+          key: 'benefits',
+          className: 'space-y-4'
+        }, product.features.map((feature, index) => {
+          const descriptions = {
+            'Complete 5-Product System': 'Everything needed for daily care, weekly treatment, and targeted growth acceleration',
+            'Maximum Hair Growth Acceleration': '5-step system targets every aspect of hair growth and health for faster results',
+            'Synergistic Formula Technology': 'Products work together for enhanced effectiveness - 40% better results than individual products',
+            'Professional Treatment Results': 'Salon-quality treatment system for home use with step-by-step guide',
+            'Best Value - Save $49.96': 'Significant savings compared to buying products separately with same premium quality',
+            '94% Success Rate in Clinical Studies': 'Proven results with visible improvement in hair growth and thickness within 8 weeks'
+          };
+          
+          return e('div', {
+            key: index,
+            className: 'flex items-start gap-4 p-4 border-b border-gray-100 last:border-b-0'
+          }, [
+            e('i', {
+              key: 'icon',
+              className: 'fas fa-check-circle text-secondary text-xl mt-1'
+            }),
+            e('div', { key: 'content' }, [
+              e('strong', { key: 'feature', className: 'text-dark' }, `${feature}:`),
+              e('span', {
+                key: 'desc',
+                className: 'text-gray-700 ml-2'
+              }, descriptions[feature] || '')
+            ])
+          ]);
+        })),
+
+        e('div', {
+          key: 'guarantee',
+          className: 'bg-green-50 border-l-4 border-green-400 p-6 rounded mt-8'
+        }, [
+          e('h5', {
+            key: 'title',
+            className: 'font-bold text-lg mb-3 flex items-center gap-2'
+          }, [
+            e('i', { key: 'icon', className: 'fas fa-trophy text-green-600' }),
+            'Complete Hair Transformation Guarantee'
+          ]),
+          e('p', {
+            key: 'text',
+            className: 'text-gray-700 leading-relaxed'
+          }, 'Follow our complete system for 12 weeks and see dramatic improvements in hair growth, thickness, and overall health. This is our most effective treatment package with the highest success rate among our customers.')
+        ])
+      ]);
+    };
+
+    const IngredientsTab = ({ ingredients }) => {
+      return e('div', null, [
+        e('h3', {
+          key: 'title',
+          className: 'text-2xl font-nunito font-bold mb-6'
+        }, 'Complete System Ingredients'),
+        e('p', {
+          key: 'description',
+          className: 'text-lg text-gray-700 mb-8 leading-relaxed'
+        }, 'Each product in our complete kit contains carefully selected ingredients that work together synergistically for maximum hair growth and health benefits.'),
+
+        e('div', {
+          key: 'ingredients-grid',
+          className: 'grid-auto-fit'
+        }, ingredients.map((ingredient, index) => 
+          e('div', {
+            key: index,
+            className: 'bg-light p-6 rounded-2xl text-center transition-custom hover:shadow-lg'
+          }, [
+            e('div', {
+              key: 'icon',
+              className: 'text-4xl mb-4'
+            }, ingredient.icon),
+            e('h5', {
+              key: 'name',
+              className: 'font-bold text-dark mb-2'
+            }, `${ingredient.name} (${ingredient.percentage})`),
+            e('p', {
+              key: 'benefit',
+              className: 'text-gray-600 text-sm leading-relaxed'
+            }, ingredient.benefit)
+          ])
+        )),
+
+        e('div', {
+          key: 'synergistic',
+          className: 'bg-blue-50 border-l-4 border-blue-400 p-6 rounded mt-8'
+        }, [
+          e('h5', {
+            key: 'title',
+            className: 'font-bold text-lg mb-3 flex items-center gap-2'
+          }, [
+            e('i', { key: 'icon', className: 'fas fa-flask text-blue-600' }),
+            'Synergistic Formulation'
+          ]),
+          e('p', {
+            key: 'text',
+            className: 'text-gray-700 leading-relaxed'
+          }, 'Each product is formulated to complement the others, creating a synergistic effect that amplifies results beyond what individual products can achieve. Our research shows 40% better results when using the complete system versus individual products.')
+        ])
+      ]);
+    };
+
+    const UsageTab = () => {
+      return e('div', null, [
+        e('h3', {
+          key: 'title',
+          className: 'text-2xl font-nunito font-bold mb-6'
+        }, 'Complete System Usage Guide'),
+        e('p', {
+          key: 'description',
+          className: 'text-lg text-gray-700 mb-8 leading-relaxed'
+        }, 'Follow our comprehensive routine for maximum hair transformation results. This step-by-step guide shows you exactly how to use each product for optimal synergistic benefits.'),
+
+        e('div', {
+          key: 'content',
+          className: 'grid md:grid-cols-2 gap-8'
+        }, [
+          e('div', { key: 'daily-routine' }, [
+            e('h4', {
+              key: 'daily-title',
+              className: 'text-xl font-nunito font-bold mb-4 flex items-center gap-2'
+            }, [
+              e('i', { key: 'icon', className: 'fas fa-calendar-day text-primary' }),
+              'Daily Routine (5 minutes)'
+            ]),
+            e('div', {
+              key: 'morning',
+              className: 'bg-yellow-50 p-4 rounded-lg mb-4'
+            }, [
+              e('h6', {
+                key: 'morning-title',
+                className: 'font-bold mb-3 flex items-center gap-2'
+              }, [
+                e('span', { key: 'icon' }, '🌅'),
+                'Morning Routine'
+              ]),
+              e('ol', {
+                key: 'morning-steps',
+                className: 'space-y-2 text-sm'
+              }, [
+                e('li', { key: '1' }, [
+                  e('strong', { key: 'label' }, 'Shampoo: '),
+                  'Wash with Onion Growth Shampoo, massage for 2 minutes'
+                ]),
+                e('li', { key: '2' }, [
+                  e('strong', { key: 'label' }, 'Conditioner: '),
+                  'Apply to mid-lengths and ends, leave 3 minutes, rinse'
+                ]),
+                e('li', { key: '3' }, [
+                  e('strong', { key: 'label' }, 'Serum: '),
+                  'Apply 3-5 drops to towel-dried scalp, massage gently'
+                ]),
+                e('li', { key: '4' }, [
+                  e('strong', { key: 'label' }, 'Style: '),
+                  'Style as usual - serum is non-greasy and lightweight'
+                ])
+              ])
+            ]),
+            e('div', {
+              key: 'evening',
+              className: 'bg-blue-50 p-4 rounded-lg'
+            }, [
+              e('h6', {
+                key: 'evening-title',
+                className: 'font-bold mb-3 flex items-center gap-2'
+              }, [
+                e('span', { key: 'icon' }, '🌙'),
+                'Evening Routine (3 minutes)'
+              ]),
+              e('ol', {
+                key: 'evening-steps',
+                className: 'space-y-2 text-sm'
+              }, [
+                e('li', { key: '1' }, [
+                  e('strong', { key: 'label' }, 'Serum: '),
+                  'Apply 3-5 drops to clean scalp before bed'
+                ]),
+                e('li', { key: '2' }, [
+                  e('strong', { key: 'label' }, 'Oil Treatment: '),
+                  '2-3 times per week, apply oil and leave overnight'
+                ]),
+                e('li', { key: '3' }, [
+                  e('strong', { key: 'label' }, 'Massage: '),
+                  'Gentle 2-minute scalp massage to boost circulation'
+                ])
+              ])
+            ])
+          ]),
+
+          e('div', { key: 'weekly-results' }, [
+            e('h4', {
+              key: 'weekly-title',
+              className: 'text-xl font-nunito font-bold mb-4 flex items-center gap-2'
+            }, [
+              e('i', { key: 'icon', className: 'fas fa-calendar-week text-primary' }),
+              'Weekly Treatments'
+            ]),
+            e('div', {
+              key: 'weekly-treatments',
+              className: 'space-y-3'
+            }, [
+              e('div', {
+                key: 'mask',
+                className: 'bg-green-50 p-4 rounded-lg'
+              }, [
+                e('h6', {
+                  key: 'mask-title',
+                  className: 'font-bold text-green-600 mb-2'
+                }, 'Hair Mask (2x per week):'),
+                e('p', {
+                  key: 'mask-desc',
+                  className: 'text-sm text-gray-700'
+                }, 'Apply after shampooing, leave 20 minutes, rinse thoroughly')
+              ]),
+              e('div', {
+                key: 'oil',
+                className: 'bg-orange-50 p-4 rounded-lg'
+              }, [
+                e('h6', {
+                  key: 'oil-title',
+                  className: 'font-bold text-orange-600 mb-2'
+                }, 'Oil Treatment (3x per week):'),
+                e('p', {
+                  key: 'oil-desc',
+                  className: 'text-sm text-gray-700'
+                }, 'Apply to scalp and lengths, leave overnight or 2 hours minimum')
+              ])
+            ]),
+
+            e('h4', {
+              key: 'results-title',
+              className: 'text-xl font-nunito font-bold mb-4 mt-6 flex items-center gap-2'
+            }, [
+              e('i', { key: 'icon', className: 'fas fa-chart-line text-primary' }),
+              'Results Timeline'
+            ]),
+            e('div', {
+              key: 'timeline',
+              className: 'space-y-3'
+            }, [
+              e('div', {
+                key: 'week-1-2',
+                className: 'bg-blue-50 p-4 rounded-lg'
+              }, [
+                e('h6', {
+                  key: 'title',
+                  className: 'font-bold text-blue-600 mb-2'
+                }, 'Week 1-2:'),
+                e('p', {
+                  key: 'desc',
+                  className: 'text-sm text-gray-700'
+                }, 'Reduced hair fall, improved scalp health')
+              ]),
+              e('div', {
+                key: 'week-4-6',
+                className: 'bg-yellow-50 p-4 rounded-lg'
+              }, [
+                e('h6', {
+                  key: 'title',
+                  className: 'font-bold text-yellow-600 mb-2'
+                }, 'Week 4-6:'),
+                e('p', {
+                  key: 'desc',
+                  className: 'text-sm text-gray-700'
+                }, 'New baby hair growth, increased thickness')
+              ]),
+              e('div', {
+                key: 'week-8-12',
+                className: 'bg-green-50 p-4 rounded-lg'
+              }, [
+                e('h6', {
+                  key: 'title',
+                  className: 'font-bold text-green-600 mb-2'
+                }, 'Week 8-12:'),
+                e('p', {
+                  key: 'desc',
+                  className: 'text-sm text-gray-700'
+                }, 'Significant length and density improvement')
+              ])
+            ])
+          ])
+        ]),
+
+        e('div', {
+          key: 'pro-tips',
+          className: 'bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded mt-8'
+        }, [
+          e('h6', {
+            key: 'tips-title',
+            className: 'font-bold text-lg mb-3 flex items-center gap-2'
+          }, [
+            e('i', { key: 'icon', className: 'fas fa-lightbulb text-yellow-600' }),
+            'Pro Tips for Maximum Results'
+          ]),
+          e('ul', {
+            key: 'tips-list',
+            className: 'text-gray-700 space-y-2'
+          }, [
+            e('li', { key: '1' }, 'Use all products consistently - skipping products reduces effectiveness by 40%'),
+            e('li', { key: '2' }, 'Take progress photos weekly to track your transformation'),
+            e('li', { key: '3' }, 'Maintain healthy diet and stay hydrated for best results'),
+            e('li', { key: '4' }, 'Be patient - complete transformation takes 12 weeks of consistent use')
+          ])
+        ])
+      ]);
+    };
+
+    const ReviewsTab = ({ reviews, rating, reviewCount }) => {
+      return e('div', null, [
+        e('h3', {
+          key: 'title',
+          className: 'text-2xl font-nunito font-bold mb-6'
+        }, 'Customer Reviews'),
+        
+        e('div', {
+          key: 'rating-summary',
+          className: 'grid md:grid-cols-2 gap-8 mb-8'
+        }, [
+          e('div', {
+            key: 'rating-score',
+            className: 'text-center'
+          }, [
+            e('h2', {
+              key: 'score',
+              className: 'text-5xl font-bold text-primary mb-2'
+            }, `${rating}/5`),
+            e('div', {
+              key: 'stars',
+              className: 'flex justify-center text-yellow-400 text-xl mb-2'
+            }, [...Array(5)].map((_, i) => 
+              e('i', { key: i, className: 'fas fa-star' })
+            )),
+            e('p', {
+              key: 'count',
+              className: 'text-gray-600'
+            }, `Based on ${reviewCount.toLocaleString()} reviews`)
+          ]),
+          
+          e('div', {
+            key: 'rating-breakdown',
+            className: 'space-y-2'
+          }, [
+            { stars: 5, percentage: 85 },
+            { stars: 4, percentage: 12 },
+            { stars: 3, percentage: 2 },
+            { stars: 2, percentage: 1 },
+            { stars: 1, percentage: 0 }
+          ].map((item, index) => 
+            e('div', {
+              key: index,
+              className: 'flex items-center gap-2'
+            }, [
+              e('span', {
+                key: 'stars',
+                className: 'w-8 text-sm'
+              }, `${item.stars} ⭐`),
+              e('div', {
+                key: 'bar-container',
+                className: 'flex-1 bg-gray-200 rounded-full h-2'
+              }, e('div', {
+                className: 'bg-green-500 h-2 rounded-full transition-all duration-1000',
+                style: { width: `${item.percentage}%` }
+              })),
+              e('span', {
+                key: 'percentage',
+                className: 'w-8 text-sm text-right'
+              }, `${item.percentage}%`)
+            ])
+          ))
+        ]),
+
+        e('div', {
+          key: 'individual-reviews',
+          className: 'space-y-6'
+        }, reviews.map((review) => 
+          e('div', {
+            key: review.id,
+            className: 'bg-gray-50 rounded-2xl p-6 transition-custom hover:shadow-lg'
+          }, [
+            e('div', {
+              key: 'header',
+              className: 'flex items-center gap-4 mb-4'
+            }, [
+              e('div', {
+                key: 'avatar',
+                className: 'w-12 h-12 bg-gradient-primary text-white rounded-full flex items-center justify-center font-bold text-lg'
+              }, review.name.charAt(0)),
+              e('div', { key: 'info' }, [
+                e('h6', {
+                  key: 'name',
+                  className: 'font-bold text-dark'
+                }, review.name),
+                e('div', {
+                  key: 'meta',
+                  className: 'flex items-center gap-2 text-sm text-gray-600'
+                }, [
+                  e('div', {
+                    key: 'stars',
+                    className: 'flex text-yellow-400'
+                  }, [...Array(review.rating)].map((_, i) => 
+                    e('span', { key: i }, '⭐')
+                  )),
+                  review.verified && e('span', {
+                    key: 'verified',
+                    className: 'text-green-600'
+                  }, '✓ Verified Purchase'),
+                  e('span', { key: 'date' }, `• ${review.date}`)
+                ])
+              ])
+            ]),
+            e('p', {
+              key: 'text',
+              className: 'text-gray-700 leading-relaxed'
+            }, review.text)
+          ])
+        )),
+
+        e('div', {
+          key: 'load-more',
+          className: 'text-center mt-8'
+        }, e('button', {
+          className: 'bg-white border-2 border-primary text-primary px-6 py-3 rounded-full font-semibold transition-custom hover:bg-primary hover:text-white'
+        }, 'Load More Reviews'))
+      ]);
+    };
+
+    const RelatedProducts = ({ products }) => {
+      const [ref, isVisible] = useIntersectionObserver();
+
+      return e('div', {
+        ref: ref,
+        className: `mt-16 bg-white rounded-custom shadow-custom p-8 transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`
+      }, [
+        e('h3', {
+          key: 'title',
+          className: 'text-2xl font-nunito font-bold text-center mb-8'
+        }, 'Individual Products from Our Kit'),
+        e('div', {
+          key: 'products-grid',
+          className: 'grid sm:grid-cols-2 lg:grid-cols-4 gap-6'
+        }, products.map((product) => 
+          e('div', {
+            key: product.id,
+             onClick: () => window.location.href = `${product.id}.html`,
+            className: 'bg-light rounded-2xl p-6 text-center transition-custom hover:shadow-lg hover:-translate-y-2 group cursor-pointer'
+          }, [
+            e('div', {
+              key: 'image',
+              className: 'aspect-ratio-container mb-4 rounded-lg overflow-hidden'
+            }, e(OptimizedImage, {
+              src: product.image,
+              alt: product.name,
+              className: 'group-hover:scale-105 transition-transform duration-300'
+            })),
+            e('h6', {
+              key: 'name',
+              className: 'font-semibold text-dark mb-2'
+            }, product.name),
+            e('div', {
+              key: 'price',
+              className: 'text-primary font-bold text-lg'
+            }, `${product.price}`)
+          ])
+        ))
+      ]);
+    };
+
+    const ToastContainer = ({ toasts, onRemove }) => {
+      return e('div', {
+        className: 'fixed top-24 right-4 z-50 space-y-3'
+      }, toasts.map((toast) => 
+        e(Toast, {
+          key: toast.id,
+          toast: toast,
+          onRemove: onRemove
+        })
+      ));
+    };
+
+    // Error Boundary Component
+    class ErrorBoundary extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = { hasError: false, error: null };
+      }
+
+      static getDerivedStateFromError(error) {
+        return { hasError: true, error };
+      }
+
+      componentDidCatch(error, errorInfo) {
+        console.error('React Error:', error, errorInfo);
+      }
+
+      render() {
+        if (this.state.hasError) {
+          return e('div', {
+            className: 'error-boundary'
+          }, [
+            e('h2', { key: 'title' }, 'Something went wrong'),
+            e('p', { key: 'message' }, 'We\'re sorry, but there was an error loading the page.'),
+            e('button', {
+              key: 'reload',
+              onClick: () => window.location.reload(),
+              className: 'bg-primary text-white px-4 py-2 rounded mt-4'
+            }, 'Reload Page')
+          ]);
+        }
+
+        return this.props.children;
+      }
+    }
+
+    // Main App Component
+    const App = () => {
+      const [activeTab, setActiveTab] = useState('description');
+      
+      const cart = useCart();
+      const toast = useToast();
+
+      // Initialize - Check for return from payment
+      useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const status = urlParams.get('status');
+        const orderId = urlParams.get('order_id');
+        
+        if (status === 'completed' && orderId) {
+          toast.showToast('success', 'Payment Successful!', `Order ${orderId} completed successfully!`);
+          window.history.replaceState({}, document.title, window.location.pathname);
+        } else if (status === 'cancelled') {
+          toast.showToast('warning', 'Payment Cancelled', 'Your payment was cancelled. Your cart items are still saved.');
+          window.history.replaceState({}, document.title, window.location.pathname);
+        } else if (status === 'error') {
+          toast.showToast('error', 'Payment Error', 'There was an issue processing your payment. Please try again.');
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+      }, []);
+
+      // Tab configuration
+      const tabs = [
+        { id: 'description', label: 'Description', icon: 'fas fa-info-circle' },
+        { id: 'ingredients', label: 'Ingredients', icon: 'fas fa-seedling' },
+        { id: 'usage', label: 'How to Use', icon: 'fas fa-hand-holding-heart' },
+        { id: 'reviews', label: `Reviews (${PRODUCT_DATA.reviewCount.toLocaleString()})`, icon: 'fas fa-star' }
+      ];
+
+      // Handlers
+      const handleQuantityUpdate = (change) => {
+        cart.updateQuantity(PRODUCT_DATA.id, change);
+      };
+
+      const handleAddToCart = async () => {
+        try {
+          const quantity = cart.quantities[PRODUCT_DATA.id] || 1;
+          const cartItem = {
+            id: PRODUCT_DATA.id,
+            name: PRODUCT_DATA.name,
+            price: PRODUCT_DATA.price,
+            image: PRODUCT_DATA.images[0],
+            quantity: quantity
+          };
+
+          // Add to local cart state
+          cart.addToCart(cartItem, quantity);
+          
+          // Optionally sync with backend cart
+          await fetch(`${CONFIG.API_ENDPOINT}/cart/add`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(cartItem)
+          });
+
+          toast.showToast('success', 'Added to Cart', `${PRODUCT_DATA.name} has been added to your cart!`);
+        } catch (error) {
+          console.error('Add to cart error:', error);
+          // Still show success for local cart even if backend fails
+          toast.showToast('success', 'Added to Cart', `${PRODUCT_DATA.name} has been added to your cart!`);
+        }
+      };
+
+      const handleBuyNow = async () => {
+        try {
+          const quantity = cart.quantities[PRODUCT_DATA.id] || 1;
+          const orderData = {
+            product: {
+              id: PRODUCT_DATA.id,
+              name: PRODUCT_DATA.name,
+              price: PRODUCT_DATA.price,
+              image: PRODUCT_DATA.images[0]
+            },
+            quantity: quantity,
+            total: (PRODUCT_DATA.price * quantity).toFixed(2)
+          };
+
+          toast.showToast('info', 'Processing...', 'Redirecting to secure checkout...');
+
+          // Make request to your backend
+          const response = await fetch(`${CONFIG.API_ENDPOINT}/checkout`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderData)
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            // Redirect to the checkout URL provided by your backend
+            if (data.checkout_url) {
+              window.location.href = data.checkout_url;
+            } else {
+              toast.showToast('error', 'Checkout Error', 'No checkout URL received from server.');
+            }
+          } else {
+            throw new Error('Checkout request failed');
+          }
+        } catch (error) {
+          console.error('Checkout error:', error);
+          toast.showToast('error', 'Checkout Error', 'Failed to initiate checkout. Please try again.');
+        }
+      };
+
+      const renderTabContent = () => {
+        switch (activeTab) {
+          case 'description':
+            return e(DescriptionTab, { product: PRODUCT_DATA });
+          case 'ingredients':
+            return e(IngredientsTab, { ingredients: PRODUCT_DATA.ingredients });
+          case 'usage':
+            return e(UsageTab);
+          case 'reviews':
+            return e(ReviewsTab, { 
+              reviews: REVIEWS_DATA, 
+              rating: PRODUCT_DATA.rating, 
+              reviewCount: PRODUCT_DATA.reviewCount 
+            });
+          default:
+            return e(DescriptionTab, { product: PRODUCT_DATA });
+        }
+      };
+
+      return e('div', {
+        className: 'min-h-screen bg-light'
+      }, [
+        e(Header, { key: 'header' }),
+        e(ToastContainer, { 
+          key: 'toast', 
+          toasts: toast.toasts, 
+          onRemove: toast.removeToast 
+        }),
+        e('main', {
+          key: 'main',
+          className: 'container mx-auto px-4 py-8'
+        }, [
+          // Value Proposition Banner
+          e('div', {
+            key: 'value-banner',
+            className: 'bg-gradient-secondary text-white rounded-custom p-6 mb-8 text-center fade-in'
+          }, [
+            e('div', {
+              key: 'banner-content',
+              className: 'max-w-4xl mx-auto'
+            }, [
+              e('h2', {
+                key: 'banner-title',
+                className: 'text-2xl font-nunito font-bold mb-2'
+              }, '🎉 Complete Hair Transformation System - Save $49.96!'),
+              e('p', {
+                key: 'banner-text',
+                className: 'text-lg opacity-90'
+              }, 'Get all 5 professional-grade products for the price of 3. Clinically proven synergistic formula with 94% success rate.')
+            ])
+          ]),
+
+          e('div', {
+            key: 'product-section',
+            className: 'grid lg:grid-cols-2 gap-12 mb-12'
+          }, [
+            e('div', {
+              key: 'image-gallery',
+              className: 'slide-in-left'
+            }, e(ImageGallery, { 
+              images: PRODUCT_DATA.images, 
+              productName: PRODUCT_DATA.name 
+            })),
+            e('div', {
+              key: 'product-info',
+              className: 'slide-in-right'
+            }, e(ProductInfo, {
+              product: PRODUCT_DATA,
+              quantity: cart.quantities[PRODUCT_DATA.id] || 1,
+              onQuantityUpdate: handleQuantityUpdate,
+              onAddToCart: handleAddToCart,
+              onBuyNow: handleBuyNow
+            }))
+          ]),
+
+          // Trust Indicators Section
+          e(TrustIndicators, { key: 'trust-indicators' }),
+
+          // Before & After Section  
+          e(BeforeAfterSection, { key: 'before-after' }),
+
+          // How It Works Section
+          e(HowItWorksSection, { key: 'how-it-works' }),
+
+          e('div', {
+            key: 'tabs',
+            className: 'fade-in'
+          }, e(Tab, {
+            activeTab: activeTab,
+            setActiveTab: setActiveTab,
+            tabs: tabs
+          }, renderTabContent())),
+
+          // FAQ Section
+          e(FAQSection, { key: 'faq' }),
+
+          // Guarantee Section
+          e(GuaranteeSection, { key: 'guarantee' }),
+
+          e(RelatedProducts, {
+            key: 'related',
+            products: RELATED_PRODUCTS
+          }),
+
+          // Final CTA Section
+          e(FinalCTASection, {
+            key: 'final-cta',
+            product: PRODUCT_DATA,
+            quantity: cart.quantities[PRODUCT_DATA.id] || 1,
+            onAddToCart: handleAddToCart,
+            onBuyNow: handleBuyNow
+          })
+        ]),
+
+        // Footer
+        e(Footer, { key: 'footer' })
+      ]);
+    };
+
+    // Render with Error Boundary
+    try {
+      ReactDOM.render(
+        React.createElement(ErrorBoundary, null, React.createElement(App)),
+        document.getElementById('root')
+      );
+      
+      // Hide loading message
+      const loadingElement = document.getElementById('loading');
+      if (loadingElement) {
+        loadingElement.style.display = 'none';
+      }
+    } catch (error) {
+      console.error('Failed to render app:', error);
+      document.getElementById('root').innerHTML = `
+        <div class="error-boundary">
+          <h2>Failed to Load</h2>
+          <p>There was an error loading the application. Please refresh the page.</p>
+          <button onclick="window.location.reload()" class="bg-primary text-white px-4 py-2 rounded mt-4">
+            Refresh Page
+          </button>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
