@@ -1416,7 +1416,8 @@
             merchant_defined_data2: 'Hair Care Products'
           };
 
-          console.log('Sending payment data to backend:', paymentData);
+          console.log('🚀 DEBUGGING: Sending payment data to backend:', paymentData);
+          console.log('🔗 DEBUGGING: API Endpoint:', CONFIG.API_ENDPOINT);
 
           const response = await fetch(`${CONFIG.API_ENDPOINT}/api/secure-acceptance/generate-payment-form`, {
             method: 'POST',
@@ -1427,51 +1428,117 @@
             body: JSON.stringify(paymentData)
           });
 
+          console.log('📡 DEBUGGING: Response status:', response.status);
+          console.log('📡 DEBUGGING: Response headers:', response.headers);
+
           if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            const errorText = await response.text();
+            console.error('❌ DEBUGGING: Response error text:', errorText);
+            throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
           }
 
           const result = await response.json();
-          console.log('Backend response:', result);
+          console.log('✅ DEBUGGING: Full backend response:', JSON.stringify(result, null, 2));
           
-          if (result.success && result.data && result.data.payment_url && result.data.payment_params) {
-            this.showToast('success', 'Redirecting...', 'Redirecting to secure Bank of America payment...');
+          // More detailed checking of the response
+          if (result && result.success) {
+            console.log('✅ DEBUGGING: Result success is true');
             
-            // Create form and submit to Bank of America Hosted Payments Page
-            this.submitToSecureAcceptance(result.data.payment_url, result.data.payment_params);
+            if (result.data) {
+              console.log('✅ DEBUGGING: Result.data exists:', result.data);
+              
+              if (result.data.payment_url) {
+                console.log('✅ DEBUGGING: Payment URL found:', result.data.payment_url);
+              } else {
+                console.error('❌ DEBUGGING: No payment_url in result.data');
+              }
+              
+              if (result.data.payment_params) {
+                console.log('✅ DEBUGGING: Payment params found:', result.data.payment_params);
+              } else {
+                console.error('❌ DEBUGGING: No payment_params in result.data');
+              }
+              
+              if (result.data.payment_url && result.data.payment_params) {
+                this.showToast('success', 'Redirecting...', 'Redirecting to secure Bank of America payment...');
+                
+                // Create form and submit to Bank of America Hosted Payments Page
+                console.log('🚀 DEBUGGING: About to submit to Secure Acceptance');
+                this.submitToSecureAcceptance(result.data.payment_url, result.data.payment_params);
+              } else {
+                throw new Error('Missing payment_url or payment_params in response');
+              }
+            } else {
+              console.error('❌ DEBUGGING: No data property in result');
+              throw new Error('No data property in backend response');
+            }
           } else {
-            throw new Error(result.error || 'Payment session creation failed');
+            console.error('❌ DEBUGGING: Result success is false or missing');
+            console.error('❌ DEBUGGING: Result error:', result.error);
+            throw new Error(result.error || 'Backend returned success: false');
           }
         } catch (error) {
-          console.error('Payment error:', error);
-          this.showToast('error', 'Payment Error', 'Unable to process payment. Please try again or contact support.');
+          console.error('💥 DEBUGGING: Full error object:', error);
+          console.error('💥 DEBUGGING: Error message:', error.message);
+          console.error('💥 DEBUGGING: Error stack:', error.stack);
+          this.showToast('error', 'Payment Error', `Debug: ${error.message}`);
         }
       }
 
       // Submit to Bank of America Secure Acceptance using hidden form (as per guide)
       submitToSecureAcceptance(paymentUrl, paymentParams) {
-        // Create hidden form as recommended in BofA guide
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = paymentUrl;
-        form.style.display = 'none';
+        console.log('🚀 DEBUGGING: submitToSecureAcceptance called');
+        console.log('🔗 DEBUGGING: Payment URL:', paymentUrl);
+        console.log('📋 DEBUGGING: Payment Params:', paymentParams);
 
-        // Add all signed parameters to form
-        Object.entries(paymentParams).forEach(([name, value]) => {
-          const input = document.createElement('input');
-          input.type = 'hidden';
-          input.name = name;
-          input.value = value || '';
-          form.appendChild(input);
-        });
+        try {
+          // Remove any existing form
+          const existingForm = document.getElementById('secureAcceptanceForm');
+          if (existingForm) {
+            existingForm.remove();
+          }
 
-        document.body.appendChild(form);
-        
-        // Close checkout modal before redirecting
-        this.closeMobileCheckout();
-        
-        // Submit form to Bank of America
-        form.submit();
+          // Create hidden form as recommended in BofA guide
+          const form = document.createElement('form');
+          form.id = 'secureAcceptanceForm';
+          form.method = 'POST';
+          form.action = paymentUrl;
+          form.style.display = 'none';
+
+          console.log('📝 DEBUGGING: Created form with action:', form.action);
+
+          // Add all signed parameters to form
+          let paramCount = 0;
+          Object.entries(paymentParams).forEach(([name, value]) => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = name;
+            input.value = value || '';
+            form.appendChild(input);
+            paramCount++;
+            console.log(`📝 DEBUGGING: Added param ${paramCount}: ${name} = ${value ? (value.toString().substring(0, 50) + (value.toString().length > 50 ? '...' : '')) : 'empty'}`);
+          });
+
+          console.log(`📝 DEBUGGING: Total parameters added: ${paramCount}`);
+
+          document.body.appendChild(form);
+          console.log('📝 DEBUGGING: Form appended to body');
+          
+          // Close checkout modal before redirecting
+          this.closeMobileCheckout();
+          console.log('🚪 DEBUGGING: Mobile checkout closed');
+          
+          // Add a small delay to ensure form is ready
+          setTimeout(() => {
+            console.log('🚀 DEBUGGING: About to submit form...');
+            form.submit();
+            console.log('✅ DEBUGGING: Form submitted!');
+          }, 100);
+
+        } catch (error) {
+          console.error('💥 DEBUGGING: Error in submitToSecureAcceptance:', error);
+          this.showToast('error', 'Form Error', `Failed to create payment form: ${error.message}`);
+        }
       }
 
       // ==================== DESKTOP CHECKOUT ====================
@@ -1716,7 +1783,8 @@
             merchant_defined_data2: 'Hair Care Products'
           };
 
-          console.log('Sending payment data to backend:', paymentData);
+          console.log('🚀 DEBUGGING DESKTOP: Sending payment data to backend:', paymentData);
+          console.log('🔗 DEBUGGING DESKTOP: API Endpoint:', CONFIG.API_ENDPOINT);
 
           const response = await fetch(`${CONFIG.API_ENDPOINT}/api/secure-acceptance/generate-payment-form`, {
             method: 'POST',
@@ -1727,24 +1795,30 @@
             body: JSON.stringify(paymentData)
           });
 
+          console.log('📡 DEBUGGING DESKTOP: Response status:', response.status);
+
           if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            const errorText = await response.text();
+            console.error('❌ DEBUGGING DESKTOP: Response error text:', errorText);
+            throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
           }
 
           const result = await response.json();
-          console.log('Backend response:', result);
+          console.log('✅ DEBUGGING DESKTOP: Full backend response:', JSON.stringify(result, null, 2));
           
-          if (result.success && result.data && result.data.payment_url && result.data.payment_params) {
+          if (result && result.success && result.data && result.data.payment_url && result.data.payment_params) {
             this.showToast('success', 'Redirecting...', 'Redirecting to secure Bank of America payment...');
             
             // Create form and submit to Bank of America Hosted Payments Page
+            console.log('🚀 DEBUGGING DESKTOP: About to submit to Secure Acceptance');
             this.submitToSecureAcceptance(result.data.payment_url, result.data.payment_params);
           } else {
-            throw new Error(result.error || 'Payment session creation failed');
+            console.error('❌ DEBUGGING DESKTOP: Invalid response structure:', result);
+            throw new Error(result.error || 'Invalid response from payment processor');
           }
         } catch (error) {
-          console.error('Payment error:', error);
-          this.showToast('error', 'Payment Error', 'Unable to process payment. Please try again or contact support.');
+          console.error('💥 DEBUGGING DESKTOP: Full error object:', error);
+          this.showToast('error', 'Payment Error', `Debug: ${error.message}`);
         }
       }
 
