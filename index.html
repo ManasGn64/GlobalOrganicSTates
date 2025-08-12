@@ -1419,7 +1419,7 @@
           console.log('🚀 DEBUGGING: Sending payment data to backend:', paymentData);
           console.log('🔗 DEBUGGING: API Endpoint:', CONFIG.API_ENDPOINT);
 
-          const response = await fetch(`${CONFIG.API_ENDPOINT}/api/secure-acceptance/create-payment-token`, {
+          const response = await fetch(`${CONFIG.API_ENDPOINT}/api/secure-acceptance/generate-payment-form`, {
             method: 'POST',
             headers: { 
               'Content-Type': 'application/json',
@@ -1459,12 +1459,12 @@
                 console.error('❌ DEBUGGING: No payment_params in result.data');
               }
               
-              if (result.data.token_url && result.data.payment_params) {
+              if (result.data.payment_url && result.data.payment_params) {
                 this.showToast('success', 'Redirecting...', 'Redirecting to secure Bank of America payment...');
                 
                 // Create form and submit to Bank of America Hosted Payments Page
                 console.log('🚀 DEBUGGING: About to submit to Secure Acceptance');
-                this.submitToSecureAcceptance(result.data.token_url, result.data.token_params);
+                this.submitToSecureAcceptance(result.data.payment_url, result.data.payment_params);
               } else {
                 throw new Error('Missing payment_url or payment_params in response');
               }
@@ -1786,7 +1786,7 @@
           console.log('🚀 DEBUGGING DESKTOP: Sending payment data to backend:', paymentData);
           console.log('🔗 DEBUGGING DESKTOP: API Endpoint:', CONFIG.API_ENDPOINT);
 
-          const response = await fetch(`${CONFIG.API_ENDPOINT}/api/secure-acceptance/create-payment-token`, {
+          const response = await fetch(`${CONFIG.API_ENDPOINT}/api/secure-acceptance/generate-payment-form`, {
             method: 'POST',
             headers: { 
               'Content-Type': 'application/json',
